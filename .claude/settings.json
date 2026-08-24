@@ -2,10 +2,7 @@
   "permissions": {
     "defaultMode": "default",
     "allow": [
-      "Read",
-      "Write(company/**)",
-      "Write(pipeline/**)",
-      "Write(proposals/**)",
+      "Read(./**)",
       "Edit(company/**)",
       "Edit(pipeline/**)",
       "Edit(proposals/**)"
@@ -13,7 +10,16 @@
     "deny": [
       "Read(./company/.env.local)",
       "Read(./.env)",
-      "Read(./.env.*)"
+      "Read(./.env.*)",
+      "Read(~/.ssh/**)",
+      "Read(~/.aws/**)",
+      "Read(~/.gnupg/**)",
+      "Read(~/.azure/**)",
+      "Read(~/.kube/**)",
+      "Read(~/.config/gcloud/**)",
+      "Read(~/.docker/config.json)",
+      "Read(~/.npmrc)",
+      "Read(~/.git-credentials)"
     ]
   }
 }
