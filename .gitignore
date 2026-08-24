@@ -1,0 +1,41 @@
+# Your company profile stays out of git. The fictional example ships as
+# company/profile.example.md, so the repo still shows what a finished one looks like.
+# To keep your own profile in your own repo, make that repo private, then delete the next line.
+company/profile.md
+
+# Your api.data.gov key. Never commit this.
+company/.env.local
+
+# Your opportunity pipeline. Target agencies, teaming partners, and bid decisions are
+# competitive information, and some of it belongs to other companies.
+# To keep your pipeline in your own private repo, delete the next two lines.
+pipeline/*
+!pipeline/opportunity.template.md
+!pipeline/README.md
+
+# Your proposal drafts, including pricing narrative and partner material under NDA.
+# To keep your drafts in your own private repo, delete the next two lines.
+proposals/*
+!proposals/README.md
+
+# Local Claude Code overrides (created when you choose "always allow" in a prompt)
+.claude/settings.local.json
+
+# Secrets in any other form
+.env
+.env.*
+
+# The key file's example, which holds no key, is tracked on purpose.
+!company/.env.local.example
+
+# Operating system clutter
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editor folders
+.vscode/
+.idea/
+
+# Office lock files, in case you open a draft in Word
+~$*

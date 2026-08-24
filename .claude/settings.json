@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "defaultMode": "default",
+    "allow": [
+      "Read",
+      "Write(company/**)",
+      "Write(pipeline/**)",
+      "Write(proposals/**)",
+      "Edit(company/**)",
+      "Edit(pipeline/**)",
+      "Edit(proposals/**)"
+    ],
+    "deny": [
+      "Read(./company/.env.local)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
