@@ -2,6 +2,16 @@
 
 A folder you download that turns Claude Code into a capture and proposal assistant for a solo government contractor. Pipeline, SAM.gov matching, bid decisions, compliance matrix, proposal drafting, and subcontractor teaming. It prepares and checks the submission. A human submits it.
 
+## Start with one thing
+
+Ten commands is a lot to meet at once. You do not need to read this whole page to begin, and you do not need nine of them today. Three steps.
+
+1. Download the folder from the link further down and unzip it.
+2. Open a terminal in that folder and type `claude`.
+3. Type `/setup-profile` and press Enter.
+
+It interviews you and writes `company/profile.md`, which every other command reads. When that file is done, type `/find-opps`. Everything else can wait until you have a solicitation in front of you, and the rest of this page will still be here when you do.
+
 ## What is this?
 
 It is a folder of files you download onto your own computer. Inside it are written instructions in plain text, which you can open and read like any other document. When you open that folder in Claude Code and start typing, the assistant reads those instructions first, and from then on it behaves like a capture manager and proposal writer for this one job instead of a general chatbot: it works from your company profile, it cites the section of the solicitation behind every requirement, and it marks a gap rather than filling it with something that sounds right. Developers call a folder like this a harness, which is why the repository is named govcon-starter-harness.
@@ -84,6 +94,24 @@ Ten commands, in the order you would actually use them. Each one is a conversati
 - `/submit-package` assembles the final package and runs the completeness check against the matrix and the solicitation's own submission instructions. It stops there. You submit.
 - `/organise` puts every file where the kit expects it: creates the folders, moves anything that landed in the wrong place, applies the naming convention so a pipeline file and its proposals folder carry the same solicitation number, and reports the drift it cannot fix for you. It never deletes anything and never overwrites a file that has content.
 - `/dashboard` reads your real files and writes `dashboard.html`, a single page you open by double-clicking. Every tracked opportunity ordered by deadline, soonest first, with the stage it is at, the bid decision and score, how far the proposal has got, the open gaps, and any registration expiring soon. The day counts are worked out when you open the page, not written into it, so the countdown is right whenever you look. The page also says how old the underlying data is, and what it could not determine.
+
+## It will not fit you perfectly
+
+This is a starting point, not a finished product. It was written for a general version of a small prime contractor, and your business is specific: your agencies, your NAICS codes, your workshare, your own read on which opportunities are worth forty hours. Some of what it produces will not match how you actually bid.
+
+Everything in the folder is plain text. You can open any file in it with any text editor and read it like a letter. Nothing is compiled, nothing is hidden, and nothing is locked.
+
+The way to change it is to tell the assistant what you want different, and ask it to edit the file for you. For example, `/bid-no-bid` scores an opportunity on a weighted rubric, and incumbent presence carries fifteen of the hundred points. If you have lost enough recompetes to think that is generous, type this:
+
+> Raise the weight on incumbent presence to 25, take the difference off the factors you think matter least, and show me the new table. Edit `.claude/skills/bid-no-bid/SKILL.md` so it scores that way from now on.
+
+The rubric is a plain markdown table in that file and it is meant to be argued with. The same goes for the volume structure in `.claude/skills/draft-proposal/SKILL.md` and for anything that should apply across every job, which lives in `CLAUDE.md`.
+
+One part is worth leaving alone. The rules in `CLAUDE.md` about never submitting to the government, never inventing past performance, never answering a rep or cert, and never stating a limitations-on-subcontracting percentage from memory are there because breaking them can cost you a contract, a certification, or worse. Change the rubric freely. Leave those.
+
+If a change goes wrong, download the folder again and start from the original. Your own work is in separate files: `company/profile.md`, everything in `pipeline/`, and everything in `proposals/`. Those three are kept out of git on purpose. Copy them somewhere outside the folder first, then put them back into the fresh download.
+
+This next part matters more here than in the other kits. It can be wrong, and a proposal carries your signature, not the assistant's. Read every line of a draft before it goes anywhere. Check each citation against the solicitation in front of you, check the numbers, and check every past performance detail against your own records. If a sentence states something as fact and you cannot point at where that fact came from, delete it. A federal proposal is a signed statement to the government, and the person who answers for what is in it is you.
 
 ## Who this is for
 
