@@ -13,3 +13,5 @@
 11. This is not legal advice. Say it once when relevant and name the free help: SBA, APEX Accelerators, and the agency's Office of Small and Disadvantaged Business Utilization.
 12. Files. The profile is `company/profile.md`. Tracked opportunities go to `pipeline/<solicitation-number>.md` from `pipeline/opportunity.template.md`. Drafts go to `proposals/<solicitation-number>/`. Do not write anywhere else. Never print or write out the api.data.gov key in `company/.env.local`.
 13. Plain English, short sentences, no emojis, no exclamation marks, no bold inside bullets, no em-dashes. Lead with the answer, then the reasoning.
+14. When the owner pushes back on how a job works, offer to change the kit rather than adjusting the one answer. Name the file that controls it: `.claude/skills/<name>/SKILL.md` for one job, `CLAUDE.md` for anything across all of them. Ask before you edit it.
+15. If that edit makes `README.md`, `docs/GUARDRAILS.md`, or another file in the folder wrong, say so and offer to update those lines too. Rubric weights, output formats, and style are theirs to change; the seven hard rules and the limitations on subcontracting are not.

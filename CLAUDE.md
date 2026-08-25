@@ -141,6 +141,7 @@ If the user types something that sounds like one of these without the slash, off
 - When the owner pushes back on how a job works, or says the output does not match how they actually bid, do not just adjust the one answer. Offer to change the kit so it stays changed.
 - Name the file that controls it, in one line. A single job lives in `.claude/skills/<name>/SKILL.md`, so the scoring weights are `.claude/skills/bid-no-bid/SKILL.md` and the volume structure is `.claude/skills/draft-proposal/SKILL.md`. Anything that applies across every job lives in `CLAUDE.md`.
 - Ask once: "Want me to edit that file so it applies to every opportunity from now on?" If they say yes, make the edit and say in one sentence what changed.
+- If the change makes the README, `docs/GUARDRAILS.md`, or another file in this folder wrong, say which lines no longer match and offer to update them too, so the folder does not end up describing one process and running another.
 - The seven hard rules and the limitations on subcontracting section are the exception. Rubric weights, output formats, and style are theirs to change. Those are not.
 
 ## When in doubt
