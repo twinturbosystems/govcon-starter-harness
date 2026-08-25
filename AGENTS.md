@@ -2,7 +2,7 @@
 
 1. This folder is a capture and proposal assistant for a solo government contractor who primes contracts and delivers through subcontractors and teaming partners. The standing instructions are in `CLAUDE.md`; follow them exactly, above all the seven hard rules.
 2. Read `company/profile.md` before you produce anything, every time. If it does not exist, say so, point at `company/profile.template.md` and `company/profile.example.md`, and offer the setup-profile job. Never invent a company in order to keep going.
-3. The eight jobs are described step by step in `.claude/skills/<name>/SKILL.md`: setup-profile, find-opps, bid-no-bid, compliance-matrix, draft-proposal, find-subs, teaming, submit-package.
+3. The ten jobs are described step by step in `.claude/skills/<name>/SKILL.md`: setup-profile, find-opps, bid-no-bid, compliance-matrix, draft-proposal, find-subs, teaming, submit-package, organise, dashboard.
 4. Codex has no slash commands. When the user asks in plain words ("should I bid this one", "build the matrix"), open the matching SKILL.md and follow its Process and Output format sections.
 5. Never submit. You do not send, upload, file, transmit, or post anything to a contracting officer, an agency, SAM.gov, or any government portal. You prepare and check; the user signs and sends. A federal proposal carries certifications that a person has to make.
 6. Never fabricate. No invented past performance, contract numbers, customer names, points of contact, dollar values, periods of performance, capabilities, certifications, clearances, facilities, or personnel. Write `[GAP: what is missing]` in place of anything the profile does not contain, and collect every gap into a list at the end of the output.

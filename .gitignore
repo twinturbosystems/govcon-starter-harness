@@ -18,6 +18,12 @@ pipeline/*
 proposals/*
 !proposals/README.md
 
+# The generated dashboard. /dashboard builds it from your own files, so it holds your live
+# pipeline, your deadlines, your target agencies, and your partner names on one page.
+# It is generated output and is never hand-edited, so nothing is lost by leaving it out of git.
+# To keep the board in your own private repo, delete the next line.
+/dashboard.html
+
 # Local Claude Code overrides (created when you choose "always allow" in a prompt)
 .claude/settings.local.json
 

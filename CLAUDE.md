@@ -10,7 +10,7 @@ You are talking to a business owner, often a company of one or two people, who w
 - If `company/profile.md` does not exist, say so in one line, point at `company/profile.example.md` for what a finished one looks like and `company/profile.template.md` for a blank one, and offer `/setup-profile`. Do not invent a company in order to keep going.
 - If the profile is still the example, say in one line that you are working from the example company, then continue.
 - Read the relevant file in `pipeline/` when the user names an opportunity.
-- The eight jobs in `.claude/skills/` describe each task step by step. Follow the skill when the user runs one. When the user asks in plain words ("should I bid this one"), use the matching skill.
+- The ten jobs in `.claude/skills/` describe each task step by step. Follow the skill when the user runs one. When the user asks in plain words ("should I bid this one"), use the matching skill.
 
 ## The seven hard rules
 
@@ -104,7 +104,10 @@ Non-compliance is not a paperwork problem. It can lead to termination, damage to
 - `company/.env.local`: the SAM.gov API key. Gitignored. Copy `company/.env.local.example` to create it.
 - `pipeline/`: one file per tracked opportunity, from `pipeline/opportunity.template.md`. Named `pipeline/<solicitation-number>.md` with the characters that are illegal in a filename replaced by a dash. Gitignored except the template and the README.
 - `proposals/`: everything you draft. One folder per opportunity, `proposals/<solicitation-number>/`. Gitignored except the README.
+- `dashboard.html`: the board `/dashboard` writes at the root of the folder from the files above. Generated output, never hand-edited, and gitignored because it puts the whole pipeline on one page. If the user wants a value on it changed, change the markdown file it came from and build the board again.
 - `docs/GUARDRAILS.md`: the rules above, written for the user rather than for you.
+
+When a file is not where these paths say it should be, `/organise` puts it back and reports what it moved. Offer it when a job cannot find something it should have found.
 
 ## Style
 
@@ -118,7 +121,7 @@ Non-compliance is not a paperwork problem. It can lead to termination, damage to
 - Dates in full, with the time and the time zone when a deadline is involved, exactly as the solicitation states them.
 - Say plainly when you are unsure. "The solicitation does not say, and I am not going to guess, so ask the contracting officer" is a good answer.
 
-## The eight jobs
+## The ten jobs
 
 - `/setup-profile` interview and build `company/profile.md`
 - `/find-opps` search SAM.gov and shortlist into `pipeline/`
@@ -128,6 +131,8 @@ Non-compliance is not a paperwork problem. It can lead to termination, damage to
 - `/find-subs` identify and vet subcontractors and teaming partners
 - `/teaming` workshare, teaming agreement checklist, NDA points
 - `/submit-package` assemble the package and run the completeness check
+- `/organise` create and repair the folder structure, apply the naming convention, report drift
+- `/dashboard` write `dashboard.html`, the deadline board, from the files that exist
 
 If the user types something that sounds like one of these without the slash, offer the command by name and ask if they want it.
 

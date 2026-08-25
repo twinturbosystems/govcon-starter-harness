@@ -16,7 +16,7 @@ The folder is ordinary text files. Nothing in it is compiled, and nothing runs o
 
 When you point an assistant at the folder, it reads those instructions before it answers you. From then on it behaves like a capture and proposal assistant for everything you ask, not just the first question. It is not a program that starts up, and nothing is installed on your computer beyond the assistant itself. It is instructions the assistant chooses to follow.
 
-The saved jobs are why you can type one short word instead of explaining the task every time. `/setup-profile` interviews you and writes your company profile. `/find-opps` searches SAM.gov and shortlists what actually fits you. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix.
+The saved jobs are why you can type one short word instead of explaining the task every time. `/setup-profile` interviews you and writes your company profile. `/find-opps` searches SAM.gov and shortlists what actually fits you. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
 
 Your work lives in files in the folder that you own. The profile is in `company/`, tracked opportunities are in `pipeline/`, one file each, and drafts go to `proposals/`, one folder per opportunity. Those three are excluded from git on purpose, which the privacy section below explains.
 
@@ -56,6 +56,7 @@ Two other ways to get the same folder, if you prefer them:
 3. Say yes to the trust prompt. The first time Claude Code opens a folder it has not seen before, it asks whether you trust the files in it. That is normal and it only happens once per folder. This is the folder you just downloaded, so choose yes.
 4. Type `/setup-profile` and press Enter. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other command reads that file.
 5. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes.
+6. Type `/dashboard` whenever you want to see where everything stands. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
 
 There is nothing to build and nothing to install beyond Claude Code itself.
 
@@ -71,7 +72,7 @@ The exact steps and copy-ready prompts for all three are in [ONE-PROMPT.md](ONE-
 
 ## What you can type
 
-Eight commands, in the order you would actually use them. Each one is a conversation, not a form.
+Ten commands, in the order you would actually use them. Each one is a conversation, not a form.
 
 - `/setup-profile` interviews you and writes `company/profile.md`: entity, UEI, CAGE, SAM status, NAICS codes with the size standard under each, set-aside status as you report it, real capabilities, real past performance, geography, bonding, clearances, target agencies.
 - `/find-opps` searches SAM.gov against your profile and shortlists what fits, either through the API with your free key or through the web search with you pasting results in. Shortlisted opportunities get a file in `pipeline/`.
@@ -81,6 +82,8 @@ Eight commands, in the order you would actually use them. Each one is a conversa
 - `/find-subs` helps you identify and vet subcontractors and teaming partners: what to check on SAM before you talk to them, what to ask for, and what a real answer looks like.
 - `/teaming` prepares the teaming approach: the workshare split, a teaming agreement checklist, the NDA points, and what has to be settled before the proposal goes out.
 - `/submit-package` assembles the final package and runs the completeness check against the matrix and the solicitation's own submission instructions. It stops there. You submit.
+- `/organise` puts every file where the kit expects it: creates the folders, moves anything that landed in the wrong place, applies the naming convention so a pipeline file and its proposals folder carry the same solicitation number, and reports the drift it cannot fix for you. It never deletes anything and never overwrites a file that has content.
+- `/dashboard` reads your real files and writes `dashboard.html`, a single page you open by double-clicking. Every tracked opportunity ordered by deadline, soonest first, with the stage it is at, the bid decision and score, how far the proposal has got, the open gaps, and any registration expiring soon. The day counts are worked out when you open the page, not written into it, so the countdown is right whenever you look. The page also says how old the underlying data is, and what it could not determine.
 
 ## Who this is for
 
@@ -101,12 +104,13 @@ If you ask it for any of the above, it declines in a sentence and offers the hon
 
 ## Privacy: what stays out of git
 
-This folder ships with a `.gitignore` that excludes four things from version control:
+This folder ships with a `.gitignore` that excludes five things from version control:
 
 - `company/profile.md`, your real company facts
 - `company/.env.local`, your api.data.gov key
 - everything in `pipeline/` except the template and the README
 - everything in `proposals/` except the README
+- `dashboard.html`, the generated board, which puts your whole pipeline on one page
 
 That is deliberate. If you push your copy of this folder to your own GitHub, the default should not be that your bid pipeline, your target agencies, your teaming partners, and your draft pricing narrative become public. Your pipeline is competitive information and some of it belongs to other people. The example profile that ships in the repo is fictional and is a separate file, `company/profile.example.md`, so the kit still shows you what a finished profile looks like without ever tracking yours.
 

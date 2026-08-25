@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pipeline board</title>
+<style>
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:#eceef1;
+  color:#15181d;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  font-size:15px;
+  line-height:1.5;
+  -webkit-print-color-adjust:exact;
+  print-color-adjust:exact;
+}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:0.92em}
+.sheet{max-width:1120px;margin:0 auto;background:#fff;min-height:100vh;padding:34px 36px 64px;box-shadow:0 0 0 1px #dde1e6}
+
+/* masthead */
+.masthead{display:flex;flex-wrap:wrap;gap:20px;align-items:flex-end;justify-content:space-between;border-bottom:2px solid #15181d;padding-bottom:14px}
+.masthead h1{margin:0;font-size:27px;letter-spacing:-0.02em;font-weight:650}
+.mast-sub{margin:5px 0 0;color:#4f5661;font-size:14px;max-width:64ch}
+.mast-note{margin:4px 0 0;color:#5b4b7a;font-size:13px;max-width:64ch}
+.mast-right{text-align:right;min-width:212px}
+.gen-label{margin:0;font-size:10.5px;letter-spacing:0.14em;text-transform:uppercase;color:#767e8a}
+.gen-when{margin:2px 0 0;font-size:15px;font-weight:600}
+.gen-age{margin:1px 0 0;font-size:12.5px;color:#767e8a}
+
+/* banners */
+.banner{margin:18px 0 0;border:1px solid #c9a227;border-left:6px solid #c9a227;background:#fdfaef;padding:12px 16px}
+.banner.hard{border-color:#8a2b12;border-left-color:#8a2b12;background:#fdf3f0}
+.banner.plain{border-color:#c4c9d1;border-left-color:#5c6470;background:#f6f7f9}
+.banner p{margin:0;font-size:13.5px;color:#3d4149;max-width:96ch}
+.banner-title{font-weight:650;color:#15181d;margin-bottom:3px}
+
+/* summary strip */
+.strip{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#dde1e6;border:1px solid #dde1e6;margin:22px 0 0}
+.tile{background:#fff;padding:13px 16px}
+.tile-label{margin:0;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#767e8a}
+.tile-value{margin:3px 0 0;font-size:25px;font-weight:660;letter-spacing:-0.02em;line-height:1.15}
+.tile-note{margin:1px 0 0;font-size:12px;color:#767e8a}
+.tile.alert .tile-value{color:#7b1f1f}
+
+/* sections */
+section{margin:38px 0 0}
+h2{margin:0 0 3px;font-size:17px;font-weight:650;letter-spacing:-0.01em}
+.lede{margin:0 0 14px;font-size:13.5px;color:#5b6270;max-width:80ch}
+h3{margin:0;font-size:15px;font-weight:650}
+h4{margin:0 0 6px;font-size:10.5px;letter-spacing:0.12em;text-transform:uppercase;color:#767e8a;font-weight:650}
+
+/* deadline table */
+.table-wrap{overflow-x:auto;border:1px solid #dde1e6}
+table.board{border-collapse:collapse;width:100%;min-width:860px;font-size:13.5px}
+table.board th{
+  text-align:left;font-size:10.5px;letter-spacing:0.11em;text-transform:uppercase;color:#5b6270;
+  font-weight:650;padding:9px 12px;background:#f6f7f9;border-bottom:1px solid #dde1e6;white-space:nowrap;
+}
+table.board td{padding:11px 12px;border-bottom:1px solid #edeff2;vertical-align:top}
+table.board tr:last-child td{border-bottom:0}
+.col-days{width:120px}
+td.days{border-left:2px solid #c4c9d1;white-space:nowrap}
+.days-num{display:block;font-size:23px;font-weight:680;line-height:1.05;letter-spacing:-0.02em}
+.days-label{display:block;font-size:11px;letter-spacing:0.06em;text-transform:uppercase;color:#5b6270;margin-top:2px}
+.due-date{display:block;font-weight:600;white-space:nowrap}
+.due-time{display:block;font-size:12.5px;color:#5b6270;white-space:nowrap}
+.opp{min-width:236px}
+.opp-num{display:block;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:12.5px;font-weight:600}
+.opp-title{display:block;color:#3d4149;margin-top:1px}
+
+/* urgency, carried by colour, border weight and wording together */
+.band-past td.days{border-left:9px solid #7b1f1f}
+tr.band-past{background:#fbf3f2}
+.band-past .days-num,.band-past .days-label{color:#7b1f1f}
+.band-critical td.days{border-left:7px solid #9a3d12}
+tr.band-critical{background:#fdf6f1}
+.band-critical .days-num,.band-critical .days-label{color:#9a3d12}
+.band-urgent td.days{border-left:5px solid #8a6a0f}
+tr.band-urgent{background:#fdfbf1}
+.band-urgent .days-num,.band-urgent .days-label{color:#7d6008}
+.band-near td.days{border-left:3px solid #3a5570}
+.band-near .days-num{color:#2f4459}
+.band-steady td.days{border-left:2px solid #c4c9d1}
+.band-unknown td.days{border-left:4px dashed #6b5b8a}
+tr.band-unknown{background:#faf8fc}
+.band-unknown .days-num,.band-unknown .days-label{color:#5b4b7a}
+
+/* empty and error states */
+.empty{border:1px dashed #c4c9d1;background:#f9fafb;padding:22px 24px}
+.empty p{margin:0 0 8px;max-width:74ch}
+.empty p:last-child{margin-bottom:0}
+.empty-title{font-weight:650}
+
+/* opportunity cards */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(332px,1fr));gap:16px}
+.card{border:1px solid #dde1e6;border-left:4px solid #c4c9d1;padding:16px 18px 18px;background:#fff}
+.card.band-past{border-left-color:#7b1f1f;background:#fdfaf9}
+.card.band-critical{border-left-color:#9a3d12}
+.card.band-urgent{border-left-color:#8a6a0f}
+.card.band-near{border-left-color:#3a5570}
+.card.band-unknown{border-left-color:#6b5b8a;border-left-style:dashed}
+.card-num{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;font-size:13.5px}
+.card-title{margin:2px 0 0;font-size:14.5px;color:#3d4149}
+.card-when{margin:8px 0 0;font-size:12.5px;color:#5b6270}
+.card-when .days-num{display:inline;font-size:15px;font-weight:660}
+.card-when .days-label{display:inline;font-size:12.5px;text-transform:none;letter-spacing:0;margin:0}
+.facts{margin:14px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:9px 14px}
+.facts>div{margin:0}
+.facts dt{margin:0;font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#767e8a}
+.facts dd{margin:1px 0 0;font-size:13px;word-break:break-word}
+.progress{margin:15px 0 0;border-top:1px solid #edeff2;padding-top:12px}
+.checks{list-style:none;margin:0;padding:0}
+.checks li{position:relative;padding-left:18px;font-size:13px;margin-bottom:4px}
+.checks li::before{content:"";position:absolute;left:0;top:5px;width:9px;height:9px}
+.checks li.yes::before{background:#2f5d4a}
+.checks li.no::before{border:1.5px solid #b6bcc6}
+.checks li.no{color:#5b6270}
+.gapline{margin:9px 0 0;font-size:13px;font-weight:600}
+.gapline.has-gaps{color:#8a4a12}
+.gapline.unmeasured{color:#5b4b7a}
+.card-unknown{margin:11px 0 0;font-size:12.5px;color:#5b4b7a;border-top:1px dotted #d8d3e2;padding-top:8px}
+
+/* readiness */
+table.plain{border-collapse:collapse;width:100%;font-size:13.5px;border:1px solid #dde1e6}
+table.plain th{text-align:left;font-size:10.5px;letter-spacing:0.11em;text-transform:uppercase;color:#5b6270;font-weight:650;padding:9px 12px;background:#f6f7f9;border-bottom:1px solid #dde1e6}
+table.plain td{padding:10px 12px;border-bottom:1px solid #edeff2}
+table.plain tr:last-child td{border-bottom:0}
+.exp-note{font-size:12.5px;color:#5b6270}
+tr.flag-soon{background:#fdfbf1}
+tr.flag-soon .exp-note{color:#7d6008;font-weight:600}
+tr.flag-past{background:#fbf3f2}
+tr.flag-past .exp-note{color:#7b1f1f;font-weight:600}
+
+/* lists */
+ul.notes{margin:0;padding-left:20px;font-size:13.5px;color:#3d4149}
+ul.notes li{margin-bottom:5px;max-width:92ch}
+ul.sources{margin:0;padding-left:20px;font-size:12.5px;color:#5b6270;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+ul.sources li{margin-bottom:3px}
+
+/* footer */
+.colophon{margin:44px 0 0;border-top:1px solid #dde1e6;padding-top:14px;font-size:12.5px;color:#767e8a}
+.colophon p{margin:0 0 5px;max-width:92ch}
+.colophon p:last-child{margin-bottom:0}
+
+@media (max-width:760px){
+  .sheet{padding:24px 18px 48px}
+  .strip{grid-template-columns:1fr 1fr}
+  .facts{grid-template-columns:1fr}
+}
+@media print{
+  body{background:#fff;font-size:10.5pt}
+  .sheet{max-width:none;box-shadow:none;padding:0;min-height:0}
+  .cards{grid-template-columns:1fr 1fr}
+  .card,tr,.tile{break-inside:avoid}
+  .table-wrap{overflow:visible}
+  table.board{min-width:0}
+  section{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+
+<header class="masthead">
+  <div class="mast-left">
+    <h1>Pipeline board</h1>
+    <p class="mast-sub" id="company-line"></p>
+    <p class="mast-note" id="company-note" hidden></p>
+  </div>
+  <div class="mast-right">
+    <p class="gen-label">Data generated</p>
+    <p class="gen-when" id="generated-when"></p>
+    <p class="gen-age" id="generated-age"></p>
+  </div>
+</header>
+
+<div class="banner" id="stale" hidden>
+  <p class="banner-title">This board was generated <span id="stale-age"></span> ago.</p>
+  <p>The day counts below were worked out just now, when this page opened, so they are correct. What they are counting down to is only as current as the generation time above. Run <span class="mono">/dashboard</span> again to pick up anything that changed in the files since then.</p>
+</div>
+
+<div class="banner hard" id="load-error" hidden>
+  <p class="banner-title">This board could not be read.</p>
+  <p>The data block in this file is not valid, so nothing below it was rendered. Nothing is lost: the markdown files under <span class="mono">pipeline/</span>, <span class="mono">proposals/</span>, and <span class="mono">company/</span> hold everything. Run <span class="mono">/dashboard</span> again to rebuild this page.</p>
+</div>
+
+<noscript>
+  <div class="banner plain">
+    <p class="banner-title">This page needs JavaScript switched on.</p>
+    <p>The day counts are worked out when the page opens rather than written into the file, so that a board opened three weeks later still counts down correctly instead of lying to you. That calculation needs JavaScript. Nothing is fetched from the network, and nothing leaves this machine. The underlying facts are in the markdown files under <span class="mono">pipeline/</span>, <span class="mono">proposals/</span>, and <span class="mono">company/</span>, which are the source of truth either way.</p>
+  </div>
+</noscript>
+
+<div id="board" hidden>
+
+<div class="strip">
+  <div class="tile"><p class="tile-label">Tracked</p><p class="tile-value" id="tile-tracked">0</p><p class="tile-note" id="tile-tracked-note"></p></div>
+  <div class="tile"><p class="tile-label">Next deadline</p><p class="tile-value" id="tile-next">0</p><p class="tile-note" id="tile-next-note"></p></div>
+  <div class="tile" id="tile-past-wrap"><p class="tile-label">Past due</p><p class="tile-value" id="tile-past">0</p><p class="tile-note" id="tile-past-note"></p></div>
+  <div class="tile"><p class="tile-label">Open gaps</p><p class="tile-value" id="tile-gaps">0</p><p class="tile-note" id="tile-gaps-note"></p></div>
+</div>
+
+<section>
+  <h2>Deadlines</h2>
+  <p class="lede">Soonest first. A missed deadline in this business is total, so this is the first thing on the page. The day counts are worked out when the page opens, not written into the file.</p>
+
+  <div class="table-wrap" id="deadline-table-wrap" hidden>
+    <table class="board">
+      <thead>
+        <tr>
+          <th class="col-days" scope="col">Time left</th>
+          <th scope="col">Due</th>
+          <th scope="col">Opportunity</th>
+          <th scope="col">Agency</th>
+          <th scope="col">Set-aside</th>
+          <th scope="col">Stage</th>
+          <th scope="col">Decision</th>
+        </tr>
+      </thead>
+      <tbody id="deadline-rows"></tbody>
+    </table>
+  </div>
+
+  <div class="empty" id="pipeline-empty" hidden>
+    <p class="empty-title">Nothing is being tracked yet.</p>
+    <p>There are no opportunity files in <span class="mono">pipeline/</span>, so there is nothing to count down to. This is an empty pipeline, not a clean one.</p>
+    <p>Run <span class="mono">/find-opps</span> to search SAM.gov against your profile and shortlist what fits. If you already have a solicitation in front of you, run <span class="mono">/bid-no-bid</span> and paste it in. Then run <span class="mono">/dashboard</span> again.</p>
+  </div>
+</section>
+
+<section id="detail-section" hidden>
+  <h2>Proposal progress</h2>
+  <p class="lede">One card per tracked opportunity, in the same order. Volumes and matrices are counted by looking for the files, and gap markers by counting <span class="mono">[GAP: ...]</span> across that opportunity's files. A card says what was not measured rather than showing a zero.</p>
+  <div class="cards" id="cards"></div>
+</section>
+
+<section>
+  <h2>Company readiness</h2>
+  <p class="lede">From <span class="mono">company/profile.md</span>. Anything with an expiry date is checked against today when the page opens, and flagged when it falls inside ninety days or inside the period of performance of something live.</p>
+  <table class="plain" id="readiness-table" hidden>
+    <thead>
+      <tr><th scope="col">Registration or certification</th><th scope="col">Status</th><th scope="col">Expires</th><th scope="col">Standing</th></tr>
+    </thead>
+    <tbody id="readiness-rows"></tbody>
+  </table>
+  <div class="empty" id="readiness-empty" hidden>
+    <p class="empty-title">No registration or expiry dates were found.</p>
+    <p>Either <span class="mono">company/profile.md</span> does not exist yet, or it records no SAM registration status and no certification expiry dates. Run <span class="mono">/setup-profile</span>. A lapsed SAM registration makes a company ineligible for award, so this belongs on the board.</p>
+  </div>
+</section>
+
+<section>
+  <h2>What this board could not determine</h2>
+  <p class="lede">Written out rather than left blank, because a zero here would read as good news.</p>
+  <ul class="notes" id="unknowns"></ul>
+</section>
+
+<section>
+  <h2>Files read to build this</h2>
+  <ul class="sources" id="sources"></ul>
+</section>
+
+<div class="colophon">
+  <p>This file is generated output. The markdown files under <span class="mono">pipeline/</span>, <span class="mono">proposals/</span>, and <span class="mono">company/</span> are the single source of truth. Nothing here is edited by hand; anything typed into this file is lost the next time the board is built. Change the markdown, then run <span class="mono">/dashboard</span> again.</p>
+  <p>Nothing on this page was invented. Every value came from a file listed above, and anything a file did not state is named in the section on what could not be determined.</p>
+  <p>This file is excluded from git, because it holds your live pipeline, your target agencies, and your partner names.</p>
+</div>
+
+</div>
+</div>
+
+<script type="application/json" id="board-data">
+{{DATA}}
+</script>
+
+<script>
+(function () {
+  "use strict";
+  var DAY = 86400000;
+  var now = new Date();
+  var data = null;
+
+  try {
+    data = JSON.parse(document.getElementById("board-data").textContent);
+  } catch (e) {
+    data = null;
+  }
+  if (!data || typeof data !== "object") {
+    document.getElementById("load-error").hidden = false;
+    return;
+  }
+
+  function parseDate(v) {
+    if (!v) { return null; }
+    var d = new Date(v);
+    return isNaN(d.getTime()) ? null : d;
+  }
+  function startOfDay(d) {
+    return new Date(d.getFullYear(), d.getMonth(), d.getDate()).getTime();
+  }
+  function calendarDays(target) {
+    return Math.round((startOfDay(target) - startOfDay(now)) / DAY);
+  }
+  function plural(n, word) {
+    return n + " " + word + (n === 1 ? "" : "s");
+  }
+  function el(tag, cls, text) {
+    var node = document.createElement(tag);
+    if (cls) { node.className = cls; }
+    if (text !== undefined && text !== null && text !== "") { node.textContent = String(text); }
+    return node;
+  }
+  function setText(id, text) {
+    var node = document.getElementById(id);
+    if (node) { node.textContent = String(text); }
+  }
+  function show(id, on) {
+    var node = document.getElementById(id);
+    if (node) { node.hidden = !on; }
+  }
+  function or(v, fallback) {
+    return (v === undefined || v === null || v === "") ? fallback : v;
+  }
+
+  // How far off a deadline is, and which band that puts it in.
+  // Everything here is computed at load. Nothing about time is written into the file.
+  function countdown(iso) {
+    var due = parseDate(iso);
+    if (!due) {
+      return { band: "band-unknown", num: "?", label: "no due date recorded", past: false, days: null };
+    }
+    var days = calendarDays(due);
+    if (due.getTime() <= now.getTime()) {
+      return {
+        band: "band-past",
+        num: String(Math.abs(days)),
+        label: days === 0 ? "passed today" : (Math.abs(days) === 1 ? "day past due" : "days past due"),
+        past: true,
+        days: days
+      };
+    }
+    var band = days <= 3 ? "band-critical" : (days <= 7 ? "band-urgent" : (days <= 21 ? "band-near" : "band-steady"));
+    return {
+      band: band,
+      num: String(days),
+      label: days === 0 ? "due today" : (days === 1 ? "day left" : "days left"),
+      past: false,
+      days: days
+    };
+  }
+
+  // Masthead.
+  var company = data.company || {};
+  setText("company-line", or(company.line, "No company profile was read."));
+  if (company.note) {
+    setText("company-note", company.note);
+    show("company-note", true);
+  }
+  setText("generated-when", or(data.generatedAtDisplay, "not recorded"));
+
+  var gen = parseDate(data.generatedAt);
+  if (!gen) {
+    setText("generated-age", "generation time not recorded");
+  } else {
+    var hours = (now.getTime() - gen.getTime()) / 3600000;
+    var ageDays = Math.floor(hours / 24);
+    if (hours < 0) {
+      setText("generated-age", "generation time is in the future, check the clock");
+    } else if (hours < 24) {
+      setText("generated-age", "generated less than a day ago");
+    } else {
+      setText("generated-age", "generated " + plural(ageDays, "day") + " ago");
+      setText("stale-age", plural(ageDays, "day"));
+      show("stale", true);
+      if (ageDays >= 7) { document.getElementById("stale").className = "banner hard"; }
+    }
+  }
+
+  // Opportunities, soonest deadline first, no due date last.
+  var opps = (data.opportunities || []).slice();
+  opps.sort(function (a, b) {
+    var A = parseDate(a.dueIso), B = parseDate(b.dueIso);
+    if (!A && !B) { return 0; }
+    if (!A) { return 1; }
+    if (!B) { return -1; }
+    return A.getTime() - B.getTime();
+  });
+
+  var tbody = document.getElementById("deadline-rows");
+  var cards = document.getElementById("cards");
+  var pastDue = 0, gapTotal = 0, gapUnmeasured = 0, nextDays = null, nextLabel = "";
+
+  for (var i = 0; i < opps.length; i++) {
+    var o = opps[i];
+    var c = countdown(o.dueIso);
+    if (c.past) { pastDue += 1; }
+    if (!c.past && c.days !== null && nextDays === null) {
+      nextDays = c.days;
+      nextLabel = or(o.solicitation, "");
+    }
+
+    var tr = el("tr", "deadline " + c.band);
+
+    var days = el("td", "days");
+    days.appendChild(el("span", "days-num", c.num));
+    days.appendChild(el("span", "days-label", c.label));
+    tr.appendChild(days);
+
+    var dueCell = el("td", "due");
+    dueCell.appendChild(el("span", "due-date", or(o.dueDate, "not stated")));
+    dueCell.appendChild(el("span", "due-time", or(o.dueTime, "time not stated")));
+    tr.appendChild(dueCell);
+
+    var oppCell = el("td", "opp");
+    oppCell.appendChild(el("span", "opp-num", or(o.solicitation, "number not stated")));
+    oppCell.appendChild(el("span", "opp-title", or(o.title, "title not stated")));
+    tr.appendChild(oppCell);
+
+    tr.appendChild(el("td", null, or(o.agency, "not stated")));
+    tr.appendChild(el("td", null, or(o.setAside, "not stated")));
+    tr.appendChild(el("td", null, or(o.stage, "not stated")));
+    tr.appendChild(el("td", null, or(o.decision, "no decision recorded")));
+    tbody.appendChild(tr);
+
+    // Detail card.
+    var card = el("article", "card " + c.band);
+    var head = el("header");
+    head.appendChild(el("h3", "card-num", or(o.solicitation, "number not stated")));
+    head.appendChild(el("p", "card-title", or(o.title, "title not stated")));
+    var when = el("p", "card-when");
+    when.appendChild(el("span", "days-num", c.num));
+    when.appendChild(document.createTextNode(" "));
+    when.appendChild(el("span", "days-label", c.label));
+    when.appendChild(document.createTextNode(
+      o.dueDate ? (" · due " + o.dueDate + (o.dueTime ? " at " + o.dueTime : "")) : " · no due date in the pipeline file"
+    ));
+    head.appendChild(when);
+    card.appendChild(head);
+
+    var facts = el("dl", "facts");
+    var pairs = [
+      ["Agency", or(o.agency, "not stated")],
+      ["NAICS", or(o.naics, "not stated")],
+      ["Set-aside", or(o.setAside, "not stated")],
+      ["Stage", or(o.stage, "not stated")],
+      ["Decision", or(o.decisionDetail, or(o.decision, "no decision recorded"))],
+      ["Pipeline file", or(o.pipelineFile, "not found")]
+    ];
+    for (var p = 0; p < pairs.length; p++) {
+      var pair = el("div");
+      pair.appendChild(el("dt", null, pairs[p][0]));
+      var dd = el("dd", p === 5 ? "mono" : null, pairs[p][1]);
+      pair.appendChild(dd);
+      facts.appendChild(pair);
+    }
+    card.appendChild(facts);
+
+    var progress = el("div", "progress");
+    progress.appendChild(el("h4", null, "Proposal progress"));
+    var checks = el("ul", "checks");
+    var steps = o.progress || [];
+    if (steps.length === 0) {
+      checks.appendChild(el("li", "no", "No proposals folder yet, so nothing has been drafted"));
+    }
+    for (var s = 0; s < steps.length; s++) {
+      checks.appendChild(el("li", steps[s].done ? "yes" : "no", steps[s].label));
+    }
+    progress.appendChild(checks);
+
+    if (typeof o.gaps === "number") {
+      gapTotal += o.gaps;
+      progress.appendChild(el("p", o.gaps > 0 ? "gapline has-gaps" : "gapline",
+        o.gaps === 0 ? "No [GAP: ...] markers found" : (plural(o.gaps, "open gap marker"))));
+    } else {
+      gapUnmeasured += 1;
+      progress.appendChild(el("p", "gapline unmeasured",
+        or(o.gapsNote, "Gap markers not counted, so this is unmeasured rather than zero")));
+    }
+    card.appendChild(progress);
+
+    if (o.unknown) {
+      card.appendChild(el("p", "card-unknown", "Not determined: " + o.unknown));
+    }
+    cards.appendChild(card);
+  }
+
+  show("deadline-table-wrap", opps.length > 0);
+  show("pipeline-empty", opps.length === 0);
+  show("detail-section", opps.length > 0);
+
+  // Readiness.
+  var readiness = data.readiness || [];
+  var rbody = document.getElementById("readiness-rows");
+  for (var r = 0; r < readiness.length; r++) {
+    var item = readiness[r];
+    var row = el("tr");
+    row.appendChild(el("td", null, or(item.label, "not stated")));
+    row.appendChild(el("td", null, or(item.status, "not stated")));
+    row.appendChild(el("td", null, or(item.expiresDisplay, "not stated")));
+
+    var exp = parseDate(item.expiresIso);
+    var text;
+    if (!exp) {
+      text = "no expiry date recorded";
+    } else {
+      var left = calendarDays(exp);
+      if (left < 0) {
+        row.className = "flag-past";
+        text = "expired " + plural(Math.abs(left), "day") + " ago";
+      } else if (left <= 90) {
+        row.className = "flag-soon";
+        text = "expires in " + plural(left, "day") + ", inside ninety days";
+      } else {
+        text = "expires in " + plural(left, "day");
+      }
+    }
+    if (item.note) { text = text + ". " + item.note; }
+    row.appendChild(el("td", "exp-note", text));
+    rbody.appendChild(row);
+  }
+  show("readiness-table", readiness.length > 0);
+  show("readiness-empty", readiness.length === 0);
+
+  // What could not be determined.
+  var unknowns = data.unknowns || [];
+  var ul = document.getElementById("unknowns");
+  if (unknowns.length === 0) {
+    ul.appendChild(el("li", null, "Nothing was left undetermined on this pass. Every field on this board came from a file."));
+  }
+  for (var u = 0; u < unknowns.length; u++) {
+    ul.appendChild(el("li", null, unknowns[u]));
+  }
+
+  var sources = data.sources || [];
+  var sl = document.getElementById("sources");
+  if (sources.length === 0) {
+    sl.appendChild(el("li", null, "no files recorded"));
+  }
+  for (var f = 0; f < sources.length; f++) {
+    sl.appendChild(el("li", null, sources[f]));
+  }
+
+  // Totals.
+  setText("tile-tracked", String(opps.length));
+  setText("tile-tracked-note", opps.length === 1 ? "opportunity in pipeline/" : "opportunities in pipeline/");
+
+  if (nextDays === null) {
+    setText("tile-next", "none");
+    setText("tile-next-note", opps.length === 0 ? "nothing tracked" : "no future deadline recorded");
+  } else {
+    setText("tile-next", String(nextDays));
+    setText("tile-next-note", (nextDays === 1 ? "day until " : "days until ") + nextLabel);
+  }
+
+  setText("tile-past", String(pastDue));
+  setText("tile-past-note", pastDue === 0 ? "nothing has slipped" : "already past the response date");
+  if (pastDue > 0) { document.getElementById("tile-past-wrap").className = "tile alert"; }
+
+  setText("tile-gaps", String(gapTotal));
+  setText("tile-gaps-note",
+    gapUnmeasured > 0
+      ? "counted, plus " + gapUnmeasured + " not measured"
+      : (gapTotal === 0 ? "no [GAP: ...] markers found" : "[GAP: ...] markers to close"));
+
+  document.getElementById("board").hidden = false;
+}());
+</script>
+</body>
+</html>

@@ -5,7 +5,9 @@
       "Read(./**)",
       "Edit(company/**)",
       "Edit(pipeline/**)",
-      "Edit(proposals/**)"
+      "Edit(proposals/**)",
+      "Edit(dashboard.html)",
+      "Write(dashboard.html)"
     ],
     "deny": [
       "Read(./company/.env.local)",
