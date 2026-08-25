@@ -172,6 +172,12 @@ Things we are asked for often and do not do: software development, 24x7 operatio
 - Contract vehicles held: none
 - Vehicles being pursued: GSA Multiple Award Schedule, IT category. Application not started.
 - Set-aside types we can bid today: total small business, SDVOSB, and full and open where we are competitive
+Optional, and only if you want `/sync` to filter at the SAM.gov API rather than pulling every set-aside under your NAICS codes and filtering locally. Write the API codes on a line of their own, exactly like this, and `/sync` will read them:
+
+SAM set-aside codes: SBA, SDVOSBC
+
+The codes SAM.gov documents are SBA and SBP for small business, 8A and 8AN, HZC and HZS for HUBZone, SDVOSBC and SDVOSBS, WOSB and WOSBSS, EDWOSB and EDWOSBSS, LAS, IEE, ISBEE, BICiv, VSA and VSS. Check the current list at https://open.gsa.gov/api/get-opportunities-public-api/ before you rely on one, because the kit has not verified them against a live call. Leaving this line out is the cheaper option: it costs fewer API calls and covers more, because every set-aside under your NAICS codes comes down and the filtering happens locally.
+
 
 ## Partner bench
 

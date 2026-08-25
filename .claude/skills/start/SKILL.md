@@ -8,7 +8,7 @@ argument-hint: [nothing needed, just type: Start the kit]
 
 # Start the kit
 
-The owner has downloaded a folder, opened it, and typed three words. They run a very small contracting business and they are not a developer. Ten jobs is a lot to meet at once. Your job is to get them from nothing to a first result without asking them for anything about their company.
+The owner has downloaded a folder, opened it, and typed three words. They run a very small contracting business and they are not a developer. Twelve jobs is a lot to meet at once. Your job is to get them from nothing to a first result without asking them for anything about their company.
 
 ## Never, in this skill
 

@@ -72,9 +72,23 @@ The kit helps you organize, decide, and write. It is not legal advice and it is 
 
 ## Your data
 
-Nothing in this folder sends anything anywhere except through the assistant you installed and signed in to, plus one optional SAM.gov opportunity search that only runs if you set up a free api.data.gov key and approve the command.
+Nothing in this folder sends anything anywhere except through the assistant you installed and signed in to, plus the SAM.gov opportunity sync that only runs if you set up a free api.data.gov key and approve the command.
 
-Your profile, your pipeline, and your drafts are text files on your computer. They are excluded from git by default so that pushing your copy of this folder does not publish your bid pipeline or your partners' information. Your api.data.gov key lives in `company/.env.local`, which is also excluded, and the kit is instructed never to print it, repeat it, or write it into another file.
+Your profile, your pipeline, and your drafts are text files on your computer. Your local copy of the SAM.gov notices is a single file at `data/sam.db`. All of them are excluded from git by default so that pushing your copy of this folder does not publish your bid pipeline, your partners' information, or which agencies and set-asides you are chasing. Your api.data.gov key lives in `company/.env.local`, which is also excluded, and the kit is instructed never to print it, repeat it, or write it into another file. The database tool loads the key inside its own process, and the key is never written into the database, into a log, or into a filename.
+
+## What the local copy of SAM.gov is, and is not
+
+The SAM.gov Get Opportunities API is rate limited to as few as 10 requests per day, so the kit keeps its own copy of the notices and searches that instead of calling the API for every search. Four things about that copy are stated here rather than left implied.
+
+It mirrors opportunity notices. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself.
+
+Its coverage is exactly whatever filters were synced. Two NAICS codes synced means two NAICS codes known. The kit prints the coverage on every search and will not describe a local search as a complete search of SAM.gov.
+
+It can be stale. Every search result shows how old the data is, in days, and the kit offers to refresh it rather than pretending it is current.
+
+It does not replace checking SAM.gov. It makes searching fast and free. SAM.gov is still the authoritative record, and the deadline you bid against is the one on SAM.gov, confirmed by you.
+
+One thing it can do that the API cannot. The API only ever returns the latest active version of a notice. Because the kit snapshots on every sync, your copy accumulates a change history: deadlines that moved, set-asides that switched, notices amended or cancelled. That history starts the day you start syncing.
 
 ## Reporting a problem with the kit
 

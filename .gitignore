@@ -18,6 +18,21 @@ pipeline/*
 proposals/*
 !proposals/README.md
 
+# Your local opportunity database and anything derived from it. /sync builds data/sam.db
+# from SAM.gov, so it holds the NAICS codes you track, the set-asides you can bid, the
+# agencies you are watching, and the notices you looked at. That is your pipeline strategy
+# and it is competitive information. It is rebuildable, so nothing is lost by leaving it out.
+# To keep the database in your own private repo, delete the next two lines.
+data/*
+!data/README.md
+
+# SQLite's own side files, and any export taken from the database.
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+sam-export.*
+
 # The generated dashboard. /dashboard builds it from your own files, so it holds your live
 # pipeline, your deadlines, your target agencies, and your partner names on one page.
 # It is generated output and is never hand-edited, so nothing is lost by leaving it out of git.

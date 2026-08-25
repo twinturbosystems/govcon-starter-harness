@@ -6,13 +6,22 @@
       "Edit(company/**)",
       "Edit(pipeline/**)",
       "Edit(proposals/**)",
+      "Edit(data/**)",
+      "Write(data/**)",
       "Edit(dashboard.html)",
-      "Write(dashboard.html)"
+      "Write(dashboard.html)",
+      "Bash(python3 tools/samdb.py:*)",
+      "Bash(python tools/samdb.py:*)",
+      "Bash(py -3 tools/samdb.py:*)",
+      "Bash(python3 --version)",
+      "Bash(python --version)",
+      "Bash(py -3 --version)"
     ],
     "deny": [
       "Read(./company/.env.local)",
       "Read(./.env)",
       "Read(./.env.*)",
+      "Read(./data/sam.db)",
       "Read(~/.ssh/**)",
       "Read(~/.aws/**)",
       "Read(~/.gnupg/**)",

@@ -32,6 +32,24 @@ You expected a pipeline file, a draft, or `dashboard.html` and cannot find it.
 
 Do this: ask it, in plain words, "What is the full path of the file you just wrote?" Then open that path yourself. If it never wrote anything, ask it to write it now and to confirm the path afterwards. `dashboard.html` is built from your files each time you run `/dashboard`, so run that again after anything changes.
 
+## It says Python is not installed
+
+You ran `/sync`, `/backfill`, or `/find-opps` and it said Python 3 is missing, or a python command was not found.
+
+Do this: install Python 3 from https://www.python.org/downloads/ , and on Windows tick "Add python.exe to PATH" on the first screen of the installer. Then close the terminal, open it again in the kit folder, and run the command again. Python is only needed for the local opportunity database; everything else in the kit works without it, and `/find-opps` still has the path where you search sam.gov yourself and paste the results in.
+
+## The opportunity search says the data is stale, or there is no database
+
+`/find-opps` told you the local copy of the SAM.gov notices is old, or that there is no copy yet.
+
+Do this: type `/sync` to refresh it. If it says there is no database at all, type `/backfill` first and let it tell you how many days the initial load takes under your rate limit. If you have no api.data.gov key, say so and `/find-opps` will walk you through the SAM.gov web search instead.
+
+## It says the rate limit was reached
+
+`/sync` or `/backfill` stopped and said the API refused the call.
+
+Do this: stop for today and run the same command again tomorrow. The kit saved where it got to, so nothing is lost and nothing gets skipped. Running it again now does not help; it spends tomorrow's allowance as well. A free api.data.gov key gets 10 requests a day if you hold no role on an entity registration in SAM.gov, and 1,000 a day if you do, so if you are hitting the limit often it is worth checking whether you are listed on your own registration.
+
 ## I am on my phone
 
 You can read this page on a phone, but the kit cannot run there. A phone has no way to open the downloaded folder in an assistant, and no way to build a submission package.
@@ -42,7 +60,7 @@ Do this: save or bookmark this page now, then open it again on a Mac, Windows, o
 
 Something got tangled and you would rather have the original files back.
 
-Do this: copy your own work out of the folder first, which for this kit means `company/profile.md`, `company/.env.local`, everything in `pipeline/`, and everything in `proposals/`, then download the kit again from the link in the README and unzip it next to the old one. Nothing forces you to delete the old folder; you can leave it where it is and move your work into the fresh one.
+Do this: copy your own work out of the folder first, which for this kit means `company/profile.md`, `company/.env.local`, everything in `pipeline/`, everything in `proposals/`, and `data/sam.db` if you have built it, then download the kit again from the link in the README and unzip it next to the old one. Nothing forces you to delete the old folder; you can leave it where it is and move your work into the fresh one.
 
 ## Still stuck
 

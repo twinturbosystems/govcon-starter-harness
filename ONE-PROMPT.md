@@ -22,7 +22,7 @@ Codex reads `AGENTS.md` automatically when you run it inside this folder. Paste 
 
 ## 3. Limited browser mode
 
-This is ChatGPT, Claude in a browser, or any other chat window on a website. It cannot operate the folder you downloaded, it cannot save your progress locally, it cannot build final packages, which rules out `/submit-package` and `/dashboard`, and it cannot call the SAM.gov API, so `/find-opps` has to use the manual path. It can give you advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit.
+This is ChatGPT, Claude in a browser, or any other chat window on a website. It cannot operate the folder you downloaded, it cannot save your progress locally, it cannot build final packages, which rules out `/submit-package` and `/dashboard`, and it cannot run the local opportunity database, which rules out `/sync` and `/backfill` and means `/find-opps` has to use the manual path. It can give you advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit.
 
 The file list to attach and the prompt to paste are in [browser-prompts/limited-browser-mode.md](browser-prompts/limited-browser-mode.md).
 

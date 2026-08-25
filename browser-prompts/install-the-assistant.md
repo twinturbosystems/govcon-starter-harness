@@ -1,6 +1,6 @@
 # Do not have Claude Code or Codex yet
 
-Claude Code is the smoothest way to run this kit, and it needs to be installed on your computer. It is also the only path where a full solicitation, your company profile, and all ten jobs sit together in one folder on your own machine instead of being re-attached to every new chat.
+Claude Code is the smoothest way to run this kit, and it needs to be installed on your computer. It is also the only path where a full solicitation, your company profile, your local copy of the SAM.gov notices, and all twelve jobs sit together in one folder on your own machine instead of being re-attached to every new chat.
 
 You are already talking to an assistant, and it can guide the install one step at a time. It cannot perform the install itself and it cannot run this kit, because a chat window on a website cannot reach your computer, and the folder still has to be downloaded either way. Copy the block that matches the tool you want and paste it into ChatGPT, Claude in a browser, or whatever assistant you already have open.
 

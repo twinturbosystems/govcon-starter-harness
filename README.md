@@ -37,7 +37,7 @@ If that is not what you see, [docs/STUCK.md](docs/STUCK.md) gives one next actio
 
 ## Privacy and safety
 
-The kit has no account, no server, and no telemetry, and it does not upload anything on its own. The files the assistant reads, and everything you type or attach, are sent to that assistant's provider as part of the conversation, the same as any other chat with it, so think before you attach a draft carrying a partner's proprietary information or a customer point of contact. Your company profile, your pipeline, and your drafts are stored only as plain text files inside this folder on your computer, and `.gitignore` keeps all of them out of version control by default. The only network call the kit ever makes is the SAM.gov opportunity search in `/find-opps`, and only if you set up a free key and approve the command.
+The kit has no account, no server, and no telemetry, and it does not upload anything on its own. The files the assistant reads, and everything you type or attach, are sent to that assistant's provider as part of the conversation, the same as any other chat with it, so think before you attach a draft carrying a partner's proprietary information or a customer point of contact. Your company profile, your pipeline, your drafts, and your local copy of the SAM.gov notices are stored only inside this folder on your computer, and `.gitignore` keeps all of them out of version control by default. The only network call the kit ever makes is to SAM.gov, from `/sync` and `/backfill`, and only if you set up a free key and approve the command.
 
 ---
 
@@ -57,9 +57,9 @@ The folder is ordinary text files. Nothing in it is compiled, and nothing runs o
 
 When you point an assistant at the folder, it reads those instructions before it answers you. From then on it behaves like a capture and proposal assistant for everything you ask, not just the first question. It is not a program that starts up, and nothing is installed on your computer beyond the assistant itself. It is instructions the assistant chooses to follow.
 
-The saved jobs are why you can type one short word instead of explaining the task every time. `Start the kit` orients you and offers the example profile. `/setup-profile` interviews you and writes your company profile. `/find-opps` searches SAM.gov and shortlists what actually fits you. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
+The saved jobs are why you can type one short word instead of explaining the task every time. `Start the kit` orients you and offers the example profile. `/setup-profile` interviews you and writes your company profile. `/sync` refreshes a local copy of the SAM.gov opportunity notices in one small daily pull and tells you what changed. `/backfill` loads a year of history the first time. `/find-opps` searches that local copy and shortlists what actually fits you, without touching the network. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
 
-Your work lives in files in the folder that you own. The profile is in `company/`, tracked opportunities are in `pipeline/`, one file each, and drafts go to `proposals/`, one folder per opportunity. Those three are excluded from git on purpose, which the privacy section below explains.
+Your work lives in files in the folder that you own. The profile is in `company/`, tracked opportunities are in `pipeline/`, one file each, drafts go to `proposals/`, one folder per opportunity, and the local copy of the notices sits in `data/`. Those four are excluded from git on purpose, which the privacy section below explains.
 
 Two honest limitations. An assistant follows instructions, it does not enforce them the way a locked-down program does, so the rules in `CLAUDE.md` are strong defaults rather than a guarantee. Read what it drafts before you send it, because you are the one signing it. And this kit is not legal advice. It helps you organize, decide, and write. A contracts attorney, an APEX Accelerator advisor, or your SBA district office is the right call for the questions that turn legal.
 
@@ -72,7 +72,7 @@ Two honest limitations. An assistant follows instructions, it does not enforce t
 
 An active SAM.gov registration, if you intend to be awarded anything. This is not optional and it is not something this kit can do for you. A company cannot receive a federal contract without an active registration in SAM.gov and a Unique Entity ID. Registration is free and you do it yourself at https://sam.gov. If you are not registered yet, run `/setup-profile` anyway; it will tell you where you stand and put registration first. Do not pay anyone to register you.
 
-A free api.data.gov key, optional. `/find-opps` can call the SAM.gov Get Opportunities API directly, which needs a free key from https://api.data.gov/signup/. Without one, the same skill walks you through the SAM.gov web search and you paste the results in. Both paths work.
+A free api.data.gov key, optional. `/sync` calls the SAM.gov Get Opportunities API to build your local copy of the notices, and that needs a free key from https://api.data.gov/signup/. Without one, `/find-opps` walks you through the SAM.gov web search and you paste the results in. Both paths work, and the manual one is not a lesser path.
 
 ## Start in 60 seconds
 
@@ -83,7 +83,7 @@ The sixty seconds begins after the assistant is installed and the unzipped folde
 3. Say yes to the trust prompt. The first time Claude Code opens a folder it has not seen before, it asks whether you trust the files in it. That is normal and it only happens once per folder. This is the folder you just downloaded, so choose yes.
 4. Type `Start the kit` and press Enter. Expect a short orientation, the exact next thing to type, and an offer to walk the fictional example profile so you can see the shape of a finished one.
 5. Type `/setup-profile` and press Enter. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other command reads that file.
-6. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes.
+6. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes. If you set up a free api.data.gov key, run `/backfill` once and `/sync` each morning, and `/find-opps` then searches your own copy of the notices instead of the rate limited API.
 7. Type `/dashboard` whenever you want to see where everything stands. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
 
 There is nothing to build and nothing to install beyond Claude Code itself.
@@ -105,17 +105,19 @@ A chat window on a website cannot reach your computer. That is a hard limit of t
 - operate the folder you downloaded, so it cannot read your profile, your pipeline, or your drafts unless you attach those files by hand
 - save your progress locally, so nothing is written into `pipeline/` or `proposals/` and nothing carries over to the next chat
 - build final packages, which means `/submit-package` cannot assemble the package and `/dashboard` cannot write `dashboard.html`
-- call the SAM.gov API, so `/find-opps` has to use the manual path where you search sam.gov yourself and paste the results in
+- build or search the local copy of the notices, so `/sync` and `/backfill` cannot run and `/find-opps` has to use the manual path where you search sam.gov yourself and paste the results in
 
 What it can do is real and often enough: give advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit. To actually run the kit, use Claude Code or the Codex CLI on a computer.
 
 ## What you can type
 
-One starting instruction and ten commands, in the order you would actually use them. Each one is a conversation, not a form.
+One starting instruction and twelve commands, in the order you would actually use them. Each one is a conversation, not a form.
 
 - `Start the kit`, or `/start`, orients you: which kit this is, what it does, what to type next, and an offer to see the fictional example profile first.
 - `/setup-profile` interviews you and writes `company/profile.md`: entity, UEI, CAGE, SAM status, NAICS codes with the size standard under each, set-aside status as you report it, real capabilities, real past performance, geography, bonding, clearances, target agencies.
-- `/find-opps` searches SAM.gov against your profile and shortlists what fits, either through the API with your free key or through the web search with you pasting results in. Shortlisted opportunities get a file in `pipeline/`.
+- `/sync` refreshes your local copy of the SAM.gov opportunity notices with one small pull, usually one or two API calls, and reports what changed since last time: new notices, deadlines that moved, set-asides that changed, notices amended or cancelled. Run it once a day.
+- `/backfill` loads the history the first time, in resumable chunks. It tells you how many API calls the load needs and how many days that takes under your rate limit before it spends a single one, and when the day's budget runs out it stops cleanly and picks up where it left off tomorrow.
+- `/find-opps` searches that local copy against your profile and shortlists what fits, with no network call at all. Shortlisted opportunities get a file in `pipeline/`. If you have no key, the same job walks you through the SAM.gov web search and takes results you paste in.
 - `/bid-no-bid` scores one opportunity on a stated rubric: NAICS and capability fit, set-aside eligibility, incumbent presence, honest win probability, time to deadline, cost to bid, and whether you can actually staff or subcontract it. Ends with go or no-go and the reasoning.
 - `/compliance-matrix` reads the solicitation you paste or attach and builds the compliance matrix from Sections L and M and the SOW or PWS, mapping every instruction and every evaluation factor to where it gets answered. This is the single most valuable artifact in a proposal.
 - `/draft-proposal` drafts the technical, management, and past performance volumes against that matrix, in your voice, using only facts from your profile. Anything it does not have becomes a marked gap.
@@ -126,6 +128,28 @@ One starting instruction and ten commands, in the order you would actually use t
 - `/dashboard` reads your real files and writes `dashboard.html`, a single page you open by double-clicking. Every tracked opportunity ordered by deadline, soonest first, with the stage it is at, the bid decision and score, how far the proposal has got, the open gaps, and any registration expiring soon. The day counts are worked out when you open the page, not written into it, so the countdown is right whenever you look. The page also says how old the underlying data is, and what it could not determine.
 
 If anything goes wrong at any point, read [docs/STUCK.md](docs/STUCK.md).
+
+## Why there is a local copy of SAM.gov, and what it is not
+
+The SAM.gov Get Opportunities API is rate limited hard. A non-federal user with no role on an entity registration gets 10 requests a day. With a role on a registration it is 1,000 a day. Ten calls is not a day's work; it is two searches and a mistake. So the kit stopped searching live.
+
+Instead, `/sync` makes one small pull a day into a single file at `data/sam.db`, and `/find-opps` searches that file offline, as many times as you like, for free. `/backfill` loads the history once, in chunks, and tells you how many days that will take under your limit before it spends anything.
+
+One thing the local copy can do that the API cannot. The API only ever returns the latest active version of a notice, so nobody calling it can see what changed. Because the kit takes a snapshot every time it syncs, your own copy builds up a real history: the deadline that moved twice, the set-aside that switched from SDVOSB to total small business, the notice that was quietly cancelled. `/find-opps` shows that against each result, and `/sync` reports it every morning. That history starts the day you start syncing, not before.
+
+Four things it is not, and the kit says all four out loud rather than leaving them implied.
+
+It mirrors opportunity notices. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself, and `/compliance-matrix` needs the real document in front of it.
+
+Its coverage is exactly whatever you synced. If you sync two NAICS codes, it knows about two NAICS codes and nothing else. Every search prints the coverage so you can see what was actually looked at, and the kit will not describe a local search as a complete search of SAM.gov.
+
+It can be stale. Every result carries how old the data is, in days, and the kit offers `/sync` when it has gone quiet for a while.
+
+It does not replace checking SAM.gov. It makes searching fast and free. SAM.gov is still the authoritative record, and the deadline you bid against is the one on SAM.gov, confirmed by you, on the day.
+
+Two practical notes. The database tool is one Python 3 file, `tools/samdb.py`, using only what ships with Python, so there is nothing to install beyond Python itself, and you can open it and read it like any other file in this folder. And `data/` is excluded from git, because the database says which agencies you chase and which set-asides you can bid, which is competitive information.
+
+Honesty about testing, because it matters here. The database, the search, the change history, the paging, the resumable backfill, and the rate limit handling were all tested offline against fixed sample data. The live SAM.gov API path has never been run, because there is no api.data.gov key on the machine this was built on. The parameter names come from the published GSA documentation rather than from a successful call. If a call comes back with an error about a parameter, the skills tell the assistant to open https://open.gsa.gov/api/get-opportunities-public-api/ , use the names listed there today, and say plainly what it changed.
 
 ## It will not fit you perfectly
 
@@ -141,7 +165,7 @@ The rubric is a plain markdown table in that file and it is meant to be argued w
 
 One part is worth leaving alone. The rules in `CLAUDE.md` about never submitting to the government, never inventing past performance, never answering a rep or cert, and never stating a limitations-on-subcontracting percentage from memory are there because breaking them can cost you a contract, a certification, or worse. Change the rubric freely. Leave those.
 
-If a change goes wrong, download the folder again and start from the original. Your own work is in separate files: `company/profile.md`, everything in `pipeline/`, and everything in `proposals/`. Those three are kept out of git on purpose. Copy them somewhere outside the folder first, then put them back into the fresh download.
+If a change goes wrong, download the folder again and start from the original. Your own work is in separate files: `company/profile.md`, everything in `pipeline/`, and everything in `proposals/`. Those three are kept out of git on purpose. Copy them somewhere outside the folder first, then put them back into the fresh download. Copy `data/sam.db` too if you have it, because rebuilding it costs API calls, though nothing in it is yours alone and `/backfill` can build it again.
 
 This next part matters more here than in the other kits. It can be wrong, and a proposal carries your signature, not the assistant's. Read every line of a draft before it goes anywhere. Check each citation against the solicitation in front of you, check the numbers, and check every past performance detail against your own records. If a sentence states something as fact and you cannot point at where that fact came from, delete it. A federal proposal is a signed statement to the government, and the person who answers for what is in it is you.
 
@@ -164,19 +188,20 @@ If you ask it for any of the above, it declines in a sentence and offers the hon
 
 ## Privacy: what stays out of git
 
-This folder ships with a `.gitignore` that excludes five things from version control:
+This folder ships with a `.gitignore` that excludes six things from version control:
 
 - `company/profile.md`, your real company facts
 - `company/.env.local`, your api.data.gov key
 - everything in `pipeline/` except the template and the README
 - everything in `proposals/` except the README
+- everything in `data/` except the README, which is your local copy of the notices and the record of which NAICS codes, set-asides, and agencies you track
 - `dashboard.html`, the generated board, which puts your whole pipeline on one page
 
 That is deliberate. If you push your copy of this folder to your own GitHub, the default should not be that your bid pipeline, your target agencies, your teaming partners, and your draft pricing narrative become public. Your pipeline is competitive information and some of it belongs to other people. The example profile that ships in the repo is fictional and is a separate file, `company/profile.example.md`, so the kit still shows you what a finished profile looks like without ever tracking yours.
 
 If you want your own repo to keep that work, make the repo private first, then delete the matching lines from `.gitignore`. The file says the same thing in comments next to each line.
 
-Nothing in this folder uploads anything on its own. The only network call it ever makes is the SAM.gov opportunity search in `/find-opps`, and only if you set up a key and approve the command.
+Nothing in this folder uploads anything on its own. The only network call it ever makes is to SAM.gov, from `/sync` and `/backfill`, and only if you set up a key and approve the command. Your api.data.gov key is never written into the database, into a log, into a filename, or into the conversation. It is read inside the process that makes the call and nowhere else.
 
 ## Not legal advice
 

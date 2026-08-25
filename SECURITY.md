@@ -19,12 +19,19 @@ These are goals, not guarantees. There is no bounty program.
 ## Scope
 
 This repository is a starter kit for Claude Code. It contains documentation,
-skill files, and configuration. It ships no server, no database, and no runtime
+skill files, configuration, and one Python 3 script, `tools/samdb.py`, which
+builds a local SQLite database of SAM.gov opportunity notices in `data/sam.db`.
+That script uses the Python standard library only, installs nothing, and is the
+only part of the kit that makes a network call. It ships no server and no runtime
 service, so the realistic risk areas are:
 
 - Instructions or settings that could lead an assistant to take an unsafe action
 - Configuration that grants wider file or command access than a task requires
 - Any credential, key, or personal data committed by mistake
+- Handling of the api.data.gov key in `company/.env.local`, which is loaded inside
+  the tool process and is never written to the database, a log, or a filename
+- SQL handling in `tools/samdb.py`, where every statement is parameterised because
+  search terms come from user input
 
 Those are in scope. Issues in third-party tools that this kit only mentions
 should be reported to those projects.

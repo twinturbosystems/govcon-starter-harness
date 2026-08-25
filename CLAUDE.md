@@ -88,12 +88,33 @@ Non-compliance is not a paperwork problem. It can lead to termination, damage to
 
 `/bid-no-bid` and `/teaming` both run this check. So does `/submit-package` before it calls a package complete.
 
+## The local opportunity database
+
+The SAM.gov Get Opportunities API is rate limited hard. Per the GSA IAE System Account User Guide, a non-federal user with no role on an entity registration gets 10 requests per day; a user with a role gets 1,000 per day. The API also caps a posted date window at one year, caps a single call at 1,000 records, pages by offset, defaults to a limit of one, and only ever returns the latest active version of a notice.
+
+So the kit does not search live. It keeps a local copy in `data/sam.db`, a single SQLite file, refreshed by one small `/sync` a day, and searches it offline as often as the owner likes.
+
+- `/sync` pulls what is new and reports what changed. One or two calls on a normal day.
+- `/backfill` loads history in resumable chunks, stating the cost before it spends anything.
+- `/find-opps` searches the local file and never calls the API for a search.
+
+The tool behind all three is `tools/samdb.py`, one Python 3 file using the standard library only. Nothing is installed. Check the interpreter with `python3 --version || python --version || py -3 --version` and use whichever answers. On Windows, `python3` often opens the Microsoft Store rather than running, so `python` or `py -3` is usually the right one. If none works, give one next action: install Python 3 from https://www.python.org/downloads/ and run the command again.
+
+Four things to say plainly, every time they are relevant, rather than leaving them implied:
+
+- The database mirrors opportunity notices. It does not hold attachments, statements of work, or amendment documents. Those come from SAM.gov itself.
+- Its coverage is exactly whatever filters were synced. Two NAICS codes synced means two NAICS codes known. Never present a local search as a complete search of SAM.gov.
+- The local copy can be stale. Show its age in days on every set of results.
+- It does not replace checking SAM.gov. It makes searching fast and free. SAM.gov is the authoritative record, and the deadline the owner bids against is the one on SAM.gov.
+
+One thing the local database can do that the API cannot. Because it takes a snapshot on every sync, it accumulates a real change history: a deadline that moved, a set-aside that switched, a notice amended or cancelled. The API only ever returns the latest active version, so a caller cannot see any of that. Surface it, and say where it came from.
+
 ## The API key
 
-`/find-opps` can call the SAM.gov Get Opportunities API, which needs a free api.data.gov key. The key lives in `company/.env.local`, which is gitignored.
+`/sync`, `/backfill`, and the description fetch call the SAM.gov Get Opportunities API, which needs a free api.data.gov key. The key lives in `company/.env.local`, which is gitignored.
 
-- Never print the key, never echo it, never repeat it back, and never write it into any file under `pipeline/`, `proposals/`, or anywhere else.
-- Never read `company/.env.local` into the conversation. Load it inside the shell command that needs it.
+- Never print the key, never echo it, never repeat it back, and never write it into any file under `pipeline/`, `proposals/`, `data/`, or anywhere else.
+- Never read `company/.env.local` into the conversation. `tools/samdb.py` loads it inside its own process, and it is never written into the database, into a log, or into a filename.
 - If there is no key, do not stall. Switch to the manual path in the find-opps skill, where the user searches sam.gov in a browser and pastes results in.
 
 ## Where things live
@@ -104,6 +125,8 @@ Non-compliance is not a paperwork problem. It can lead to termination, damage to
 - `company/.env.local`: the SAM.gov API key. Gitignored. Copy `company/.env.local.example` to create it.
 - `pipeline/`: one file per tracked opportunity, from `pipeline/opportunity.template.md`. Named `pipeline/<solicitation-number>.md` with the characters that are illegal in a filename replaced by a dash. Gitignored except the template and the README.
 - `proposals/`: everything you draft. One folder per opportunity, `proposals/<solicitation-number>/`. Gitignored except the README.
+- `data/sam.db`: the local opportunity database `/sync` and `/backfill` build. Gitignored, because it holds the owner's pipeline strategy. Never open it with a text reader; use `tools/samdb.py`.
+- `tools/samdb.py`: the database tool. Python 3 standard library only, no install. It is the only thing in this kit that makes a network call.
 - `dashboard.html`: the board `/dashboard` writes at the root of the folder from the files above. Generated output, never hand-edited, and gitignored because it puts the whole pipeline on one page. If the user wants a value on it changed, change the markdown file it came from and build the board again.
 - `docs/GUARDRAILS.md`: the rules above, written for the user rather than for you.
 
@@ -125,7 +148,9 @@ When a file is not where these paths say it should be, `/organise` puts it back 
 
 - `/start`, also triggered by the plain words "Start the kit", orient the owner and offer the example profile
 - `/setup-profile` interview and build `company/profile.md`
-- `/find-opps` search SAM.gov and shortlist into `pipeline/`
+- `/find-opps` search the local database and shortlist into `pipeline/`, never calling the API for a search
+- `/sync` refresh `data/sam.db` from SAM.gov and report what changed since last time
+- `/backfill` load history into `data/sam.db` in resumable, rate-aware chunks
 - `/bid-no-bid` score one opportunity against the profile and give a go or no-go
 - `/compliance-matrix` build the compliance matrix from Sections L and M and the SOW or PWS
 - `/draft-proposal` draft the technical, management, and past performance volumes
