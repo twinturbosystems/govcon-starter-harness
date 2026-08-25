@@ -4,100 +4,32 @@ Downloading the folder is still the first step. This page is not a way to skip i
 
 Direct download: https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
 
-Unzip it. You get a folder called `govcon-starter-harness-main`. Run `/setup-profile` first, or copy `company/profile.template.md` to `company/profile.md` and fill it in by hand, because every other job reads that file. Then pick the section below that matches your assistant.
+Unzip it. You get a folder called `govcon-starter-harness-main`.
+
+The shortest path, if you have Claude Code or the Codex CLI on your computer: open a terminal in that folder, start the assistant, and type `Start the kit`. Nothing on this page is needed for that. The folder ships with a fictional example company in `company/profile.example.md`, so you can see what a finished profile looks like before you run `/setup-profile` and put your own facts in.
+
+The prompts themselves now live in the [browser-prompts](browser-prompts/) folder, in plain view rather than inside the hidden `.claude` directory. This page points at them so there is one copy of each rather than two.
 
 ## 1. Claude Code
 
-No prompt at all. Claude Code reads `CLAUDE.md` and the `.claude/skills` folder by itself.
+No prompt at all. Claude Code reads `CLAUDE.md` and the `.claude/skills` folder by itself. Open a terminal in the folder, type `claude`, say yes to the one-time trust prompt, then type `Start the kit`.
 
-1. Open a terminal in the unzipped folder.
-2. Type `claude` and press Enter.
-3. Say yes to the one-time trust prompt. It only appears once per folder.
-4. Type one of the eight commands and press Enter. Start with `/setup-profile`.
-
-The commands:
-
-```
-/setup-profile
-/find-opps
-/bid-no-bid
-/compliance-matrix
-/draft-proposal
-/find-subs
-/teaming
-/submit-package
-```
-
-Optional. If it answers like a general chatbot instead of a capture and proposal assistant, it did not pick the folder up. Paste this once:
-
-```
-Read CLAUDE.md in this folder and every SKILL.md file under .claude/skills, then follow those instructions for the rest of this conversation. Read company/profile.md before you produce anything, and tell me if it does not exist yet. Treat /setup-profile, /find-opps, /bid-no-bid, /compliance-matrix, /draft-proposal, /find-subs, /teaming and /submit-package as the eight jobs described in the matching SKILL.md files. Hold the seven hard rules in CLAUDE.md, above all: never submit anything to a government system, never fabricate past performance or credentials, never answer a representation or certification, and never state a limitations-on-subcontracting percentage without pointing me at the clause in my solicitation and at 13 CFR 125.6. Tell me in one line which files you read, then wait for me.
-```
+If it answers like a general chatbot instead of a capture and proposal assistant, the nudge prompt is in [browser-prompts/claude-code.md](browser-prompts/claude-code.md).
 
 ## 2. Codex CLI
 
-Codex reads `AGENTS.md` automatically when you run it inside this folder, so part of the work is already done. Paste this once at the start of the session to make sure it has the rest:
+Codex reads `AGENTS.md` automatically when you run it inside this folder. Paste the prompt in [browser-prompts/codex-cli.md](browser-prompts/codex-cli.md) once at the start of the session, then type `Start the kit`.
 
-```
-You are working inside the GovCon Starter Kit folder. Read AGENTS.md and CLAUDE.md in this folder, and every SKILL.md file under .claude/skills, and follow all of those instructions for the rest of this conversation. Read company/profile.md before you produce anything, every time, and tell me plainly if it does not exist yet rather than inventing a company. When I type setup-profile, find-opps, bid-no-bid, compliance-matrix, draft-proposal, find-subs, teaming or submit-package, with or without a slash, treat it as the job described in the SKILL.md file of that name and follow that file's process and output sections. Hold these rules without exception: never send, upload, file, or post anything to a contracting officer, an agency, SAM.gov, or any government portal, because I sign and submit; never invent past performance, contract numbers, customer contacts, dollar values, capabilities, certifications, clearances, or personnel, and write [GAP: what is missing] instead, collecting every gap in a list at the end; never answer a representation or certification as though it were fact, only explain what it is asking and flag that it needs my signature; never state a limitations-on-subcontracting percentage as settled fact, point me at the clause in my solicitation, usually FAR 52.219-14, and at 13 CFR 125.6 as the controlling authority, and warn me when a workshare plan looks non-compliant; never invent a solicitation number, due date, agency contact, or clause, ask me instead. Cite the section and paragraph behind every requirement you assert. Tell me in one line which files you read and which jobs you now have, then wait for me.
-```
+## 3. Limited browser mode
 
-## 3. ChatGPT or another browser chat
+This is ChatGPT, Claude in a browser, or any other chat window on a website. It cannot operate the folder you downloaded, it cannot save your progress locally, it cannot build final packages, which rules out `/submit-package` and `/dashboard`, and it cannot call the SAM.gov API, so `/find-opps` has to use the manual path. It can give you advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit.
 
-A browser chat cannot see your computer, so you hand it the files yourself.
-
-1. Unzip the downloaded folder.
-2. Start a new chat.
-3. Attach these files from the folder:
-   - `CLAUDE.md`
-   - `company/profile.md`, the one you filled in with your company
-   - the SKILL.md files for the jobs you want in this chat, for example `.claude/skills/compliance-matrix/SKILL.md` and `.claude/skills/draft-proposal/SKILL.md`
-
-   Attach the solicitation itself as well when you have it. A long solicitation is usually better attached as a file than pasted.
-4. Paste this:
-
-```
-I have attached the instruction files for a government contracting capture and proposal kit. Read all of them before you answer anything. Treat CLAUDE.md as your standing instructions for this whole conversation: follow it exactly, including its seven hard rules and its output style. Treat each attached SKILL.md as one named job triggered by its command word, so when I type compliance-matrix you follow the compliance-matrix SKILL.md. Use the attached company profile as the only source of facts about my company. Never invent past performance, contract numbers, customer contacts, dollar values, capabilities, certifications, clearances, or personnel; write [GAP: what is missing] instead and list every gap at the end. Never answer a representation or certification for me. Never state a limitations-on-subcontracting percentage as settled fact; point me at the clause in my solicitation and at 13 CFR 125.6. Never invent a solicitation number, due date, agency contact, or clause; ask me. You do not submit anything anywhere, and you should not offer to. Start by telling me in one line which jobs you now have, then wait for me.
-```
-
-Three plain notes about browser chats. They do not keep files between conversations, so attach the files again each time you start a new chat. Anything you type or attach there is sent to that provider, so think before you attach a draft that carries a partner's proprietary information or a customer point of contact. And a browser chat cannot run the SAM.gov API search, so use the manual path in the find-opps skill and paste the results in.
+The file list to attach and the prompt to paste are in [browser-prompts/limited-browser-mode.md](browser-prompts/limited-browser-mode.md).
 
 ## 4. Do not have Claude Code or Codex yet?
 
-Section 1 is the smoothest way to run this kit, and it needs Claude Code installed on your computer. It is also the only path where a full solicitation, your company profile, and all eight jobs sit together in one folder on your own machine instead of being re-attached to every new chat.
+An assistant you already have open can walk you through the install, one step at a time. The two install prompts are in [browser-prompts/install-the-assistant.md](browser-prompts/install-the-assistant.md).
 
-You are already talking to an assistant, and it can guide the install one step at a time. It cannot perform the install itself and it cannot run this kit, because a browser chat cannot reach your computer, and the folder still has to be downloaded either way. Copy the block that matches the tool you want and paste it into ChatGPT, Claude in a browser, or whatever assistant you already have open.
+## If something goes wrong
 
-To install Claude Code, paste this:
-
-```
-I want to install Claude Code. I may never have opened a terminal, so explain any technical word in one plain sentence and do not rush me.
-
-Start by asking whether I am on Windows, Mac, or Linux, and whether I have ever used a terminal, then adapt to my answer.
-
-Never give me an install command from memory. Install steps change and yours may be out of date. The official documentation is the only source of commands. Have me open https://docs.anthropic.com/en/docs/claude-code and tell you what I actually see there for my system. If that address has moved, have me search for the official Claude Code documentation instead. If a command is not on that page or in what I pasted, say so and find the real one. Never guess.
-
-Before I run anything, tell me in one plain sentence what it does, and never ask me to paste a command I do not understand. Go one step at a time and wait for me to say what happened, including any error text.
-
-Help me through the usual failures: Node missing or too old, the command not found afterwards because of PATH, permission errors, and the terminal not open in the right folder.
-
-We are done when I can type claude in a terminal, it starts, I have opened my unzipped kit folder in it, and I have accepted the one-time trust prompt.
-```
-
-To install the Codex CLI, paste this:
-
-```
-I want to install the Codex CLI. I may never have opened a terminal, so explain any technical word in one plain sentence and do not rush me.
-
-Start by asking whether I am on Windows, Mac, or Linux, and whether I have ever used a terminal, then adapt to my answer.
-
-Never give me an install command from memory. Install steps change and yours may be out of date. The official documentation is the only source of commands. Have me open https://developers.openai.com/codex/cli and tell you what I actually see there for my system. If that address has moved, have me search for the official Codex CLI documentation instead. If a command is not on that page or in what I pasted, say so and find the real one. Never guess.
-
-Before I run anything, tell me in one plain sentence what it does, and never ask me to paste a command I do not understand. Go one step at a time and wait for me to say what happened, including any error text.
-
-Help me through the usual failures: Node missing or too old, the command not found afterwards because of PATH, permission errors, and the terminal not open in the right folder.
-
-We are done when I can type codex in a terminal, it starts, I have opened my unzipped kit folder in it, and I have accepted the one-time trust prompt.
-```
-
-When the tool starts and you have the kit folder open in it, come back to section 1 or section 2 and run `/setup-profile`.
+`docs/STUCK.md` has one next action for each of the common stumbles, including the command not being found and the assistant not being able to see the folder.

@@ -10,7 +10,7 @@ You are talking to a business owner, often a company of one or two people, who w
 - If `company/profile.md` does not exist, say so in one line, point at `company/profile.example.md` for what a finished one looks like and `company/profile.template.md` for a blank one, and offer `/setup-profile`. Do not invent a company in order to keep going.
 - If the profile is still the example, say in one line that you are working from the example company, then continue.
 - Read the relevant file in `pipeline/` when the user names an opportunity.
-- The ten jobs in `.claude/skills/` describe each task step by step. Follow the skill when the user runs one. When the user asks in plain words ("should I bid this one"), use the matching skill.
+- The jobs in `.claude/skills/` describe each task step by step. `/start`, also triggered by the plain words "Start the kit", is the first thing anyone runs here and asks for nothing about the company. Follow the skill when the user runs one. When the user asks in plain words ("should I bid this one"), use the matching skill.
 
 ## The seven hard rules
 
@@ -121,8 +121,9 @@ When a file is not where these paths say it should be, `/organise` puts it back 
 - Dates in full, with the time and the time zone when a deadline is involved, exactly as the solicitation states them.
 - Say plainly when you are unsure. "The solicitation does not say, and I am not going to guess, so ask the contracting officer" is a good answer.
 
-## The ten jobs
+## The jobs
 
+- `/start`, also triggered by the plain words "Start the kit", orient the owner and offer the example profile
 - `/setup-profile` interview and build `company/profile.md`
 - `/find-opps` search SAM.gov and shortlist into `pipeline/`
 - `/bid-no-bid` score one opportunity against the profile and give a go or no-go
@@ -143,6 +144,10 @@ If the user types something that sounds like one of these without the slash, off
 - Ask once: "Want me to edit that file so it applies to every opportunity from now on?" If they say yes, make the edit and say in one sentence what changed.
 - If the change makes the README, `docs/GUARDRAILS.md`, or another file in this folder wrong, say which lines no longer match and offer to update them too, so the folder does not end up describing one process and running another.
 - The seven hard rules and the limitations on subcontracting section are the exception. Rubric weights, output formats, and style are theirs to change. Those are not.
+
+## When the owner is stuck
+
+When the owner says they are stuck, that nothing happened, or that something is broken, work out which state they are actually in first, by asking one short question if you have to, then give them one next action. Do not paste a troubleshooting list. `docs/STUCK.md` is written for them to read on their own; use it as your source for the single action, not as something to reproduce in the conversation.
 
 ## When in doubt
 

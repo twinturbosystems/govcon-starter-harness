@@ -1,22 +1,53 @@
 # GovCon Starter Kit
 
-A folder you download that turns Claude Code into a capture and proposal assistant for a solo government contractor. Pipeline, SAM.gov matching, bid decisions, compliance matrix, proposal drafting, and subcontractor teaming. It prepares and checks the submission. A human submits it.
+This kit helps a solo federal contractor run the mechanical half of capture and proposals: the pipeline, SAM.gov matching, bid decisions, the compliance matrix, proposal drafting, and subcontractor teaming. You download a folder, open it in an AI assistant, and the assistant becomes a capture and proposal assistant instead of a general chatbot. It prepares and checks the submission. A human submits it.
 
-## Start with one thing
+## What you need first
 
-Ten commands is a lot to meet at once. You do not need to read this whole page to begin, and you do not need nine of them today. Three steps.
+- A Mac, Windows, or Linux computer.
+- An account with an AI assistant. Claude Code is the smoothest, because this folder is built for it. Install it from the official guide at https://docs.anthropic.com/en/docs/claude-code and it walks you through creating a Claude account the first time you run it.
 
-1. Download the folder from the link further down and unzip it.
-2. Open a terminal in that folder and type `claude`.
-3. Type `/setup-profile` and press Enter.
+Choose a kit now, then finish setup on a Mac, Windows, or Linux computer. On your phone? Save this page and come back to it there.
 
-It interviews you and writes `company/profile.md`, which every other command reads. When that file is done, type `/find-opps`. Everything else can wait until you have a solicitation in front of you, and the rest of this page will still be here when you do.
+## Download the kit
+
+https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
+
+## Three steps to set it up
+
+1. Unzip the file you just downloaded. You get a folder called `govcon-starter-harness-main`.
+2. Open a terminal in that folder and type `claude`, then press Enter. A terminal is the plain text window where you type commands to your computer.
+3. Say yes when it asks whether you trust the files in this folder. It asks once per folder.
+
+## Type this first
+
+Type these three words and press Enter.
+
+```
+Start the kit
+```
+
+That is the whole first instruction. It is the same three words in every one of these kits.
+
+## What a good result looks like
+
+Within a few seconds the assistant tells you which kit it is reading, names itself, says in one line what this kit does, and gives you the exact next thing to type. It then offers to walk you through the fictional example company profile that ships in the folder, so you can see what a finished profile looks like before you type a single fact about your own business. It does not ask you for personal or company information to get started.
+
+If that is not what you see, [docs/STUCK.md](docs/STUCK.md) gives one next action for each of the common stumbles.
+
+## Privacy and safety
+
+The kit has no account, no server, and no telemetry, and it does not upload anything on its own. The files the assistant reads, and everything you type or attach, are sent to that assistant's provider as part of the conversation, the same as any other chat with it, so think before you attach a draft carrying a partner's proprietary information or a customer point of contact. Your company profile, your pipeline, and your drafts are stored only as plain text files inside this folder on your computer, and `.gitignore` keeps all of them out of version control by default. The only network call the kit ever makes is the SAM.gov opportunity search in `/find-opps`, and only if you set up a free key and approve the command.
+
+---
+
+Everything below is detail. You do not need it to begin.
 
 ## What is this?
 
 It is a folder of files you download onto your own computer. Inside it are written instructions in plain text, which you can open and read like any other document. When you open that folder in Claude Code and start typing, the assistant reads those instructions first, and from then on it behaves like a capture manager and proposal writer for this one job instead of a general chatbot: it works from your company profile, it cites the section of the solicitation behind every requirement, and it marks a gap rather than filling it with something that sounds right. Developers call a folder like this a harness, which is why the repository is named govcon-starter-harness.
 
-The instructions also save each job as a short command. You type `/compliance-matrix` and paste the solicitation, instead of explaining what kind of answer you want every time. Your company facts live in `company/profile.md`, your tracked opportunities in `pipeline/`, and your drafts in `proposals/`, all as text files on your machine that you own and can read, edit, or delete. There is no account, no server, and no telemetry in this folder.
+The instructions also save each job as a short command. You type `/compliance-matrix` and paste the solicitation, instead of explaining what kind of answer you want every time. Your company facts live in `company/profile.md`, your tracked opportunities in `pipeline/`, and your drafts in `proposals/`, all as text files on your machine that you own and can read, edit, or delete.
 
 If this turns out to be useful to you, a star on the repo helps other people find it.
 
@@ -26,47 +57,34 @@ The folder is ordinary text files. Nothing in it is compiled, and nothing runs o
 
 When you point an assistant at the folder, it reads those instructions before it answers you. From then on it behaves like a capture and proposal assistant for everything you ask, not just the first question. It is not a program that starts up, and nothing is installed on your computer beyond the assistant itself. It is instructions the assistant chooses to follow.
 
-The saved jobs are why you can type one short word instead of explaining the task every time. `/setup-profile` interviews you and writes your company profile. `/find-opps` searches SAM.gov and shortlists what actually fits you. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
+The saved jobs are why you can type one short word instead of explaining the task every time. `Start the kit` orients you and offers the example profile. `/setup-profile` interviews you and writes your company profile. `/find-opps` searches SAM.gov and shortlists what actually fits you. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
 
 Your work lives in files in the folder that you own. The profile is in `company/`, tracked opportunities are in `pipeline/`, one file each, and drafts go to `proposals/`, one folder per opportunity. Those three are excluded from git on purpose, which the privacy section below explains.
 
 Two honest limitations. An assistant follows instructions, it does not enforce them the way a locked-down program does, so the rules in `CLAUDE.md` are strong defaults rather than a guarantee. Read what it drafts before you send it, because you are the one signing it. And this kit is not legal advice. It helps you organize, decide, and write. A contracts attorney, an APEX Accelerator advisor, or your SBA district office is the right call for the questions that turn legal.
 
-## What you need first
+## Other ways to get the same folder
 
-An AI assistant. This kit works with Claude Code, with Codex, or with a browser chat like ChatGPT. Claude Code is the smoothest of the three, because the folder is built for it: it reads the instructions by itself and the commands work exactly as typed.
+- On this page, click the green Code button near the top, then choose Download ZIP.
+- If you already use git: `git clone https://github.com/twinturbosystems/govcon-starter-harness.git`
 
-Claude Code is Anthropic's assistant that runs in a terminal window on your computer. Install it by following the official guide: https://docs.anthropic.com/en/docs/claude-code
-
-Claude Code signs in with a Claude account. If you do not have one yet, it walks you through creating one the first time you run it.
+## Two things this kit cannot do for you
 
 An active SAM.gov registration, if you intend to be awarded anything. This is not optional and it is not something this kit can do for you. A company cannot receive a federal contract without an active registration in SAM.gov and a Unique Entity ID. Registration is free and you do it yourself at https://sam.gov. If you are not registered yet, run `/setup-profile` anyway; it will tell you where you stand and put registration first. Do not pay anyone to register you.
 
 A free api.data.gov key, optional. `/find-opps` can call the SAM.gov Get Opportunities API directly, which needs a free key from https://api.data.gov/signup/. Without one, the same skill walks you through the SAM.gov web search and you paste the results in. Both paths work.
 
-If you would rather use Codex or a browser chat, download the folder first the same way, then follow `ONE-PROMPT.md` for the exact steps and the prompt to paste.
-
-## Download the kit
-
-The one-click way, straight to the zip file:
-
-https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
-
-Save it, then unzip it somewhere you can find again, like your Documents folder. Unzipping gives you a folder called `govcon-starter-harness-main`. That folder is the kit.
-
-Two other ways to get the same folder, if you prefer them:
-
-- On this page, click the green Code button near the top, then choose Download ZIP.
-- If you already use git: `git clone https://github.com/twinturbosystems/govcon-starter-harness.git`
-
 ## Start in 60 seconds
 
-1. Open a terminal in the folder you just unzipped. A terminal is the plain text window where you type commands to your computer. On Windows, right-click inside the folder and choose Open in Terminal. On a Mac, right-click the folder in Finder and choose New Terminal at Folder.
+The sixty seconds begins after the assistant is installed and the unzipped folder is open in it. Installing an assistant for the first time takes longer than that, and that is normal.
+
+1. Open a terminal in the folder you just unzipped. On Windows, right-click inside the folder and choose Open in Terminal. On a Mac, right-click the folder in Finder and choose New Terminal at Folder.
 2. Type `claude` and press Enter. The first time, it asks you to sign in to your Claude account in a browser.
 3. Say yes to the trust prompt. The first time Claude Code opens a folder it has not seen before, it asks whether you trust the files in it. That is normal and it only happens once per folder. This is the folder you just downloaded, so choose yes.
-4. Type `/setup-profile` and press Enter. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other command reads that file.
-5. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes.
-6. Type `/dashboard` whenever you want to see where everything stands. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
+4. Type `Start the kit` and press Enter. Expect a short orientation, the exact next thing to type, and an offer to walk the fictional example profile so you can see the shape of a finished one.
+5. Type `/setup-profile` and press Enter. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other command reads that file.
+6. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes.
+7. Type `/dashboard` whenever you want to see where everything stands. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
 
 There is nothing to build and nothing to install beyond Claude Code itself.
 
@@ -74,16 +92,28 @@ There is nothing to build and nothing to install beyond Claude Code itself.
 
 Downloading the folder above is still the first step. This is how you switch that folder on inside the assistant you already use.
 
-- Claude Code: no prompt needed. Open a terminal in the folder, run `claude`, accept the one-time trust prompt, and type a command. That is the five steps above.
+- Claude Code: no prompt needed. Open a terminal in the folder, run `claude`, accept the one-time trust prompt, and type `Start the kit`. That is the steps above. Claude Code reads the instructions by itself and the commands work exactly as typed.
 - Codex CLI: run it inside the folder. It reads `AGENTS.md` by itself, and one short paste-in prompt covers the rest.
-- ChatGPT or another browser chat: there is no folder there, so you attach the instruction files to the chat and paste one setup prompt.
+- Limited browser mode, which means ChatGPT, Claude in a browser, or any other chat window on a website: there is no folder there, so you attach the instruction files to the chat and paste one setup prompt. Read the limits below before you choose this path.
 
-The exact steps and copy-ready prompts for all three are in [ONE-PROMPT.md](ONE-PROMPT.md).
+The copy-ready prompts for all three are in the [browser-prompts](browser-prompts/) folder, in plain view rather than inside the hidden `.claude` directory. [ONE-PROMPT.md](ONE-PROMPT.md) is the short guide that points at them.
+
+## Limited browser mode
+
+A chat window on a website cannot reach your computer. That is a hard limit of the browser, not a setting anyone can change. In limited browser mode this kit cannot:
+
+- operate the folder you downloaded, so it cannot read your profile, your pipeline, or your drafts unless you attach those files by hand
+- save your progress locally, so nothing is written into `pipeline/` or `proposals/` and nothing carries over to the next chat
+- build final packages, which means `/submit-package` cannot assemble the package and `/dashboard` cannot write `dashboard.html`
+- call the SAM.gov API, so `/find-opps` has to use the manual path where you search sam.gov yourself and paste the results in
+
+What it can do is real and often enough: give advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit. To actually run the kit, use Claude Code or the Codex CLI on a computer.
 
 ## What you can type
 
-Ten commands, in the order you would actually use them. Each one is a conversation, not a form.
+One starting instruction and ten commands, in the order you would actually use them. Each one is a conversation, not a form.
 
+- `Start the kit`, or `/start`, orients you: which kit this is, what it does, what to type next, and an offer to see the fictional example profile first.
 - `/setup-profile` interviews you and writes `company/profile.md`: entity, UEI, CAGE, SAM status, NAICS codes with the size standard under each, set-aside status as you report it, real capabilities, real past performance, geography, bonding, clearances, target agencies.
 - `/find-opps` searches SAM.gov against your profile and shortlists what fits, either through the API with your free key or through the web search with you pasting results in. Shortlisted opportunities get a file in `pipeline/`.
 - `/bid-no-bid` scores one opportunity on a stated rubric: NAICS and capability fit, set-aside eligibility, incumbent presence, honest win probability, time to deadline, cost to bid, and whether you can actually staff or subcontract it. Ends with go or no-go and the reasoning.
@@ -94,6 +124,8 @@ Ten commands, in the order you would actually use them. Each one is a conversati
 - `/submit-package` assembles the final package and runs the completeness check against the matrix and the solicitation's own submission instructions. It stops there. You submit.
 - `/organise` puts every file where the kit expects it: creates the folders, moves anything that landed in the wrong place, applies the naming convention so a pipeline file and its proposals folder carry the same solicitation number, and reports the drift it cannot fix for you. It never deletes anything and never overwrites a file that has content.
 - `/dashboard` reads your real files and writes `dashboard.html`, a single page you open by double-clicking. Every tracked opportunity ordered by deadline, soonest first, with the stage it is at, the bid decision and score, how far the proposal has got, the open gaps, and any registration expiring soon. The day counts are worked out when you open the page, not written into it, so the countdown is right whenever you look. The page also says how old the underlying data is, and what it could not determine.
+
+If anything goes wrong at any point, read [docs/STUCK.md](docs/STUCK.md).
 
 ## It will not fit you perfectly
 
@@ -160,7 +192,7 @@ Ibrahim El-Radi
 
 ## The other three kits
 
-Same idea, different job. Each is a separate folder you download the same way.
+Same idea, different job. Each is a separate folder you download the same way, and each one starts with the same three words.
 
 AI Starter Kit, for people who are new to AI tools and want to build one small real thing today.
 Download: https://github.com/twinturbosystems/ai-starter-harness/archive/refs/heads/main.zip
@@ -178,6 +210,8 @@ Read first: https://github.com/twinturbosystems/security-starter-harness
 
 - Everything I make, in one place: https://ibrahim.build/links
 - The rules this kit holds itself to, in plain words: `docs/GUARDRAILS.md`
+- When something goes wrong: `docs/STUCK.md`
+- Paste-ready prompts: `browser-prompts/`
 - Codex users: see `AGENTS.md`
 
 Ibrahim Builds is a creator brand from Beit Systems LLC. https://beitsystems.com
