@@ -3,7 +3,7 @@
 # To keep your own profile in your own repo, make that repo private, then delete the next line.
 company/profile.md
 
-# Your api.data.gov key. Never commit this.
+# Your SAM.gov Public API Key. Never commit this.
 company/.env.local
 
 # Your opportunity pipeline. Target agencies, teaming partners, and bid decisions are
@@ -33,11 +33,13 @@ data/*
 *.db-shm
 sam-export.*
 
-# The generated dashboard. /dashboard builds it from your own files, so it holds your live
-# pipeline, your deadlines, your target agencies, and your partner names on one page.
-# It is generated output and is never hand-edited, so nothing is lost by leaving it out of git.
-# To keep the board in your own private repo, delete the next line.
+# The generated dashboard and its staging data hold your live pipeline, deadlines, target
+# agencies, and partner names. The organise plan can also expose filenames and bid activity.
+# They are generated output, so nothing is lost by leaving them out of git.
+# To keep these in your own private repo, delete the next three lines.
 /dashboard.html
+/dashboard-data.json
+/organise-plan.json
 
 # Local Claude Code overrides (created when you choose "always allow" in a prompt)
 .claude/settings.local.json
@@ -57,6 +59,10 @@ desktop.ini
 # Editor folders
 .vscode/
 .idea/
+
+# Python bytecode created by local validation
+__pycache__/
+*.py[cod]
 
 # Office lock files, in case you open a draft in Word
 ~$*

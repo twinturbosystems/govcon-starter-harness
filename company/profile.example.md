@@ -34,14 +34,15 @@ Size standards checked on: February 3, 2026. Note in the example: size standards
 
 ## Socioeconomic status (self-reported)
 
-| Program | Status | Certified or self-certified | Certifying body | Certificate or approval date | Expiration |
+| Program | Claim or application status | Official evidence source | Approval date | Expiration if used | Last checked |
 |---|---|---|---|---|---|
-| Small business | Yes | Self-certified in SAM | n/a | n/a | n/a |
-| 8(a) Business Development | No | n/a | n/a | n/a | n/a |
-| SDVOSB or VOSB | SDVOSB, yes | Certified | SBA veteran certification program | June 2, 2025 | June 2, 2028 |
-| WOSB or EDWOSB | No | n/a | n/a | n/a | n/a |
-| HUBZone | No | n/a | n/a | n/a | n/a |
-| Other | Maryland Small Business Reserve, registered | State program | Maryland | January 2024 | annual renewal |
+| Small business, by NAICS | Represented small under the codes above | SAM representations plus current SBA size table | n/a | n/a | February 3, 2026 |
+| 8(a) Business Development | No application started | SBA certification record | n/a | n/a | February 3, 2026 |
+| SDVOSB | Certified | SBA Veteran Small Business Certification record | June 2, 2025 | June 2, 2028 | February 3, 2026 |
+| VOSB, VA-specific | No separate claim recorded | VA solicitation gate not checked | n/a | n/a | February 3, 2026 |
+| WOSB or EDWOSB | No | SBA certification record | n/a | n/a | February 3, 2026 |
+| HUBZone | No | SBA certification record | n/a | n/a | February 3, 2026 |
+| Other state or agency program | Maryland Small Business Reserve, registered | Maryland program record | January 2024 | annual renewal | February 3, 2026 |
 
 Notes: the 8(a) application has not been started. The owner has asked twice about HUBZone and the office address does not currently qualify.
 
@@ -139,7 +140,8 @@ Things we are asked for often and do not do: software development, 24x7 operatio
 | Largest we believe we could deliver | Roughly $1.2M per year, and only with two named subcontractors carrying at least a third of the labor |
 | How long we can carry payroll before the first invoice is paid | 60 days, 90 at a stretch |
 | Line of credit or factoring | $150,000 line of credit, undrawn |
-| Accounting system | QuickBooks Online with a job costing setup. Never reviewed by DCAA. This rules us out of cost reimbursable work today. |
+| Accounting system and controls | QuickBooks Online with job costing. Direct and indirect cost segregation and government timekeeping controls have not been assessed. |
+| Evidence of accounting-system adequacy | No DCAA or other preaward review. This is an unresolved gate for any solicitation requiring an adequate accounting system, not an automatic FAR prohibition on all cost-reimbursement work. |
 | Timekeeping system | A commercial time tracking tool, daily entry, but not set up for the government timekeeping rules |
 
 ## Bonding and insurance
@@ -171,7 +173,7 @@ Things we are asked for often and do not do: software development, 24x7 operatio
 - Offices where we have a relationship: one small business specialist at a VA medical center in the region who has taken our call twice
 - Contract vehicles held: none
 - Vehicles being pursued: GSA Multiple Award Schedule, IT category. Application not started.
-- Set-aside types we can bid today: total small business, SDVOSB, and full and open where we are competitive
+- Programs we may be eligible to bid under today: total small business and SDVOSB, subject to the assigned NAICS, current official evidence, registration timing, and the solicitation's program gate. Full and open is not a set-aside status.
 Optional, and only if you want `/sync` to filter at the SAM.gov API rather than pulling every set-aside under your NAICS codes and filtering locally. Write the API codes on a line of their own, exactly like this, and `/sync` will read them:
 
 SAM set-aside codes: SBA, SDVOSBC
@@ -181,11 +183,13 @@ The codes SAM.gov documents are SBA and SBP for small business, 8A and 8AN, HZC 
 
 ## Partner bench
 
-| Company | UEI | What they bring | Size and set-aside status (as they report it) | Similarly situated for which set-asides? | Worked together before? |
-|---|---|---|---|---|---|
-| Talbot Networks (fictional) | EXAMPLEUEI02 | Cabling, switching, field technicians across the mid-Atlantic | Small under 541512, no set-aside status | Small business set-asides only, not SDVOSB | Yes, twice |
-| Blue Harbor Document Services (fictional) | EXAMPLEUEI03 | Scanning, indexing, records management | Small, WOSB self-certified | Small business set-asides; not SDVOSB | Yes, once |
-| [GAP: no similarly situated SDVOSB partner on the bench] | | Needed before bidding an SDVOSB set-aside that we cannot largely self-perform | | | |
+| Company | UEI | What they bring | Size and program status evidence | Candidate first-tier role | Subcontract NAICS to test per pursuit | Worked together before? |
+|---|---|---|---|---|---|---|
+| Talbot Networks (fictional) | EXAMPLEUEI02 | Cabling, switching, field technicians across the mid-Atlantic | Reports small; no socioeconomic certification | Cabling subcontractor | Assign from actual cabling scope, then test current size | Yes, twice |
+| Blue Harbor Document Services (fictional) | EXAMPLEUEI03 | Scanning, indexing, records management | Reports small; old WOSB self-certification is not accepted as current evidence | Document-services subcontractor | Assign from actual scanning scope, then test current size | Yes, once |
+| [GAP: no evidenced first-tier SDVOSB partner on the bench] | | Needed before bidding an SDVOSB set-aside whose planned split requires one | | | | |
+
+No partner is labelled similarly situated in advance. That decision depends on the award program, first-tier role, subcontract NAICS, current evidence, and work its own employees will perform.
 
 ## How you write
 
@@ -198,4 +202,4 @@ The codes SAM.gov documents are SBA and SBP for small business, 8A and 8AN, HZC 
 - Minimum contract value worth bidding: $75,000 total
 - Maximum spent on a single bid: 40 hours of the owner's time
 - Minimum days before a due date to still start: 10 business days, 15 if a teaming agreement has to be signed
-- Types of work we have decided not to chase: anything requiring a bond, anything cost reimbursable until the accounting system is fixed, anything requiring cleared staff, 24x7 operations
+- Types of work we have decided not to chase: anything requiring a bond, cost-reimbursement work until the accounting-system adequacy gap is resolved, anything requiring cleared staff, 24x7 operations

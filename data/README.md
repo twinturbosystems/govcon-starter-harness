@@ -2,7 +2,7 @@
 
 This folder holds `sam.db`, the local copy of SAM.gov opportunity notices that `/sync` builds and `/find-opps` searches.
 
-It exists because the SAM.gov Get Opportunities API is rate limited hard. A non-federal user with no role on an entity registration gets 10 requests per day. With a role on a registration it is 1,000 per day. Searching live against a budget of 10 calls a day is not workable, so the kit does one small sync a day and then searches its own copy as often as you like, for free and with no network call.
+It exists because the published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. Searching live against the lower tier is not workable, so the kit syncs and then searches its local copy without a network call. The local counter sees only calls from this folder, not the user's complete account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 Everything in this folder except this README is excluded from git on purpose. The database says which NAICS codes you track, which set-asides you can bid, which agencies you are watching, and which notices you looked at. That is your pipeline strategy, and it is competitive information. Nothing is lost by leaving it out of version control, because `/sync` and `/backfill` rebuild it from SAM.gov.
 
@@ -11,16 +11,16 @@ Everything in this folder except this README is excluded from git on purpose. Th
 - Every notice the kit has synced, with the fields the rest of the kit uses
 - A snapshot of what each notice looked like on each sync date
 - The change history built from those snapshots: deadlines that moved, set-asides that changed, notices that were amended or cancelled
-- The last successful sync window and the last run time
-- A record of every API call the kit made, so the rate limit can be reported honestly
+- The last successful sync window, plus the status and time of the latest attempt
+- A record of every API call this folder made, so its own recent use can be reported honestly
 
-The api.data.gov key is never written into this database. It stays in `company/.env.local` and is loaded inside the process that makes the call.
+The SAM.gov Public API Key is never written into this database. It stays in `company/.env.local` and is loaded inside the process that makes the call.
 
 ## Four things it is not
 
 It is a mirror of opportunity NOTICES. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself.
 
-Its coverage is exactly whatever filters were synced. If you sync two NAICS codes, it knows about two NAICS codes and nothing else. Run `/sync` and read the coverage line it prints, which states this every time.
+Completed coverage contains only filter and full date windows that finished. If a later page is rate limited, complete pages are retained but the unfinished window does not expand coverage or advance last-successful freshness. Run `/sync` and read the coverage and status lines.
 
 It can be stale. Every search result shows how old the data is. Confirm any deadline on SAM.gov itself before you rely on it to bid.
 

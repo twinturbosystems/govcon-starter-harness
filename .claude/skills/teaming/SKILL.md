@@ -2,7 +2,6 @@
 name: teaming
 description: Prepare the teaming approach for one opportunity. Sets the workshare split, checks it against the limitations on subcontracting for a set-aside, produces a teaming agreement checklist and the NDA points, and lists everything that must be settled before the proposal goes out. Use when the user is deciding who does what share, or is about to sign a teaming agreement.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [solicitation number, or the partners and the split you are considering]
 ---
 
@@ -29,29 +28,31 @@ If the solicitation is not in hand, say plainly that the workshare check cannot 
 
 ## Step 2, build the workshare table
 
-One row per piece of scope. Percentages of the total contract value, and separately of the total labor where the two differ, because on a services contract the cap is usually measured against the amount paid rather than against headcount, and confusing the two is how plans go wrong quietly.
+One row per piece of scope. Record the dollar amount against the calculation base named in the clause, plus value and labor percentages for planning. Do not assume total contract value or headcount is the legal calculation base.
 
-| Scope | PWS ref | Performed by | Similarly situated? | Percent of value | Percent of labor | Basis for the estimate |
-|---|---|---|---|---|---|---|
+| Scope | PWS ref | Performed by | First-tier? | Subcontract NAICS | Program status and evidence | Similarly situated? | Amount on clause calculation base | Percent of value | Percent of labor | Basis |
+|---|---|---|---|---|---|---|---|---|---|---|
 
-A similarly situated entity is a subcontractor that is itself small under the NAICS code assigned to this contract and holds the same set-aside status the prime is bidding under, for example another SDVOSB on an SDVOSB set-aside. Mark each partner yes, no, or unverified, and never mark one yes on the partner's say-so alone; note what evidence it rests on and the date it was checked.
+A similarly situated entity is a first-tier subcontractor with the same program status as the prime and small under the NAICS the prime assigns to that subcontract. That subcontract NAICS may differ from the prime contract NAICS. Only work its own employees perform qualifies. Mark each partner yes, no, or unverified, and never mark one yes on the partner's say-so alone. Record the evidence and date. Sources: https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.1 and https://www.acquisition.gov/far/52.219-14 .
 
 Then total three numbers: self-performed, similarly situated subcontractors, everyone else.
 
 ## Step 3, the limitations on subcontracting check
 
-This is the step this whole skill exists for. Run it every time the contract is a set-aside.
+This is the step this whole skill exists for. First establish applicability. 13 CFR 125.6 covers ordinary small-business set-asides above the simplified acquisition threshold; covered 8(a), HUBZone, SDVOSB, WOSB, and EDWOSB set-aside or sole-source awards; and HUBZone price-evaluation-preference awards when the concern did not waive the preference. For VA Veterans First, separately apply [VAAR 819.7003](https://www.acquisition.gov/vaar/819.7003-eligibility.) and [VAAR 819.7004](https://www.acquisition.gov/vaar/819.7004-limitations-subcontracting-compliance-requirements.) to VA VOSB or SDVOSB set-aside and sole-source contracts above the micro-purchase threshold and to VA evaluation-preference awards. Sources: https://www.acquisition.gov/far/19.507 and https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.6 .
 
 Explain it plainly to the user before you check it, in something close to these words.
 
-When a small business wins a set-aside contract, it cannot simply pass the work through to other companies and keep a margin. Federal rules at 13 CFR 125.6 cap how much of the amount paid under the contract may go to subcontractors that are not similarly situated entities. Work performed by a similarly situated subcontractor does not count against that cap. Work performed by anyone else does. The cap is a percentage, and the percentage is different for services, for supplies, for general construction, and for construction by special trade contractors.
+When the rule applies, 13 CFR 125.6 and FAR 52.219-14 limit amounts paid to subcontractors that are not similarly situated. Qualifying first-tier similarly situated work may count, but lower-tier work does not. The calculation and exclusions differ for services, supplies, general construction, and special-trade construction.
 
 Then do this, in order, and do not skip a step:
 
-1. Find the limitations on subcontracting clause in this solicitation, usually FAR 52.219-14. Quote what the solicitation itself states: the percentage, and the contract type it applies to.
-2. Confirm it against 13 CFR 125.6, which is the controlling authority. If the clause in the solicitation and the regulation appear to disagree, or the solicitation is silent on it, tell the user to ask the contracting officer in writing before bid rather than assuming either way.
-3. Establish which contract type applies here, because the number is meaningless without it. If the solicitation mixes services and supplies, say so, and say that the treatment of a mixed contract is a question for the contracting officer.
-4. Compare the planned split from step 2 against what the clause states.
+1. Find FAR 52.219-14 in this solicitation. Record the program, assigned principal-purpose NAICS, work category, percentage, calculation base, exclusions, and clause-specified measurement period.
+2. Confirm it against 13 CFR 125.6. If the solicitation and current regulation appear inconsistent or silent, mark the check unresolved and have the user ask the contracting officer in writing before offer submission.
+3. For a mixed contract, use the principal-purpose NAICS assigned by the contracting officer to choose one limitation and apply it only to that portion of the award. Do not apply separate limitations to each component.
+4. Apply exclusions exactly. Materials are excluded for supply and construction calculations. For services, exclude only other direct costs that are not the principal purpose of the acquisition and are services small business concerns do not provide. Subcontract labor is not excluded merely because it is labelled an other direct cost.
+5. If this is a supply acquisition, decide whether the offeror is the manufacturer. If not, separately check FAR 52.219-33 and 13 CFR 121.406, including the domestic-small-business-source requirement and any item-specific or class waiver. Sources: https://www.acquisition.gov/far/52.219-33 and https://www.ecfr.gov/current/title-13/chapter-I/part-121/section-121.406 .
+6. Compare the planned amounts from step 2 against the clause calculation.
 
 Never state the percentage from your own memory as settled fact, and never let the user proceed on a figure you supplied without sending them to those two sources.
 
@@ -68,7 +69,7 @@ If the plan looks non-compliant, give the two fixes and price both:
 
 If neither fix is achievable with the partners available and the time left, say so plainly and send the user back to `/bid-no-bid`, because this is a no-go and it is better found now.
 
-Two more things to say when they apply. Compliance is measured over the period the clause specifies, not on a single invoice, so a plan that averages out has to be shown to average out, and the workshare has to be tracked during performance and not only proposed. And on a full and open contract with no set-aside this cap does not apply in the same way, though other clauses in the solicitation may still limit subcontracting, so the clause list still has to be read.
+Two more things to say when they apply. Compliance is measured over the period the clause specifies, such as the base term, an option period, or an order's performance period, not on a single invoice. Record that period and track it during performance. Do not skip the check from a full-and-open label alone. FAR 52.219-14 applies when the HUBZone price evaluation preference produces an award to a HUBZone small business, unless the concern waived the preference. Outside a covered path, other clauses may still limit subcontracting.
 
 Write the result into the limitations on subcontracting section of the pipeline file, including which clause you read, what it said, and the date.
 
@@ -119,11 +120,17 @@ Housekeeping
 - Assignment and change of control
 - Notices, signatures, and who is authorized to sign for each party
 
-## Step 5, the NDA points
+## Step 5, information-sharing and NDA points
 
-The NDA comes first, before any solicitation material or proposal content goes to a candidate. Cover:
+Classify the material before sharing it:
 
-- What is confidential: the solicitation content where restricted, the proposal, pricing, rates, technical approach, customer contacts, and the fact of the teaming discussion itself
+- A public solicitation and its public attachments can be shared without pretending an NDA makes them confidential. Cite the public source. FAR 5.102 addresses public availability: https://www.acquisition.gov/far/5.102 .
+- Proprietary proposal material, rates, partner past performance, resumes, customer contacts, and nonpublic business information need owner consent and an appropriate NDA before sharing.
+- Controlled Unclassified Information, controlled-access portal material, export-controlled data, and classified information follow the solicitation's access and handling rules. An NDA alone does not authorize access or transmission. Stop and require the user's security, legal, or contracting review.
+
+When proprietary material will be exchanged, cover:
+
+- What is confidential: restricted solicitation material, the proposal, pricing, rates, technical approach, customer contacts, and the fact of the teaming discussion itself
 - Mutual, not one way, because both sides are handing over rates and past performance
 - Duration, and a longer or indefinite term for anything that is a trade secret
 - Permitted use limited to this opportunity, named by solicitation number
@@ -137,7 +144,7 @@ The NDA comes first, before any solicitation material or proposal content goes t
 
 Produce a dated list, working backwards from the proposal deadline, with owners:
 
-- NDA signed with every partner whose material appears in the proposal
+- NDA signed before proprietary material is exchanged, and documented authorization before any controlled material is shared
 - Teaming agreement signed with every partner named in the proposal, or a letter of commitment if that is what the solicitation requires
 - The workshare final, and the limitations on subcontracting check clean and written down
 - Partner documents received: capability statement, insurance certificate, past performance write-ups, resumes, W-9, rates in the pricing format, certification evidence

@@ -1,35 +1,43 @@
 # Set up the GovCon Starter Kit in your assistant
 
-Downloading the folder is still the first step. This page is not a way to skip it. It is how you switch the downloaded folder on inside the assistant you already use.
+Download first:
 
-Direct download: https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
+https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
 
-Unzip it. You get a folder called `govcon-starter-harness-main`.
+Unzip it. The downloaded folder is usually named `govcon-starter-harness-main`.
 
-The shortest path, if you have Claude Code or the Codex CLI on your computer: open a terminal in that folder, start the assistant, and type `Start the kit`. Nothing on this page is needed for that. The folder ships with a fictional example company in `company/profile.example.md`, so you can see what a finished profile looks like before you run `/setup-profile` and put your own facts in.
+Choose one path before continuing:
 
-The prompts themselves now live in the [browser-prompts](browser-prompts/) folder, in plain view rather than inside the hidden `.claude` directory. This page points at them so there is one copy of each rather than two.
+1. Claude Code, full-folder mode. Use an eligible Claude subscription or Anthropic Console account. Install from https://code.claude.com/docs/en/installation .
+2. Codex CLI, full-folder mode. Install from https://learn.chatgpt.com/docs/codex/cli .
+3. Browser chat, limited mode. It can advise and draft, but cannot operate or save the folder. Attach [BROWSER-READY.md](BROWSER-READY.md).
 
-## 1. Claude Code
+## Claude Code or Codex CLI
 
-No prompt at all. Claude Code reads `CLAUDE.md` and the `.claude/skills` folder by itself. Open a terminal in the folder, type `claude`, say yes to the one-time trust prompt, then type `Start the kit`.
+Open a terminal in the unzipped folder:
 
-If it answers like a general chatbot instead of a capture and proposal assistant, the nudge prompt is in [browser-prompts/claude-code.md](browser-prompts/claude-code.md).
+- Windows: open the folder in File Explorer, click the address bar, type `powershell`, and press Enter.
+- Mac: open Terminal with Spotlight, type `cd ` including the space, drag the folder into Terminal, and press Enter.
+- Linux: use Open in Terminal if available, or open Terminal, type `cd `, drag the folder in, and press Enter.
 
-## 2. Codex CLI
+Type `claude` or `codex`. If a trust prompt appears, verify that its full path is the folder you downloaded before approving it. For every later permission prompt, read the action and path and approve only an expected action inside this folder.
 
-Codex reads `AGENTS.md` automatically when you run it inside this folder. Paste the prompt in [browser-prompts/codex-cli.md](browser-prompts/codex-cli.md) once at the start of the session, then type `Start the kit`.
+Then type:
 
-## 3. Limited browser mode
+```
+Start the kit
+```
 
-This is ChatGPT, Claude in a browser, or any other chat window on a website. It cannot operate the folder you downloaded, it cannot save your progress locally, it cannot build final packages, which rules out `/submit-package` and `/dashboard`, and it cannot run the local opportunity database, which rules out `/sync` and `/backfill` and means `/find-opps` has to use the manual path. It can give you advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit.
+Claude Code reads `CLAUDE.md` and the jobs automatically. Codex reads `AGENTS.md`; the optional orientation prompt is in [browser-prompts/codex-cli.md](browser-prompts/codex-cli.md).
 
-The file list to attach and the prompt to paste are in [browser-prompts/limited-browser-mode.md](browser-prompts/limited-browser-mode.md).
+For later jobs, Claude Code accepts names such as `/setup-profile`. Those kit job names are not native Codex slash commands, so in Codex say `run setup-profile`, `run find-opps`, or the matching job name in plain words.
 
-## 4. Do not have Claude Code or Codex yet?
+## Browser chat
 
-An assistant you already have open can walk you through the install, one step at a time. The two install prompts are in [browser-prompts/install-the-assistant.md](browser-prompts/install-the-assistant.md).
+Attach [BROWSER-READY.md](BROWSER-READY.md), your own `company/profile.md` if it exists, and the solicitation you want to work on. Follow the paste-ready prompt in that bundle.
+
+A browser chat cannot read or save the downloaded folder, run `/sync` or `/backfill`, build `dashboard.html`, assemble a submission package, or submit anything. It can produce analysis, draft text, and checklists for you to copy. Anything typed or attached is sent to the provider.
 
 ## If something goes wrong
 
-`docs/STUCK.md` has one next action for each of the common stumbles, including the command not being found and the assistant not being able to see the folder.
+[docs/STUCK.md](docs/STUCK.md) gives one next action for each common problem.

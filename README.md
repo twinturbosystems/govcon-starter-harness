@@ -5,19 +5,22 @@ This kit helps a solo federal contractor run the mechanical half of capture and 
 ## What you need first
 
 - A Mac, Windows, or Linux computer.
-- An account with an AI assistant. Claude Code is the smoothest, because this folder is built for it. Install it from the official guide at https://docs.anthropic.com/en/docs/claude-code and it walks you through creating a Claude account the first time you run it.
+- An AI assistant. Choose one path before you install or open anything:
+  1. Claude Code, full-folder mode. Use an eligible Claude subscription or Anthropic Console account and follow https://code.claude.com/docs/en/installation .
+  2. Codex CLI, full-folder mode. Follow https://learn.chatgpt.com/docs/codex/cli .
+  3. ChatGPT, Claude, or another browser chat, limited mode. It can advise and draft, but it cannot operate or save this folder. Use [BROWSER-READY.md](BROWSER-READY.md).
 
-Choose a kit now, then finish setup on a Mac, Windows, or Linux computer. On your phone? Save this page and come back to it there.
+Choose an assistant path now. If you chose limited browser mode, go straight to [BROWSER-READY.md](BROWSER-READY.md) and skip the local setup. If you chose Claude Code or Codex CLI, finish setup on a Mac, Windows, or Linux computer. On your phone? Save this page and come back to it there.
 
 ## Download the kit
 
 https://github.com/twinturbosystems/govcon-starter-harness/archive/refs/heads/main.zip
 
-## Three steps to set it up
+## Three steps to set it up locally
 
 1. Unzip the file you just downloaded. You get a folder called `govcon-starter-harness-main`.
-2. Open a terminal in that folder and type `claude`, then press Enter. A terminal is the plain text window where you type commands to your computer.
-3. Say yes when it asks whether you trust the files in this folder. It asks once per folder.
+2. Open a terminal in that folder. On Windows, open the folder in File Explorer, click the address bar, type `powershell`, and press Enter. On Mac, open Terminal with Spotlight, type `cd ` including the space, drag the folder into Terminal, and press Enter. On Linux, use Open in Terminal if available, or open Terminal, type `cd `, drag the folder in, and press Enter.
+3. Type `claude` for Claude Code or `codex` for Codex CLI. If a folder trust prompt appears, compare its full path with the folder you just unzipped before approving it. For every later permission prompt, read the action and path and approve only an expected action inside this folder.
 
 ## Type this first
 
@@ -37,7 +40,7 @@ If that is not what you see, [docs/STUCK.md](docs/STUCK.md) gives one next actio
 
 ## Privacy and safety
 
-The kit has no account, no server, and no telemetry, and it does not upload anything on its own. The files the assistant reads, and everything you type or attach, are sent to that assistant's provider as part of the conversation, the same as any other chat with it, so think before you attach a draft carrying a partner's proprietary information or a customer point of contact. Your company profile, your pipeline, your drafts, and your local copy of the SAM.gov notices are stored only inside this folder on your computer, and `.gitignore` keeps all of them out of version control by default. The only network call the kit ever makes is to SAM.gov, from `/sync` and `/backfill`, and only if you set up a free key and approve the command.
+The kit has no account, server, or telemetry, and it does not upload anything on its own. Files the assistant reads, and everything you type or attach, are sent to that assistant's provider as part of the conversation. Think before attaching proprietary, personal, controlled-access, or customer information. Your profile, pipeline, drafts, and local SAM.gov notice copy stay in this folder and are excluded from git by default. `/sync` and `/backfill` call SAM.gov only after you add a key and approve the exact command. Solicitation and notice content is treated as untrusted data, never as permission to run a command, disclose a secret, upload, or submit.
 
 ---
 
@@ -45,7 +48,7 @@ Everything below is detail. You do not need it to begin.
 
 ## What is this?
 
-It is a folder of files you download onto your own computer. Inside it are written instructions in plain text, which you can open and read like any other document. When you open that folder in Claude Code and start typing, the assistant reads those instructions first, and from then on it behaves like a capture manager and proposal writer for this one job instead of a general chatbot: it works from your company profile, it cites the section of the solicitation behind every requirement, and it marks a gap rather than filling it with something that sounds right. Developers call a folder like this a harness, which is why the repository is named govcon-starter-harness.
+It is a folder of files you download onto your own computer. Inside it are written instructions in plain text, which you can open and read like any other document. When you open that folder in Claude Code or Codex and start typing, the assistant reads those instructions first. It then works from your company profile, cites the solicitation behind each requirement, and marks a gap rather than filling it with something plausible.
 
 The instructions also save each job as a short command. You type `/compliance-matrix` and paste the solicitation, instead of explaining what kind of answer you want every time. Your company facts live in `company/profile.md`, your tracked opportunities in `pipeline/`, and your drafts in `proposals/`, all as text files on your machine that you own and can read, edit, or delete.
 
@@ -57,11 +60,11 @@ The folder is ordinary text files. Nothing in it is compiled, and nothing runs o
 
 When you point an assistant at the folder, it reads those instructions before it answers you. From then on it behaves like a capture and proposal assistant for everything you ask, not just the first question. It is not a program that starts up, and nothing is installed on your computer beyond the assistant itself. It is instructions the assistant chooses to follow.
 
-The saved jobs are why you can type one short word instead of explaining the task every time. `Start the kit` orients you and offers the example profile. `/setup-profile` interviews you and writes your company profile. `/sync` refreshes a local copy of the SAM.gov opportunity notices in one small daily pull and tells you what changed. `/backfill` loads a year of history the first time. `/find-opps` searches that local copy and shortlists what actually fits you, without touching the network. `/bid-no-bid` scores one opportunity on a stated rubric and gives you a go or a no-go with the reasoning. `/compliance-matrix` turns Sections L and M into the matrix the rest of the proposal is written against. `/draft-proposal` writes the volumes from your real facts. `/find-subs` and `/teaming` cover the partner side. `/submit-package` assembles everything and checks it against the matrix. `/organise` keeps the folders in the shape the other jobs expect, and `/dashboard` writes `dashboard.html`, one page you open by double-clicking that puts every deadline in order with the soonest at the top.
+The saved jobs are why you can use a short name instead of explaining the task every time. `Start the kit` orients you and offers the example profile. Claude Code registers job names such as `/setup-profile`. Codex has its own built-in slash commands, so these kit names are plain-language requests there, such as `run setup-profile`. References below use `/setup-profile`, `/sync`, `/find-opps`, and the other Claude labels as names for the jobs, not as Codex commands. The jobs write your profile, refresh and search a local SAM.gov notice copy, score bids, map compliance, draft from real facts, check teaming, prepare the package for human submission, organize the folder, and build `dashboard.html`.
 
 Your work lives in files in the folder that you own. The profile is in `company/`, tracked opportunities are in `pipeline/`, one file each, drafts go to `proposals/`, one folder per opportunity, and the local copy of the notices sits in `data/`. Those four are excluded from git on purpose, which the privacy section below explains.
 
-Two honest limitations. An assistant follows instructions, it does not enforce them the way a locked-down program does, so the rules in `CLAUDE.md` are strong defaults rather than a guarantee. Read what it drafts before you send it, because you are the one signing it. And this kit is not legal advice. It helps you organize, decide, and write. A contracts attorney, an APEX Accelerator advisor, or your SBA district office is the right call for the questions that turn legal.
+Two honest limitations. An assistant follows instructions, it does not enforce them the way a locked-down program does, so the rules in `CLAUDE.md` are strong defaults rather than a guarantee. Read what it drafts before it goes anywhere; an authorized human is responsible for any answers, certifications, or signatures the solicitation actually requires. And this kit is not legal advice. It helps you organize, decide, and write. A contracts attorney, an APEX Accelerator advisor, or your SBA district office is the right call for the questions that turn legal.
 
 ## Other ways to get the same folder
 
@@ -70,33 +73,33 @@ Two honest limitations. An assistant follows instructions, it does not enforce t
 
 ## Two things this kit cannot do for you
 
-An active SAM.gov registration, if you intend to be awarded anything. This is not optional and it is not something this kit can do for you. A company cannot receive a federal contract without an active registration in SAM.gov and a Unique Entity ID. Registration is free and you do it yourself at https://sam.gov. If you are not registered yet, run `/setup-profile` anyway; it will tell you where you stand and put registration first. Do not pay anyone to register you.
+SAM.gov registration. The standard FAR 52.204-7 provision requires active registration when you submit an offer or quotation and at award. Check FAR 4.1102 exceptions. Alternate I says to register as soon as possible. If registration is not possible at offer, the offer may proceed; if the awardee was unable to register before award, FAR 52.204-13(b) requires registration within 30 days after award or at least three days before the first invoice, whichever occurs first. FAR 52.204-13(c) requires registration during performance through final payment. The kit checks the actual solicitation. Registration is free at https://sam.gov. If you are not active, run the setup-profile job anyway so the rest of your capture profile is ready. Do not pay anyone to register you. Sources: https://www.acquisition.gov/far/4.1102 , https://www.acquisition.gov/far/52.204-7 , and https://www.acquisition.gov/far/52.204-13 .
 
-A free api.data.gov key, optional. `/sync` calls the SAM.gov Get Opportunities API to build your local copy of the notices, and that needs a free key from https://api.data.gov/signup/. Without one, `/find-opps` walks you through the SAM.gov web search and you paste the results in. Both paths work, and the manual one is not a lesser path.
+A SAM.gov Public API Key, optional. Sign in at https://sam.gov and open Account Details to request it. Official instructions are at https://open.gsa.gov/api/get-opportunities-public-api/ . Without a key, `/find-opps` walks you through the SAM.gov web search and you paste the results in. The manual path still works.
 
 ## Start in 60 seconds
 
-The sixty seconds begins after the assistant is installed and the unzipped folder is open in it. Installing an assistant for the first time takes longer than that, and that is normal.
+The sixty seconds begins after your chosen local assistant is installed. Browser users can skip to [BROWSER-READY.md](BROWSER-READY.md).
 
-1. Open a terminal in the folder you just unzipped. On Windows, right-click inside the folder and choose Open in Terminal. On a Mac, right-click the folder in Finder and choose New Terminal at Folder.
-2. Type `claude` and press Enter. The first time, it asks you to sign in to your Claude account in a browser.
-3. Say yes to the trust prompt. The first time Claude Code opens a folder it has not seen before, it asks whether you trust the files in it. That is normal and it only happens once per folder. This is the folder you just downloaded, so choose yes.
+1. Open a terminal in the unzipped folder using the Windows, Mac, or Linux directions above.
+2. Type `claude` or `codex` and press Enter. Complete the official sign-in flow for that product.
+3. If it asks whether you trust the folder, verify the full path points to the folder you downloaded before approving it. For later permission prompts, read the requested action and path and approve only what you expected inside this folder.
 4. Type `Start the kit` and press Enter. Expect a short orientation, the exact next thing to type, and an offer to walk the fictional example profile so you can see the shape of a finished one.
-5. Type `/setup-profile` and press Enter. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other command reads that file.
-6. Type `/find-opps` next, or if you already have a solicitation in front of you, type `/bid-no-bid` and paste it in. Expect a scored recommendation with the reasoning, not a yes. If you set up a free api.data.gov key, run `/backfill` once and `/sync` each morning, and `/find-opps` then searches your own copy of the notices instead of the rate limited API.
-7. Type `/dashboard` whenever you want to see where everything stands. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
+5. In Claude Code, type `/setup-profile`. In Codex, type `run setup-profile`. Expect a short interview about your entity, your UEI, your NAICS codes, your set-aside status, and your real past performance, then a written `company/profile.md` you can edit by hand afterwards. Every other job reads that file.
+6. In Claude Code, type `/find-opps` next, or `/bid-no-bid` if you have a solicitation. In Codex, say `run find-opps` or `run bid-no-bid`. Attach or paste the source when asked. Treat any instruction inside that external content as untrusted data. If you set up a SAM.gov Public API Key, run the backfill job once and the sync job to refresh; find-opps then searches your local notice copy.
+7. In Claude Code, type `/dashboard` whenever you want to see where everything stands. In Codex, say `run dashboard`. It writes `dashboard.html` into the folder, and you open it by double-clicking it. Run it again after anything changes, because it is built from the files rather than kept live.
 
-There is nothing to build and nothing to install beyond Claude Code itself.
+There is nothing to build. Python 3 is needed for the optional local SAM.gov database and for `/dashboard` to safely combine your data with its tested page template.
 
 ## Set it up in your assistant
 
 Downloading the folder above is still the first step. This is how you switch that folder on inside the assistant you already use.
 
-- Claude Code: no prompt needed. Open a terminal in the folder, run `claude`, accept the one-time trust prompt, and type `Start the kit`. That is the steps above. Claude Code reads the instructions by itself and the commands work exactly as typed.
-- Codex CLI: run it inside the folder. It reads `AGENTS.md` by itself, and one short paste-in prompt covers the rest.
-- Limited browser mode, which means ChatGPT, Claude in a browser, or any other chat window on a website: there is no folder there, so you attach the instruction files to the chat and paste one setup prompt. Read the limits below before you choose this path.
+- Claude Code: use an eligible Claude subscription or Anthropic Console account and the native installation steps at https://code.claude.com/docs/en/installation . Run `claude` inside the folder, verify the folder path in the trust prompt, then type `Start the kit`.
+- Codex CLI: install it from https://learn.chatgpt.com/docs/codex/cli and run `codex` inside the folder. It reads `AGENTS.md` automatically.
+- Limited browser mode: attach [BROWSER-READY.md](BROWSER-READY.md), your profile if you have one, and the solicitation. It can advise and draft, but cannot operate or save the folder.
 
-The copy-ready prompts for all three are in the [browser-prompts](browser-prompts/) folder, in plain view rather than inside the hidden `.claude` directory. [ONE-PROMPT.md](ONE-PROMPT.md) is the short guide that points at them.
+Local product notes are in [browser-prompts](browser-prompts/). [ONE-PROMPT.md](ONE-PROMPT.md) is the short setup guide. Browser users need only the visible [BROWSER-READY.md](BROWSER-READY.md) bundle plus their own source files.
 
 ## Limited browser mode
 
@@ -107,7 +110,7 @@ A chat window on a website cannot reach your computer. That is a hard limit of t
 - build final packages, which means `/submit-package` cannot assemble the package and `/dashboard` cannot write `dashboard.html`
 - build or search the local copy of the notices, so `/sync` and `/backfill` cannot run and `/find-opps` has to use the manual path where you search sam.gov yourself and paste the results in
 
-What it can do is real and often enough: give advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Nothing typed into a browser chat runs this kit. To actually run the kit, use Claude Code or the Codex CLI on a computer.
+What it can do is real and often enough: give advice, analysis, drafts, and copy-ready checklists, including a compliance matrix you copy out yourself. Attach [BROWSER-READY.md](BROWSER-READY.md) to start. Nothing typed into a browser chat runs or saves the folder. Anything typed or attached is sent to that provider.
 
 ## What you can type
 
@@ -115,15 +118,15 @@ One starting instruction and twelve commands, in the order you would actually us
 
 - `Start the kit`, or `/start`, orients you: which kit this is, what it does, what to type next, and an offer to see the fictional example profile first.
 - `/setup-profile` interviews you and writes `company/profile.md`: entity, UEI, CAGE, SAM status, NAICS codes with the size standard under each, set-aside status as you report it, real capabilities, real past performance, geography, bonding, clearances, target agencies.
-- `/sync` refreshes your local copy of the SAM.gov opportunity notices with one small pull, usually one or two API calls, and reports what changed since last time: new notices, deadlines that moved, set-asides that changed, notices amended or cancelled. Run it once a day.
-- `/backfill` loads the history the first time, in resumable chunks. It tells you how many API calls the load needs and how many days that takes under your rate limit before it spends a single one, and when the day's budget runs out it stops cleanly and picks up where it left off tomorrow.
+- `/sync` refreshes your local SAM.gov notice copy, usually with one or two requests, and reports what changed. If a later page is rate limited, successful pages stay stored but the attempt does not advance freshness or completed coverage.
+- `/backfill` loads history in resumable chunks. It shows the minimum request cost first, stores successful pages, and resumes at the refused zero-based page index after the 24-hour limit resets. An unfinished chunk is never called full coverage.
 - `/find-opps` searches that local copy against your profile and shortlists what fits, with no network call at all. Shortlisted opportunities get a file in `pipeline/`. If you have no key, the same job walks you through the SAM.gov web search and takes results you paste in.
 - `/bid-no-bid` scores one opportunity on a stated rubric: NAICS and capability fit, set-aside eligibility, incumbent presence, honest win probability, time to deadline, cost to bid, and whether you can actually staff or subcontract it. Ends with go or no-go and the reasoning.
 - `/compliance-matrix` reads the solicitation you paste or attach and builds the compliance matrix from Sections L and M and the SOW or PWS, mapping every instruction and every evaluation factor to where it gets answered. This is the single most valuable artifact in a proposal.
 - `/draft-proposal` drafts the technical, management, and past performance volumes against that matrix, in your voice, using only facts from your profile. Anything it does not have becomes a marked gap.
 - `/find-subs` helps you identify and vet subcontractors and teaming partners: what to check on SAM before you talk to them, what to ask for, and what a real answer looks like.
-- `/teaming` prepares the teaming approach: the workshare split, a teaming agreement checklist, the NDA points, and what has to be settled before the proposal goes out.
-- `/submit-package` assembles the final package and runs the completeness check against the matrix and the solicitation's own submission instructions. It stops there. You submit.
+- `/teaming` prepares the workshare, teaming-agreement checklist, and information-sharing plan. Public solicitation material, proprietary material, and CUI or other controlled material take different paths; an NDA alone is never treated as authority to share controlled material.
+- `/submit-package` prepares the package manifest and completeness checklist. A human must open every final DOCX or PDF and verify its rendered page count, layout, file size, comments, and signatures before the package can be called ready. The kit stops there. You submit.
 - `/organise` puts every file where the kit expects it: creates the folders, moves anything that landed in the wrong place, applies the naming convention so a pipeline file and its proposals folder carry the same solicitation number, and reports the drift it cannot fix for you. It never deletes anything and never overwrites a file that has content.
 - `/dashboard` reads your real files and writes `dashboard.html`, a single page you open by double-clicking. Every tracked opportunity ordered by deadline, soonest first, with the stage it is at, the bid decision and score, how far the proposal has got, the open gaps, and any registration expiring soon. The day counts are worked out when you open the page, not written into it, so the countdown is right whenever you look. The page also says how old the underlying data is, and what it could not determine.
 
@@ -131,7 +134,7 @@ If anything goes wrong at any point, read [docs/STUCK.md](docs/STUCK.md).
 
 ## Why there is a local copy of SAM.gov, and what it is not
 
-The SAM.gov Get Opportunities API is rate limited hard. A non-federal user with no role on an entity registration gets 10 requests a day. With a role on a registration it is 1,000 a day. Ten calls is not a day's work; it is two searches and a mistake. So the kit stopped searching live.
+The published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. The local counter sees only calls from this folder, not the user's full account usage. So the kit does not search live. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 Instead, `/sync` makes one small pull a day into a single file at `data/sam.db`, and `/find-opps` searches that file offline, as many times as you like, for free. `/backfill` loads the history once, in chunks, and tells you how many days that will take under your limit before it spends anything.
 
@@ -141,7 +144,7 @@ Four things it is not, and the kit says all four out loud rather than leaving th
 
 It mirrors opportunity notices. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself, and `/compliance-matrix` needs the real document in front of it.
 
-Its coverage is exactly whatever you synced. If you sync two NAICS codes, it knows about two NAICS codes and nothing else. Every search prints the coverage so you can see what was actually looked at, and the kit will not describe a local search as a complete search of SAM.gov.
+Completed coverage contains only filters and full date windows that finished. Successful pages may be retained after a rate limit, but an incomplete page set does not expand coverage or make the data look freshly synced. Every search prints completed coverage, and the kit will not describe a local search as complete SAM.gov coverage.
 
 It can be stale. Every result carries how old the data is, in days, and the kit offers `/sync` when it has gone quiet for a while.
 
@@ -149,7 +152,7 @@ It does not replace checking SAM.gov. It makes searching fast and free. SAM.gov 
 
 Two practical notes. The database tool is one Python 3 file, `tools/samdb.py`, using only what ships with Python, so there is nothing to install beyond Python itself, and you can open it and read it like any other file in this folder. And `data/` is excluded from git, because the database says which agencies you chase and which set-asides you can bid, which is competitive information.
 
-Honesty about testing, because it matters here. The database, the search, the change history, the paging, the resumable backfill, and the rate limit handling were all tested offline against fixed sample data. The live SAM.gov API path has never been run, because there is no api.data.gov key on the machine this was built on. The parameter names come from the published GSA documentation rather than from a successful call. If a call comes back with an error about a parameter, the skills tell the assistant to open https://open.gsa.gov/api/get-opportunities-public-api/ , use the names listed there today, and say plainly what it changed.
+Honesty about testing matters here. The automated offline suite covers zero-based pagination, current and older response field names, persistence after a simulated HTTP 429, freshness and completed-coverage behavior, date-only dashboard parsing, and prompt-injection and tool boundaries. Run it with `python -B -m unittest discover -s tests -v`. No live SAM.gov call is part of the suite. API parameter names are checked against https://open.gsa.gov/api/get-opportunities-public-api/ . A live service response can still differ, so the tool reports the error and never guesses or retries against a limit.
 
 ## It will not fit you perfectly
 
@@ -167,7 +170,7 @@ One part is worth leaving alone. The rules in `CLAUDE.md` about never submitting
 
 If a change goes wrong, download the folder again and start from the original. Your own work is in separate files: `company/profile.md`, everything in `pipeline/`, and everything in `proposals/`. Those three are kept out of git on purpose. Copy them somewhere outside the folder first, then put them back into the fresh download. Copy `data/sam.db` too if you have it, because rebuilding it costs API calls, though nothing in it is yours alone and `/backfill` can build it again.
 
-This next part matters more here than in the other kits. It can be wrong, and a proposal carries your signature, not the assistant's. Read every line of a draft before it goes anywhere. Check each citation against the solicitation in front of you, check the numbers, and check every past performance detail against your own records. If a sentence states something as fact and you cannot point at where that fact came from, delete it. A federal proposal is a signed statement to the government, and the person who answers for what is in it is you.
+This next part matters more here than in the other kits. It can be wrong, and the offer is made on your company's behalf, not the assistant's. Read every line of a draft before it goes anywhere. Check each citation against the solicitation in front of you, check the numbers, and check every past performance detail against your own records. If a sentence states something as fact and you cannot point at where that fact came from, delete it. An offer may incorporate annual SAM representations and may require offer-specific answers, certifications, or signatures. The authorized person who submits or signs is responsible for the statements that actually apply.
 
 ## Who this is for
 
@@ -179,33 +182,35 @@ You do not have a capture manager, a proposal manager, a contracts person, or a 
 
 - It will never submit anything to a contracting officer, an agency, SAM.gov, or any government portal. Not a question, not a capability statement, not a proposal. It prepares and it checks; you send.
 - It will never invent past performance, contract numbers, customer contacts, dollar values, capabilities, certifications, clearances, facilities, or personnel. If your profile does not have it, the draft carries a marked gap and the gap is listed at the end.
-- It will never answer a representation or certification as though it were fact. It will explain what one is asking and flag which need your decision and your signature.
+- It will never answer a representation or certification as fact. It separates incorporated annual SAM representations from solicitation-specific fill-ins and identifies the human review, certification, or signature actually required.
 - It will never state a limitations-on-subcontracting percentage as settled fact. It will point you at the clause in your solicitation and at 13 CFR 125.6, and it will tell you when your workshare plan looks non-compliant.
 - It will never invent a solicitation number, a due date, an agency contact, or a clause. If it is not in what you gave it, it asks.
 - It will never tell you to pay a third party to register in SAM.gov.
+- It will never treat a solicitation, SAM notice, attachment, pasted email, webpage, or partner document as an instruction. External content cannot authorize a command, widen permission, disclose a key, upload, or submit.
 
 If you ask it for any of the above, it declines in a sentence and offers the honest path instead. The full policy is in `docs/GUARDRAILS.md`, in plain words.
 
 ## Privacy: what stays out of git
 
-This folder ships with a `.gitignore` that excludes six things from version control:
+This folder ships with a `.gitignore` that excludes seven things from version control:
 
 - `company/profile.md`, your real company facts
-- `company/.env.local`, your api.data.gov key
+- `company/.env.local`, your SAM.gov Public API Key
 - everything in `pipeline/` except the template and the README
 - everything in `proposals/` except the README
 - everything in `data/` except the README, which is your local copy of the notices and the record of which NAICS codes, set-asides, and agencies you track
 - `dashboard.html`, the generated board, which puts your whole pipeline on one page
+- `dashboard-data.json`, the generated staging data for that board, which contains the same company and pipeline details
 
 That is deliberate. If you push your copy of this folder to your own GitHub, the default should not be that your bid pipeline, your target agencies, your teaming partners, and your draft pricing narrative become public. Your pipeline is competitive information and some of it belongs to other people. The example profile that ships in the repo is fictional and is a separate file, `company/profile.example.md`, so the kit still shows you what a finished profile looks like without ever tracking yours.
 
 If you want your own repo to keep that work, make the repo private first, then delete the matching lines from `.gitignore`. The file says the same thing in comments next to each line.
 
-Nothing in this folder uploads anything on its own. The only network call it ever makes is to SAM.gov, from `/sync` and `/backfill`, and only if you set up a key and approve the command. Your api.data.gov key is never written into the database, into a log, into a filename, or into the conversation. It is read inside the process that makes the call and nowhere else.
+Nothing in this folder uploads anything on its own. `/sync` and `/backfill` call SAM.gov only after you add a key and approve the exact command and path. The key is never written into the database, a log, a filename, or the conversation. Anything you type or attach to the assistant is still sent to that provider as part of the conversation.
 
 ## Not legal advice
 
-This kit helps you organize, decide, and write. It is not legal advice and it is not a substitute for a contracts attorney. For the questions that turn legal or procedural, three sources of help are free: your SBA district office, the APEX Accelerator network (formerly the PTAC program), and the Office of Small and Disadvantaged Business Utilization at the agency you are targeting.
+This kit helps you organize, decide, and write. It is not legal advice or a substitute for a contracts attorney. For questions that turn legal or procedural, your SBA district office, an APEX Accelerator, and the target agency's Office of Small and Disadvantaged Business Utilization offer free or low-cost help.
 
 ## Why I made this
 

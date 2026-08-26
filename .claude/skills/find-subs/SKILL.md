@@ -2,7 +2,6 @@
 name: find-subs
 description: Identify and vet subcontractors and teaming partners for a specific opportunity. Covers where to look, what to check before the first call (SAM registration active, exclusions and debarment status, size and set-aside status, relevant NAICS, past performance, capacity), what documents to ask for, and what a real answer looks like. Use when the user needs a partner for scope they cannot self-perform.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [optional: the scope you need covered, or a solicitation number, or a company name to vet]
 ---
 
@@ -20,7 +19,7 @@ Read `company/profile.md`, the pipeline file, and the compliance matrix if one e
 
 - The exact scope, tied to PWS or SOW paragraph numbers
 - The share of the total effort it represents, roughly, in labor hours or dollars
-- Whether the partner needs to be similarly situated, which on a set-aside means small under the NAICS assigned to this contract and holding the same set-aside status the prime is bidding under
+- Whether the partner must be similarly situated. That means a first-tier subcontractor with the same program status as the prime and small under the NAICS the prime will assign to that subcontract. Only work its own employees perform qualifies.
 - Whether the partner needs cleared staff, a facility clearance, a bond, a specific certification, a specific vehicle, or presence in a specific place
 - Whether they must be named in the proposal, and whether the solicitation requires a letter of commitment or an executed teaming agreement at submission
 - When their material is due to the prime, which is always earlier than the proposal deadline
@@ -35,7 +34,7 @@ Name the sources, briefly. Do not pretend one of them is a shortcut.
 - SAM.gov entity search, which lets you filter registered entities by NAICS, by socioeconomic status, and by state. This is the most direct way to find companies that are actually registered and actually claim the status you need.
 - The SBA's dynamic small business search and the certification directories for the specific programs, for confirming what a company holds rather than for discovering it.
 - Award history on USAspending.gov and on SAM.gov's award notices, for finding companies that have already delivered the exact scope to the exact agency. This is the highest quality source and the most work.
-- The agency's Office of Small and Disadvantaged Business Utilization, and APEX Accelerator advisors, both of which run matchmaking and both of which are free.
+- The agency's Office of Small and Disadvantaged Business Utilization and an APEX Accelerator. Matchmaking and advising availability and cost vary, so call them free or low-cost only when the specific office says so.
 - Industry days, pre-proposal conferences, and the attendee lists some agencies publish.
 - The incumbent's own subcontractors, where a prior award notice or a public subcontracting plan names them.
 
@@ -49,7 +48,7 @@ Run this before scope and rates get discussed, because it is much harder to walk
 
 1. SAM.gov registration. Is the entity registered and is the registration active today, not expired. Note the UEI and the CAGE. A partner whose registration is expired can still perform as a subcontractor in many cases, but it signals how they run their back office, and it matters immediately if they might ever prime.
 2. Exclusions. Check the exclusions records in SAM.gov for the company, and for its principals by name. An excluded party is debarred, suspended, or otherwise ineligible, and the government's rules prohibit awarding to and, in defined circumstances, subcontracting with excluded parties. There is a dollar threshold above which the prime must check exclusions and obtain a certification from the subcontractor. That threshold is stated in FAR 52.209-6 and it has changed over time, so read the clause as it appears in your own solicitation rather than working from a remembered number. Record the date you checked and what you found, including a clean result, because "we checked and it was clean on this date" is the record you want later.
-3. Size and set-aside status. What does their SAM record say about their size and their socioeconomic status, and is it consistent with what they told you. For a certified program, check the certifying program's own directory rather than taking a logo on a website as evidence. Note that size is determined against the NAICS code assigned to the specific contract, so a company can be small under one code and not under another.
+3. Size and set-aside status. What does their SAM record say, and is it consistent with what they told you. For a certified program, check the program's official directory rather than a website logo. For similarly situated treatment, size is tested under the NAICS the prime assigns to this subcontract, not automatically the prime contract's NAICS. Record that subcontract NAICS and its basis. Sources: https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.1 and https://www.acquisition.gov/far/52.219-14 .
 4. NAICS. Do they list the NAICS codes for the scope you need, and have they been awarded work under them.
 5. Award history. Search their UEI or name on USAspending.gov. What have they actually won, at what size, with which agencies, as prime or as sub. A company whose largest award is a tenth of the scope you are handing them is a capacity question, not a disqualification.
 6. Corporate basics. Is the entity in good standing with its state. Does the address in SAM match a real place of business. How long has it existed.
@@ -61,7 +60,7 @@ Run this before scope and rates get discussed, because it is much harder to walk
 - What is your current backlog and what else are you bidding that would compete for these same people
 - Have you ever had a contract terminated, a CPARS rating below satisfactory, or a claim or dispute with a customer
 - Are you registered and active in SAM, and is anything in your exclusions record
-- Are you similarly situated for this specific set-aside, under this specific NAICS code, and can you show me what you rely on for that
+- Would you be a first-tier subcontractor, what NAICS should the prime assign to your subcontract scope, are you small under that code, do you hold the prime's program status, and can you show the current evidence
 - Are you talking to other primes about this same opportunity, and are you willing to be exclusive
 - What is your accounting and invoicing setup, and how quickly do you invoice
 - What insurance do you carry, and can you meet the limits in the solicitation
@@ -79,7 +78,7 @@ Ask for these before a teaming agreement, not after. A partner who cannot produc
 - A W-9
 - Their rates or their pricing for the scope, in the format the pricing template requires
 - A letter of commitment or letter of intent, if the solicitation requires one at submission
-- A signed non-disclosure agreement, before anything from the solicitation or from the proposal goes to them
+- An appropriate signed non-disclosure agreement before proprietary proposal or partner material goes to them. Public solicitation material can be shared as public material. Controlled material follows its own access rules, and an NDA alone is not authorization.
 
 ## Step 4, score and recommend
 
@@ -111,5 +110,5 @@ Then say: run `/teaming` to set the workshare and check it against the limitatio
 - Never invent a UEI, a CAGE code, an award history, a certification, a customer, or a reference.
 - Never state the FAR 52.209-6 threshold or any other dollar threshold from memory. Read it in the solicitation.
 - Never send anything to a candidate. Draft the outreach email, the question list, and the document request for the user to send.
-- Nothing from the solicitation and nothing from the proposal goes to a candidate before an NDA is signed. Say that once, plainly, the first time a candidate is discussed.
+- Public solicitation material may be shared as public material. Before sharing proprietary proposal content, rates, resumes, customer contacts, or partner material, get the owner's consent and an appropriate NDA. An NDA alone does not authorize sharing CUI, controlled-access, export-controlled, or classified material; follow the solicitation's handling rules and require human security or legal review. Source for public solicitation availability: https://www.acquisition.gov/far/5.102 .
 - This is not legal advice. Affiliation, organizational conflicts of interest, and exclusions questions are attorney questions. Free help exists at SBA and APEX Accelerators.

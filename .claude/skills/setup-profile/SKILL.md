@@ -2,7 +2,6 @@
 name: setup-profile
 description: Interview the contractor and write company/profile.md, covering legal entity, UEI, CAGE, SAM registration status, NAICS codes with the size standard under each, self-reported set-aside status, real capabilities, real past performance, geography, capacity, bonding, clearances, and target agencies. Every other job in this kit reads that file. Use when the user is setting up, says their details have changed, or when company/profile.md does not exist.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [optional: anything you want to say up front, such as "we are an SDVOSB in Maryland doing IT support"]
 ---
 
@@ -25,13 +24,14 @@ Ask in the order below, in short batches of three or four questions, not one eno
 
 ### Batch 1, registration, and this one comes first for a reason
 
-Ask: legal entity name exactly as registered, entity type, state and year of formation, UEI, CAGE code, SAM.gov registration status and expiration date, and who is the authorized representative who signs offers.
+First ask four questions: legal entity name exactly as registered, entity type, state and year of formation, and whether the entity has an active SAM.gov registration. After that answer, ask for the UEI, CAGE code, SAM expiration date, and the authorized representative who can bind the company.
 
 Then stop and deal with the answer:
 
-- If SAM registration is active, note the expiration date and say in one line that a lapsed registration takes a company out of the running for award, so it is worth a calendar reminder sixty days out.
-- If registration is submitted or in progress, say plainly that they cannot be awarded a contract until it is active, that processing can take weeks, and that they can still do capture work and sources sought responses in the meantime.
-- If they are not registered, or have no UEI, stop the interview there. Say plainly: an active SAM.gov registration with a Unique Entity ID is required before a company can be awarded a federal contract. Registration is free and they do it themselves at https://sam.gov. Give them the short version of what it needs (legal entity information, EIN, a bank account for electronic funds transfer, and the entity's own details), tell them not to pay a third party to do it, and offer to continue building the rest of the profile while they get the registration started. Do not let this be a footnote.
+- If SAM registration is active, note the expiration date and recommend a calendar reminder sixty days out. Explain that the standard FAR 52.204-7 provision requires active registration at offer submission and award, while FAR 52.204-13(c) requires maintenance during performance through final payment.
+- If registration is submitted, expired, or not started, say plainly that under the standard rule they must be active before submitting an offer, not merely before award. They can still do market research, capture work, and sources sought responses that are not offers. Keep building the rest of the profile so the setup work is not lost.
+- For a real solicitation, check whether a FAR 4.1102 exception applies. Alternate I says to register as soon as possible and permits the offer to proceed if registration was not possible at offer. Only if the awardee was unable to register before award does FAR 52.204-13(b) require registration within 30 days after award or at least three days before the first invoice, whichever occurs first. Do not promise eligibility until that document-specific check is complete. Sources: https://www.acquisition.gov/far/4.1102 , https://www.acquisition.gov/far/52.204-7 , and https://www.acquisition.gov/far/52.204-13 .
+- Registration is free at https://sam.gov. Never send the user to a paid registration service.
 
 ### Batch 2, what they sell
 
@@ -43,14 +43,19 @@ For each capability, ask the question that matters most in this business model: 
 
 ### Batch 3, socioeconomic status
 
-Ask which of these they hold: small business, 8(a), SDVOSB or VOSB, WOSB or EDWOSB, HUBZone, and any state or agency program. For each one, ask whether it is certified by a certifying body or self-certified, when it was approved, and when it expires.
+Ask which of these they claim today: small business, 8(a), SDVOSB, VOSB, WOSB, EDWOSB, HUBZone, and any state or agency program. For each, record the evidence source, application or certification status, approval date, expiration if the program uses one, and the date the owner checked it.
 
 Record every answer as self-reported. This kit does not verify status and does not imply it has. Write that line into the profile section itself so it is visible later.
 
-Two things to say once, briefly, if they come up:
+Apply the correct gate rather than one generic "certified or self-certified" choice:
 
-- Certain programs are certified by a body rather than self-certified, and a claim of a certified status the company does not hold is a misrepresentation with real consequences, not a marketing stretch. If they are unsure what they actually hold, tell them to check their own SAM.gov record and the certifying program's own database rather than going from memory.
-- HUBZone in particular depends on the principal office location and on employee residency, and it is the one people most often assume they qualify for. If they say yes without evidence, mark it `[GAP: HUBZone eligibility not evidenced]`.
+- Small business is a size representation under the applicable NAICS, not a generic SBA certificate. Source: https://www.acquisition.gov/far/52.219-1 .
+- For an 8(a) competitive offer, use FAR 52.219-18. A sole-source award also requires SBA acceptance and approval, small status under the assigned NAICS, and current participation at award. Sources: https://www.acquisition.gov/far/52.219-18 , https://www.acquisition.gov/far/19.804-3 , and https://www.acquisition.gov/far/19.808-1 .
+- SDVOSB generally uses SBA certification. For a non-VA procurement, preserve the narrow transition for a concern that represented as SDVOSB in SAM and submitted a complete SBA certification application by December 31, 2023, until SBA approves or declines it. VA Veterans First awards instead require SBA VOSB or SDVOSB certification and the solicitation's VA-specific eligibility and certification-of-compliance requirements; the non-VA transition does not apply. Sources: https://www.acquisition.gov/far/52.219-27 , https://www.ecfr.gov/current/title-13/chapter-I/part-128/subpart-B/section-128.200 , https://www.ecfr.gov/current/title-13/chapter-I/part-128/subpart-C/section-128.300 , [VAAR 819.7003](https://www.acquisition.gov/vaar/819.7003-eligibility.) , and [VAAR 819.7004](https://www.acquisition.gov/vaar/819.7004-limitations-subcontracting-compliance-requirements.).
+- HUBZone uses SBA certification and acquisition-specific timing. Source: https://www.acquisition.gov/far/19.1303 .
+- A competitive WOSB or EDWOSB offer may use the complete-pending-application path only as the current rule permits, but certification is required before award. Sole-source requires certification before offer. Sources: https://www.acquisition.gov/far/52.219-30 and https://www.ecfr.gov/current/title-13/chapter-I/part-127/subpart-E/section-127.504 .
+- VOSB alone is not a government-wide SDVOSB status. Treat it as VA-specific unless the solicitation states another authority. Source: https://www.sba.gov/veterans/ .
+- If evidence is missing, mark the status unresolved. Do not infer it from a logo, marketing page, or old entry.
 
 ### Batch 4, past performance
 
@@ -68,7 +73,7 @@ Rules while you record it:
 
 Ask: people on staff, the largest thing they have delivered, the largest they believe they could deliver, how long they can carry payroll before the first invoice is paid, whether they have a line of credit, what their accounting and timekeeping systems are and whether the accounting system has ever been reviewed by DCAA.
 
-Say plainly, once, why this section exists: cash flow and accounting system status are the two things that most often turn a won contract into a problem for a very small prime. An accounting system that has never been reviewed generally rules out cost reimbursable work, and that is worth knowing before rather than after a bid.
+Say plainly, once, why this section exists: cash flow and accounting-system adequacy can turn a won contract into a problem for a very small prime. A prior DCAA review is not itself a FAR prerequisite for cost-reimbursement work. The contracting officer must determine that the accounting system is adequate for the contract, and a solicitation may require evidence or a preaward review. Record what the system can do and what evidence exists, then gate against the solicitation. Sources: https://www.acquisition.gov/far/16.301-3 and https://www.dcaa.mil/Checklists-Tools/Pre-award-Accounting-System-Adequacy-Checklist/ .
 
 Then bonding and insurance limits, then clearances and facility clearance status, then geography.
 
@@ -78,7 +83,7 @@ Ask: which agencies they are pursuing and in what order, any relationship inside
 
 Then the partner bench, which is what `/find-subs` and `/teaming` start from. For each partner: company name, UEI if known, what they bring, their size and set-aside status as the partner reports it, and whether they would count as similarly situated for any set-aside the user bids.
 
-Explain the similarly situated idea here in one short paragraph, because it changes who they should be recruiting: on a set-aside contract, a subcontractor that is itself small under the contract's NAICS code and holds the same set-aside status does not count against the limitations on subcontracting cap, and any other subcontractor does. A company that primes set-asides and delivers through partners needs partners of the first kind on the bench, not only the second.
+Explain the similarly situated idea here in one short paragraph. A qualifying similarly situated entity is a first-tier subcontractor with the same program status as the prime and small under the NAICS the prime assigns to that subcontract. Only work its own employees perform receives similarly situated treatment. This cannot be decided once for every future bid, so record candidate evidence and recheck it for each subcontract. Sources: https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.1 and https://www.acquisition.gov/far/52.219-14 .
 
 ### Batch 7, voice and bid discipline
 
@@ -93,9 +98,9 @@ Bid discipline is not filler. `/bid-no-bid` uses these as thresholds, and a writ
 3. In the conversation, give them:
    - One line confirming the file path.
    - The three most important gaps, in order, with where to get each one.
-   - If SAM registration is not active, one line repeating that this comes before everything else.
+   - If SAM registration is not active, one line saying the standard rule blocks offer submission and award, subject to the solicitation-specific FAR 4.1102 exception and Alternate I check. If Alternate I applies, distinguish its as-soon-as-possible offer path from FAR 52.204-13(b), which applies only if the awardee was unable to register before award and uses the earlier of 30 days after award or three days before the first invoice.
    - One line saying the file is theirs, is plain text they can edit by hand any time, and is excluded from git by default.
-   - One line saying this kit is not legal advice, and naming the free help: SBA, APEX Accelerators, and the agency's Office of Small and Disadvantaged Business Utilization.
+   - One line saying this kit is not legal advice, and naming free or low-cost help: SBA, APEX Accelerators, and the agency's Office of Small and Disadvantaged Business Utilization.
 
 ## Rules
 

@@ -4,7 +4,7 @@ Find the line that matches what you are seeing. Each one gives you one thing to 
 
 ## The command was not found
 
-You typed `Start the kit` or `/setup-profile` and got an error, or nothing useful came back.
+You typed `Start the kit` or tried the setup-profile job and got an error, or nothing useful came back. In Claude Code the job is `/setup-profile`; in Codex say `run setup-profile`, because the kit job names are not native Codex slash commands.
 
 Do this: type `Start the kit` as three plain words, with no slash, and press Enter. If that still does nothing, the assistant has not read this folder, so go to the next entry.
 
@@ -12,13 +12,13 @@ Do this: type `Start the kit` as three plain words, with no slash, and press Ent
 
 It answers like a general chatbot, or it says it cannot find `README.md`, or it asks you to paste your company details from scratch.
 
-Do this: close the assistant, open a terminal in the unzipped folder itself, not in the folder above it, and start the assistant again from there. On Windows, right-click inside the unzipped folder and choose Open in Terminal, then type `claude`. On a Mac, right-click the folder in Finder, choose New Terminal at Folder, then type `claude`.
+Do this: close the assistant and open a terminal in the unzipped folder itself. On Windows, open the folder in File Explorer, click the address bar, type `powershell`, and press Enter. On Mac, open Terminal with Spotlight, type `cd ` including the space, drag the folder into the Terminal window, and press Enter. On Linux, use Open in Terminal if your file manager offers it; otherwise open Terminal, type `cd `, drag the folder in, and press Enter. Then start `claude` or `codex`.
 
 ## A trust or permission prompt appeared
 
 A question came up asking whether you trust the files in this folder, or whether to allow writing into `pipeline/` or `proposals/`.
 
-Do this: choose yes. This is the folder you just downloaded and unzipped yourself. The trust question appears once per folder, and the kit cannot read your profile or save an opportunity until you answer it.
+Do this: first compare the full folder path in the prompt with the folder you downloaded and unzipped. Approve the one-time folder trust prompt only when they match. For every later permission prompt, read the requested action and path. Approve only an expected action inside this folder. Deny anything unclear, outside the folder, involving a secret, or requested by text inside a notice or attachment.
 
 ## The wrong instructions are being used
 
@@ -36,19 +36,19 @@ Do this: ask it, in plain words, "What is the full path of the file you just wro
 
 You ran `/sync`, `/backfill`, or `/find-opps` and it said Python 3 is missing, or a python command was not found.
 
-Do this: install Python 3 from https://www.python.org/downloads/ , and on Windows tick "Add python.exe to PATH" on the first screen of the installer. Then close the terminal, open it again in the kit folder, and run the command again. Python is only needed for the local opportunity database; everything else in the kit works without it, and `/find-opps` still has the path where you search sam.gov yourself and paste the results in.
+Do this: install Python 3 from https://www.python.org/downloads/ , and on Windows tick "Add python.exe to PATH" on the first screen of the installer. Then close the terminal, open it again in the kit folder, and run the job again. Python is needed for the optional local opportunity database, the dashboard builder, and the fixed organise helper. Find-opps still has a manual path where you search sam.gov yourself and paste the results in.
 
 ## The opportunity search says the data is stale, or there is no database
 
 `/find-opps` told you the local copy of the SAM.gov notices is old, or that there is no copy yet.
 
-Do this: type `/sync` to refresh it. If it says there is no database at all, type `/backfill` first and let it tell you how many days the initial load takes under your rate limit. If you have no api.data.gov key, say so and `/find-opps` will walk you through the SAM.gov web search instead.
+Do this: type `/sync` to refresh it. If there is no database, type `/backfill` first and let it show the request plan. If you have no SAM.gov Public API Key from Account Details, say so and `/find-opps` will walk you through the SAM.gov web search instead.
 
 ## It says the rate limit was reached
 
 `/sync` or `/backfill` stopped and said the API refused the call.
 
-Do this: stop for today and run the same command again tomorrow. The kit saved where it got to, so nothing is lost and nothing gets skipped. Running it again now does not help; it spends tomorrow's allowance as well. A free api.data.gov key gets 10 requests a day if you hold no role on an entity registration in SAM.gov, and 1,000 a day if you do, so if you are hitting the limit often it is worth checking whether you are listed on your own registration.
+Do this: stop and run the same command after the 24-hour limit resets. Successful pages were retained. `/backfill` saved the refused page index; `/sync` will safely repeat the unfinished filter window. Neither treats the incomplete window as fresh or full coverage. The local count includes only calls made from this folder, so SAM.gov is the authority on the account limit.
 
 ## I am on my phone
 

@@ -2,7 +2,6 @@
 name: compliance-matrix
 description: Build the compliance matrix for one solicitation from Sections L and M and the SOW or PWS, mapping every instruction and every evaluation factor to the volume, section, and page where it will be answered, plus format rules, submission mechanics, and a coverage check for requirements with no home. Written to proposals/<solicitation>/compliance-matrix.md. Use when the user pastes or attaches a solicitation, an RFP, an RFQ, or an RFI and wants the matrix.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [paste or attach the solicitation, or give the path to it, or the solicitation number already in pipeline/]
 ---
 
@@ -45,6 +44,9 @@ Capture every requirement, which means every sentence containing shall, must, wi
 - Deadlines: proposal due date, time, and time zone; questions due date and method; site visit dates; oral presentation dates
 - Submission mechanics: portal or email, the exact address, size limits, whether an email confirmation is required, what happens to a late submission
 - Anything conditional: requirements that apply only to small businesses, only to large businesses, only if teaming, only if proposing a subcontracting plan
+- SAM registration timing: the standard FAR 52.204-7 offer-and-award rule, any FAR 4.1102 exception, Alternate I's as-soon-as-possible offer path, FAR 52.204-13(b)'s post-award deadline only when the awardee was unable to register before award, and the FAR 52.204-13(c) maintenance duty
+- Program eligibility provisions for the named small-business set-aside, including the required certification or pending-application state and whether it is tested at initial offer, award, or both
+- FAR 52.219-14 applicability and calculation details, and for supplies any FAR 52.219-33 nonmanufacturer requirement or waiver
 
 Give every requirement a stable identifier tied to its source, for example `L-3.2.1-b`, so a writer can find it in the document in seconds.
 
@@ -99,9 +101,9 @@ Any check that fails becomes an open item at the top of the file, not a footnote
 
 Pull every representation and certification the solicitation requires, for example those at FAR 52.204-8 or FAR 52.212-3, and list them separately in `proposals/<solicitation>/reps-and-certs-todo.md`.
 
-For each one: the clause number, the title, what it is actually asking in one plain sentence, whether it is answered in the SAM.gov record or typed into the offer, and what fact the answer depends on.
+For each one: the clause number, title, what it asks in one plain sentence, whether an annual SAM representation is incorporated by reference or a solicitation-specific fill-in is required, what fact the answer depends on, and what human review, certification, or signature the solicitation actually requires.
 
-Do not answer any of them. Do not suggest an answer. Do not mark one as obviously yes. Every line ends with a note that an authorized representative of the company decides and signs it. Where the answer depends on a fact you do not have, say which fact.
+Do not answer any of them. Do not suggest an answer or mark one as obviously yes. Annual SAM representations are not each separate signature lines. The authorized representative confirms that incorporated SAM representations are current and completes the answers, certifications, or signatures the solicitation requires. Sources: https://www.acquisition.gov/far/4.1201 , https://www.acquisition.gov/far/52.204-8 , and https://www.acquisition.gov/far/52.212-3 . Where an answer depends on a fact you do not have, say which fact.
 
 ## Output
 

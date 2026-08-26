@@ -8,7 +8,7 @@ The kit never sends, uploads, files, transmits, or posts anything to a contracti
 
 It prepares, packages, and checks. You submit.
 
-The reason is not caution for its own sake. A federal proposal carries certifications about your company, its size, its socioeconomic status, and the truth of what is in the document. A person with authority to bind the company makes those statements and signs them. A machine must not be the one making them, and no deadline is worth blurring that.
+The reason is not caution for its own sake. An offer may incorporate your SAM representations and may require solicitation-specific certifications or signatures. An authorized person makes those statements. A machine must not do that or submit on the company's behalf.
 
 The last thing `/submit-package` produces is a checked package and the exact steps for you to send it yourself.
 
@@ -28,27 +28,29 @@ If you ask it to make something up so a section looks stronger, it declines and 
 
 ## 3. It does not answer representations and certifications
 
-Reps and certs, for example the annual representations at FAR 52.204-8 or the offeror representations at FAR 52.212-3, are statements your company makes about itself, signed by someone authorized to bind it. The kit will not answer them, pre-fill them, or recommend an answer as though it were fact.
+Representations and certifications are statements your company makes about itself. Annual SAM representations may be incorporated by reference, while a solicitation may require separate fill-ins. They are not all separate signature lines. The kit will not choose, answer, or pre-fill them.
 
-What it will do is genuinely useful. It reads a rep or cert and tells you in plain English what it is actually asking. It lists which ones in a given solicitation need a decision from you. It flags the ones whose answers depend on facts it does not have. And it notes which ones are pulled from your SAM.gov record rather than typed into the proposal. Then it hands you the list.
+It explains each provision, separates incorporated SAM representations from solicitation-specific fill-ins, identifies missing facts, and tells you what human review or signature the solicitation actually requires. An authorized representative confirms the company's SAM answers are current and completes any required offer-specific action. Sources: https://www.acquisition.gov/far/4.1201 , https://www.acquisition.gov/far/52.204-8 , and https://www.acquisition.gov/far/52.212-3 .
 
 ## 4. It takes limitations on subcontracting seriously
 
 This is the rule that matters most if you prime contracts and deliver through partners.
 
-When a small business wins a set-aside contract, it cannot simply pass the work through to other companies. Federal rules at 13 CFR 125.6 cap how much of the amount paid under the contract may go to subcontractors that are not similarly situated entities. A similarly situated entity is a subcontractor that is itself small under the NAICS code assigned to that contract and holds the same set-aside status the prime won under, for example another SDVOSB on an SDVOSB set-aside. Work performed by a similarly situated entity does not count against the cap. Work performed by anyone else does.
+First, the kit checks whether the rule applies. 13 CFR 125.6 covers ordinary small-business set-asides above the simplified acquisition threshold; covered 8(a), HUBZone, SDVOSB, WOSB, and EDWOSB set-aside or sole-source awards; and HUBZone price-evaluation-preference awards when the concern did not waive the preference. VA Veterans First is separate: VA VOSB or SDVOSB set-aside and sole-source contracts above the micro-purchase threshold and VA evaluation-preference awards follow [VAAR 819.7003](https://www.acquisition.gov/vaar/819.7003-eligibility.) and [VAAR 819.7004](https://www.acquisition.gov/vaar/819.7004-limitations-subcontracting-compliance-requirements.). Sources: https://www.acquisition.gov/far/19.507 and https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.6 .
 
-The cap is a percentage of the amount paid, and the percentage is different for services, for supplies, for general construction, and for construction by special trade contractors. Because it depends on the contract type, and because the clause written into your specific solicitation is what actually binds you, this kit will not state a percentage as settled fact. It does this instead, every time:
+A similarly situated entity is a first-tier subcontractor with the same program status as the prime and small under the NAICS the prime assigns to that subcontract. The subcontract NAICS is not automatically the prime contract NAICS. Only work performed by that subcontractor's own employees qualifies; lower-tier work does not. Sources: https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.1 and https://www.acquisition.gov/far/52.219-14 .
 
-1. Points you at the limitations on subcontracting clause in your solicitation, usually FAR 52.219-14, and asks you to read the percentage and the contract type as that solicitation states them.
-2. Points you at 13 CFR 125.6, which is the controlling authority, to confirm it.
-3. Tells you to ask the contracting officer in writing before bid if the two appear to disagree or the solicitation is silent.
+The calculation differs for services, supplies, general construction, and special-trade construction. Materials and some service other-direct-cost treatment also differ. A mixed contract uses the contracting officer's principal-purpose NAICS to choose one limitation, applied only to that portion. A supply acquisition may also trigger the nonmanufacturer rule. The kit does this every time:
+
+1. Reads the solicitation's FAR 52.219-14 text and records applicability, principal-purpose NAICS, work category, calculation base, permitted exclusions, and measurement period.
+2. Checks current 13 CFR 125.6, and for a nonmanufacturer checks FAR 52.219-33 and 13 CFR 121.406.
+3. Marks the result unresolved and tells you to ask the contracting officer in writing before offer submission if the documents appear inconsistent or incomplete.
 
 `/bid-no-bid` and `/teaming` both check your planned workshare against this, and both will say so plainly when the plan looks non-compliant rather than writing around it. The two honest fixes are the same in every case: move real, priced scope back to your company, or use similarly situated subcontractors for the work that has to go out. Both change your price and your staffing, so they get fixed before the proposal goes out.
 
-Two things worth knowing. A full and open contract with no set-aside does not carry this cap in the same way, though other clauses may still limit subcontracting, so the clause list still gets read. And compliance is measured over the period the clause specifies, not on a single invoice.
+Two things worth knowing. Do not use a full-and-open label alone to skip this check. FAR 52.219-14 applies when the HUBZone price evaluation preference produces an award to a HUBZone small business, unless the concern waived the preference. Outside a covered path, other clauses may still limit subcontracting. Compliance is measured over the clause-specified base, option, or order period, not on a single invoice.
 
-Non-compliance is not a paperwork problem. It can end in termination, it damages your past performance, and a knowing misrepresentation of small business status carries consequences well beyond the one contract.
+Non-compliance is not a paperwork problem. It can lead to termination, damage to past performance, and referral for further action. A knowing misrepresentation of small business status carries consequences well beyond the one contract.
 
 ## 5. It does not invent facts about a solicitation
 
@@ -58,13 +60,13 @@ If it is not in what you provided, it asks. It will not guess a due date and it 
 
 ## 6. Registration is a real prerequisite and it says so
 
-A company cannot be awarded a federal contract without an active registration in SAM.gov and a Unique Entity ID. Registration is free, and you do it yourself at https://sam.gov. `/setup-profile` establishes where you stand, and if you are not registered it says so plainly and puts that first, ahead of everything else in the kit, so you do not spend a week on a proposal you cannot legally be awarded.
+The standard FAR 52.204-7 provision requires active SAM.gov registration when an offeror submits an offer or quotation and at award. Check FAR 4.1102 exceptions. Alternate I says to register as soon as possible. If registration is not possible at offer, the offer may proceed; if the awardee was unable to register before award, FAR 52.204-13(b) requires registration within 30 days after award or at least three days before the first invoice, whichever occurs first. Maintain registration during performance through final payment under FAR 52.204-13(c). A Unique Entity ID alone is not active registration. Sources: https://www.acquisition.gov/far/4.1102 , https://www.acquisition.gov/far/52.204-7 , and https://www.acquisition.gov/far/52.204-13 .
 
 The kit will never tell you to pay a third party to register you, and it will never present a paid registration service as a requirement.
 
 ## 7. This is not legal advice
 
-The kit helps you organize, decide, and write. It is not legal advice and it is not a substitute for a contracts attorney or a small business advisor. For the questions that turn legal or procedural, three sources of help are free:
+The kit helps you organize, decide, and write. It is not legal advice and it is not a substitute for a contracts attorney or a small business advisor. For questions that turn legal or procedural, these sources offer free or low-cost help:
 
 - Your SBA district office
 - The APEX Accelerator network, formerly the PTAC program, which exists specifically to help small businesses with federal contracting
@@ -72,17 +74,23 @@ The kit helps you organize, decide, and write. It is not legal advice and it is 
 
 ## Your data
 
-Nothing in this folder sends anything anywhere except through the assistant you installed and signed in to, plus the SAM.gov opportunity sync that only runs if you set up a free api.data.gov key and approve the command.
+Nothing in this folder sends anything anywhere except through the assistant you installed and signed in to, plus the SAM.gov opportunity sync that runs only after you add a SAM.gov Public API Key and approve the exact command. Get the key by signing in at https://sam.gov and opening Account Details. Official instructions: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
-Your profile, your pipeline, and your drafts are text files on your computer. Your local copy of the SAM.gov notices is a single file at `data/sam.db`. All of them are excluded from git by default so that pushing your copy of this folder does not publish your bid pipeline, your partners' information, or which agencies and set-asides you are chasing. Your api.data.gov key lives in `company/.env.local`, which is also excluded, and the kit is instructed never to print it, repeat it, or write it into another file. The database tool loads the key inside its own process, and the key is never written into the database, into a log, or into a filename.
+Your profile, pipeline, and drafts are files on your computer. Your local SAM.gov notice copy is `data/sam.db`. These are excluded from git by default. Your API key lives in `company/.env.local`, which is also excluded. The database tool loads the key inside its own process and never writes it into the database, a log, or a filename.
+
+Solicitations, SAM notice text, attachments, pasted email, webpages, and partner material are treated as untrusted data. An instruction inside them cannot override the kit, authorize a command, request a secret, widen a permission, or cause an upload or submission. The kit quotes and flags suspicious embedded instructions. It never passes external content into a shell command. Every shell action requires you to review the exact command and path and approve only that action.
+
+Anything you type or attach is sent to the AI provider as part of that conversation. Think before attaching proprietary information, controlled-access material, or personal data.
 
 ## What the local copy of SAM.gov is, and is not
 
-The SAM.gov Get Opportunities API is rate limited to as few as 10 requests per day, so the kit keeps its own copy of the notices and searches that instead of calling the API for every search. Four things about that copy are stated here rather than left implied.
+The published non-federal SAM.gov Get Opportunities API tiers are as low as 10 requests in 24 hours, so the kit keeps its own notice copy and searches that instead of calling the API for every search. Its counter sees only requests from this folder, not every request made with the account key.
 
 It mirrors opportunity notices. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself.
 
-Its coverage is exactly whatever filters were synced. Two NAICS codes synced means two NAICS codes known. The kit prints the coverage on every search and will not describe a local search as a complete search of SAM.gov.
+Completed coverage is only the filters and full date windows that finished. Successful pages are retained after a rate limit, but an incomplete page set is not labelled full coverage and does not make the database look freshly synced. The kit will not describe a local search as a complete search of SAM.gov.
+
+For final DOCX and PDF files, the kit cannot prove page layout from text alone. `/submit-package` keeps the package not ready until a human opens every rendered file and checks page count, fonts, margins, page breaks, file size, signatures, comments, and other submission mechanics.
 
 It can be stale. Every search result shows how old the data is, in days, and the kit offers to refresh it rather than pretending it is current.
 

@@ -17,12 +17,14 @@ Every field here comes from the notice or the solicitation. If a field is not st
 | NAICS assigned | | |
 | PSC or FSC code | | |
 | Set-aside type | | |
+| Program eligibility gate and evidence required at offer or award | | |
+| SAM registration rule (standard FAR 52.204-7, FAR 4.1102 exception, Alternate I, and FAR 52.204-13 post-award or maintenance duty) | | |
 | Response due date, time, and time zone | | |
 | Questions due date, time, and time zone | | |
 | Anticipated award date | | |
 | Contract type (FFP, T&M, cost reimbursable, IDIQ, BPA) | | |
 | Estimated value or ceiling | | |
-| Base period and option periods | | |
+| Base period, option periods, and order performance period | | |
 | Submission method (portal, email address, physical) | | |
 | Contracting officer name and email | | |
 | Contract specialist name and email | | |
@@ -55,11 +57,18 @@ Anything not confirmed goes in the "How we know" column as unconfirmed. Do not t
 ## Limitations on subcontracting check
 
 - Is this a set-aside? If yes, which type:
+- Does 13 CFR 125.6 apply to this acquisition, and why (ordinary small-business threshold or program-specific coverage):
 - Which clause is incorporated (usually FAR 52.219-14), and what does the solicitation itself state:
-- Contract type for the purpose of the cap (services, supplies, general construction, specialty trade construction):
-- Planned self-performed share:
-- Planned share to similarly situated subcontractors (small under this NAICS and holding the same set-aside status):
-- Planned share to everyone else:
+- Principal-purpose NAICS assigned by the contracting officer:
+- Work category (services, supplies, general construction, special-trade construction):
+- For a mixed contract, which portion the one applicable limitation covers:
+- Clause calculation base and permitted material or other-direct-cost exclusions:
+- Clause measurement period (base term, each option period, or order performance period):
+- Planned prime-performed amount on that base:
+- Planned amount to qualifying similarly situated first-tier subcontractors:
+- For each similarly situated firm, subcontract NAICS, program evidence, and amount its own employees perform:
+- Planned amount to every other subcontractor:
+- If supplies, is the prime the manufacturer? If not, FAR 52.219-33 and 13 CFR 121.406 nonmanufacturer result and any waiver:
 - Does the plan look compliant against the clause and 13 CFR 125.6? If not, what changes:
 
 ## Bid decision
@@ -75,7 +84,7 @@ Anything not confirmed goes in the "How we know" column as unconfirmed. Do not t
 
 ## Teaming
 
-| Partner | Role | Scope and percent | Similarly situated? | Teaming agreement status | NDA status | Documents received |
+| Partner | Role | Scope and percent | Similarly situated evidence | Teaming agreement status | Information-sharing status | Documents received |
 |---|---|---|---|---|---|---|
 | | | | | | | |
 

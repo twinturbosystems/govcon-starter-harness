@@ -2,7 +2,6 @@
 name: bid-no-bid
 description: Score one opportunity against company/profile.md on a stated rubric covering NAICS and capability fit, set-aside eligibility, incumbent presence, realistic win probability, time to deadline, cost to bid, and whether the work can actually be staffed or subcontracted, including a limitations on subcontracting check against the planned workshare. Ends with a clear go or no-go and the reasoning. Use when the user asks whether to bid something.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [paste the opportunity, or give the pipeline file name, or the solicitation number]
 ---
 
@@ -27,12 +26,12 @@ Never fill any of those from memory or from a similar solicitation.
 
 If any of these is true, the answer is no-go regardless of the score. Say which one, in one line, and stop. Do not produce a score that argues with a hard stop.
 
-- SAM.gov registration is not active, and cannot be made active before award
-- The company is not eligible for the set-aside as stated in the notice
+- Under the standard FAR 52.204-7 provision, SAM.gov registration is not active and cannot be active before offer submission or award. First check FAR 4.1102 exceptions. Under Alternate I, inability to register at offer does not itself block the offer, and the offeror must register as soon as possible. Only if the awardee was unable to register before award does FAR 52.204-13(b) set the deadline at 30 days after award or at least three days before the first invoice, whichever occurs first. Maintain registration during performance through final payment under FAR 52.204-13(c). Sources: https://www.acquisition.gov/far/4.1102 , https://www.acquisition.gov/far/52.204-7 , and https://www.acquisition.gov/far/52.204-13 .
+- The company cannot satisfy the program-specific gate for the set-aside. Apply the 8(a), SDVOSB, WOSB or EDWOSB, HUBZone, or general-small-business gate in `CLAUDE.md`; do not accept a generic “self-certified” answer.
 - The company is not small under the size standard for the NAICS the solicitation assigned
 - A bond is required and the company has no surety relationship, with no time to build one
 - A facility clearance or cleared personnel are required and the company has neither
-- The contract is cost reimbursable and the accounting system has never been reviewed, where the solicitation requires an adequate accounting system
+- The solicitation requires an adequate accounting system and the company cannot evidence or establish adequacy in time. A prior DCAA review is relevant evidence, not a universal prerequisite. Sources: https://www.acquisition.gov/far/16.301-3 and https://www.dcaa.mil/Checklists-Tools/Pre-award-Accounting-System-Adequacy-Checklist/ .
 - The award will be made under a vehicle the company does not hold and cannot get onto in time
 - The deadline is closer than the minimum lead time in the profile's bid discipline section, and no partner is already lined up
 - A mandatory site visit or a mandatory pre-proposal step has already passed
@@ -44,7 +43,7 @@ Score each factor 0 to 5. Write one or two sentences of evidence under each, cit
 | # | Factor | Weight | What a 5 looks like | What a 0 looks like |
 |---|---|---|---|---|
 | 1 | Fit to NAICS and capability | 25 | The assigned NAICS is a primary code, and the scope is work the company's own people have delivered before | The NAICS is unrelated, or the scope is entirely work nobody on the team or the bench has done |
-| 2 | Set-aside eligibility and competitive position inside it | 15 | Eligible, certified, and the set-aside narrows the field to companies of the same size and shape | Not eligible, or eligible but competing against far larger firms in a full and open field |
+| 2 | Set-aside eligibility and competitive position inside it | 15 | Current evidence satisfies the named program gate, or the general small-business size representation where that is the gate, and the acquisition narrows the field as stated | The named program or size gate is not met, or evidence is missing and eligibility cannot be established |
 | 3 | Incumbent and competitive landscape | 15 | No incumbent, a new requirement, or an incumbent with known performance problems the customer has said something about | A satisfied incumbent recompeting a contract they have held through two cycles |
 | 4 | Staffing and subcontracting feasibility | 20 | Key personnel are on staff and available, and every subcontracted piece has a named partner who has already said yes | Key personnel would have to be recruited contingent on award, and the subcontracted scope has no named partner |
 | 5 | Time to deadline | 10 | Comfortably more than the profile's minimum lead time, questions period still open | At or under the minimum, with teaming agreements still unsigned |
@@ -57,18 +56,20 @@ Two rules about factor 7. State win probability as a band, low, moderate, or goo
 
 ## Step 4, the limitations on subcontracting check
 
-Run this whenever the opportunity is a set-aside. It can turn a high score into a no-go, so it sits after the scoring rather than inside it.
+First decide whether the rule applies. 13 CFR 125.6 covers ordinary small-business set-asides above the simplified acquisition threshold; covered 8(a), HUBZone, SDVOSB, WOSB, and EDWOSB set-aside or sole-source awards; and HUBZone price-evaluation-preference awards when the concern did not waive the preference. For VA Veterans First, separately apply [VAAR 819.7003](https://www.acquisition.gov/vaar/819.7003-eligibility.) and [VAAR 819.7004](https://www.acquisition.gov/vaar/819.7004-limitations-subcontracting-compliance-requirements.) to VA VOSB or SDVOSB set-aside and sole-source contracts above the micro-purchase threshold and to VA evaluation-preference awards. Do not treat every set-aside identically. Sources: https://www.acquisition.gov/far/19.507 and https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.6 . It can turn a high score into a no-go, so it sits after the scoring rather than inside it.
 
-1. Ask, or read from the solicitation, the planned split: what share the company would self-perform, what share goes to subcontractors that are similarly situated, and what share goes to everyone else. A similarly situated subcontractor is one that is itself small under the NAICS code assigned to this contract and holds the same set-aside status the prime is bidding under.
-2. Find the limitations on subcontracting clause in this solicitation, usually FAR 52.219-14, and quote what the solicitation itself states: the percentage and the contract type it applies to. If you do not have the full solicitation, say so and mark this check as unresolved rather than assuming.
-3. Confirm against 13 CFR 125.6, which is the controlling authority. The percentage differs for services, supplies, general construction, and construction by special trade contractors, so the contract type has to be established before the number means anything.
-4. Never state the percentage from memory as settled fact. Tell the user to read the clause in their own solicitation and confirm it against 13 CFR 125.6, and to ask the contracting officer in writing before bid if the two appear to disagree or the solicitation is silent.
-5. Compare the plan to the clause. If the planned pass-through to non-similarly-situated subcontractors looks like it exceeds what the clause allows, say so in plain words, immediately, before the recommendation. Give the two fixes: move real, priced scope back to the prime, or replace those subcontractors with similarly situated ones. Both change price and staffing, so they belong in the bid decision rather than after award.
-6. If the fix is not achievable with the partners on the bench and the time available, that is a no-go, and say so.
+1. Read the solicitation's FAR 52.219-14 text and record the program, assigned principal-purpose NAICS, work category, calculation base, exclusions, and measurement period. If the document is missing, mark this check unresolved.
+2. For a mixed contract, use the contracting officer's principal-purpose NAICS to select the one applicable limitation and apply it only to that portion of the award. Do not calculate a separate cap for every component.
+3. Build the planned split from amounts on the applicable calculation base, not a loose percent of total contract value. Separate the prime's own work, first-tier similarly situated work, and all other subcontracted work. A similarly situated entity must hold the same program status as the prime and be small under the NAICS the prime assigns to that subcontract. Only work performed by its own employees qualifies. Sources: https://www.ecfr.gov/current/title-13/chapter-I/part-125/section-125.1 and https://www.acquisition.gov/far/52.219-14 .
+4. Handle exclusions exactly. Materials are excluded for supply and construction calculations. For services, exclude only other direct costs that are not the principal purpose of the acquisition and are services small business concerns do not provide. Do not exclude subcontract labor merely because it is labelled an other direct cost.
+5. For a supply acquisition, determine whether the offeror is the manufacturer. If not, separately check the nonmanufacturer rule, the domestic-small-business-source requirement, and any item-specific or class waiver under FAR 52.219-33 and 13 CFR 121.406. Sources: https://www.acquisition.gov/far/52.219-33 and https://www.ecfr.gov/current/title-13/chapter-I/part-121/section-121.406 .
+6. Never state a percentage from memory. Compare the plan against the solicitation and current regulation. If they appear inconsistent or silent, mark the check unresolved and have the user ask the contracting officer in writing before offer submission.
+7. Measure over the period the clause specifies, such as the base term, an option period, or an order's performance period, not one invoice. Record that period in the pipeline file.
+8. If the plan exceeds the permitted work to non-similarly-situated firms, move real priced scope to the prime or qualifying similarly situated entities. If that is not achievable in time, the result is no-go.
 
 Write the result of this check into the pipeline file's limitations on subcontracting section, including which clause you read and where.
 
-For a full and open opportunity with no set-aside, note that this cap does not apply in the same way, and that other clauses in the solicitation may still limit subcontracting, so the clause list still has to be read.
+Do not skip the check from a full-and-open label alone. FAR 52.219-14 applies when the HUBZone price evaluation preference produces an award to a HUBZone small business, unless the concern waived the preference. Outside a covered path, other solicitation clauses may still limit subcontracting, so the clause list still has to be read.
 
 ## Step 5, the decision
 
@@ -95,5 +96,5 @@ Update the pipeline file: decision, date, score, the one-line reason, and the su
 - Never invent an incumbent, an estimated value, a deadline, a NAICS, a set-aside type, or a clause. Unknown is a valid input and it lowers the score honestly.
 - Never score a factor higher because the user wants to bid. If the owner disagrees with a score, ask what evidence they have, put the evidence in, and rescore.
 - Never state a limitations on subcontracting percentage as settled fact. Cite the clause in the solicitation and 13 CFR 125.6, and tell them to verify.
-- This is not legal advice. Say it once if the subcontracting check comes out close to the line, and name the free help: SBA, APEX Accelerators, and the agency's Office of Small and Disadvantaged Business Utilization.
+- This is not legal advice. Say it once if the subcontracting check comes out close to the line, and name free or low-cost help: SBA, APEX Accelerators, and the agency's Office of Small and Disadvantaged Business Utilization.
 - Do not submit anything, do not offer to submit the questions, and do not draft an email to the contracting officer as though it were going out. Draft the questions; the user sends them.

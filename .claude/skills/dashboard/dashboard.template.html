@@ -248,7 +248,7 @@ ul.sources li{margin-bottom:3px}
   </table>
   <div class="empty" id="readiness-empty" hidden>
     <p class="empty-title">No registration or expiry dates were found.</p>
-    <p>Either <span class="mono">company/profile.md</span> does not exist yet, or it records no SAM registration status and no certification expiry dates. Run <span class="mono">/setup-profile</span>. A lapsed SAM registration makes a company ineligible for award, so this belongs on the board.</p>
+    <p>Either <span class="mono">company/profile.md</span> does not exist yet, or it records no SAM registration status and no certification expiry dates. Run <span class="mono">/setup-profile</span>. Under the standard rule, active SAM registration is required at offer and award; the solicitation may contain an exception or Alternate I.</p>
   </div>
 </section>
 
@@ -295,7 +295,10 @@ ul.sources li{margin-bottom:3px}
 
   function parseDate(v) {
     if (!v) { return null; }
-    var d = new Date(v);
+    var dateOnly = /^(\d{4})-(\d{2})-(\d{2})$/.exec(v);
+    var d = dateOnly
+      ? new Date(Number(dateOnly[1]), Number(dateOnly[2]) - 1, Number(dateOnly[3]))
+      : new Date(v);
     return isNaN(d.getTime()) ? null : d;
   }
   function startOfDay(d) {
