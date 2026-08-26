@@ -165,6 +165,29 @@ class BoundaryTests(unittest.TestCase):
         self.assertNotIn("Developers call a folder like this a harness", readme)
         self.assertNotIn("Say yes to the trust prompt", readme)
 
+    def test_api_budget_is_a_conservative_default_not_a_claimed_quota(self):
+        paths = (
+            "AGENTS.md",
+            "CLAUDE.md",
+            "README.md",
+            "data/README.md",
+            "docs/GUARDRAILS.md",
+            ".claude/skills/backfill/SKILL.md",
+            ".claude/skills/sync/SKILL.md",
+            ".claude/skills/find-opps/SKILL.md",
+            "tools/samdb.py",
+        )
+        combined = "\n".join(
+            (ROOT / Path(relative)).read_text(encoding="utf-8")
+            for relative in paths
+        )
+        self.assertNotIn("published non-federal", combined)
+        self.assertNotIn("no-role tier", combined)
+        self.assertNotIn("without an entity role and 1,000", combined)
+        self.assertIn("does not publish a fixed number", combined)
+        self.assertIn("conservative local default", combined)
+        self.assertIn("not as the user's actual quota", combined)
+
     def test_compliance_claims_keep_primary_sources_and_human_gates(self):
         standing = (ROOT / "CLAUDE.md").read_text(encoding="utf-8")
         for source in (

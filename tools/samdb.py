@@ -2,10 +2,10 @@
 """
 samdb.py, the local opportunity database for the GovCon Starter Kit.
 
-Why this exists. The SAM.gov Get Opportunities API is rate limited hard. The published
-non-federal tiers are 10 requests in 24 hours without an entity role and 1,000 requests in
-24 hours with one. Searching live against the lower tier is not workable, so this script
-keeps a local copy: one small sync, then search offline as often as you like.
+Why this exists. The SAM.gov Get Opportunities API is rate limited. Its documentation says
+the daily limit varies by user role without publishing a fixed number on that page. This
+script uses 10 requests in a rolling 24-hour window as a conservative local default, then
+keeps a local copy so searches do not spend more calls.
 
 What it is not. It mirrors opportunity NOTICES. It does not download attachments,
 statements of work, or amendment documents. Those still come from SAM.gov itself.
@@ -1736,9 +1736,9 @@ def add_common(parser):
 
 def add_network(parser):
     parser.add_argument("--daily-limit", type=positive_int, default=10,
-                        help="API calls your account is allowed in 24 hours. 10 is the "
-                             "no-role tier, 1000 if you hold a role on an entity "
-                             "registration. Default 10, the safe assumption.")
+                        help="conservative local rolling 24-hour call budget; default 10. "
+                             "Use another positive number only when you have confirmed "
+                             "your account limit.")
     parser.add_argument("--timeout", type=int, default=60, help="seconds per call")
     parser.add_argument("--fixture", default=None,
                         help="read a canned JSON response instead of calling the API. A file "

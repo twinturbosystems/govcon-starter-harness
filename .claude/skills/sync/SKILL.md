@@ -11,7 +11,7 @@ Pull what is new from SAM.gov into `data/sam.db`, then say what changed. This is
 
 ## Why this job exists, say it once if the user asks
 
-The published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. Searching live against the lower tier is not workable, so the kit keeps its own copy. The local counter sees only calls from this folder, not the user's complete account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+The SAM.gov Get Opportunities page says the daily request limit varies by user role without publishing a fixed number there. The kit uses 10 requests in a rolling 24-hour window as a conservative local default and keeps its own notice copy. That default is not the user's actual quota. The local counter sees only calls from this folder, not the user's complete account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 ## Input
 
@@ -65,7 +65,7 @@ python3 tools/samdb.py sync --daily-limit 10
 
 Replace `python3` with whichever interpreter answered in step 1.
 
-`--daily-limit` is the user's stated rolling 24-hour allowance. Leave it at 10 unless the user says they hold a role on an entity registration, in which case use 1000. The tool counts calls recorded by this folder in the last 24 hours. It cannot see calls made with the key elsewhere, so do not call the result the user's remaining account quota.
+`--daily-limit` is the user's chosen local rolling 24-hour allowance. Leave it at the conservative default of 10 unless the user provides a currently confirmed positive account limit, then use that exact number. The tool counts calls recorded by this folder in the last 24 hours. It cannot see calls made with the key elsewhere, so do not call the result the user's remaining account quota.
 
 Useful variations, all of them optional:
 

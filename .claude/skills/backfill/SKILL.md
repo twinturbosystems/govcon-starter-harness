@@ -11,7 +11,7 @@ Load history once, then keep it current with `/sync`. This job is the expensive 
 
 ## Why it takes more than one run
 
-The API caps a posted-date window at one year and a page at 1,000 records. Its published non-federal tiers are 10 requests in 24 hours without an entity role and 1,000 in 24 hours with one. This job chunks the work, saves a zero-based API page index, and picks up at the first unfinished page. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+The API caps a posted-date window at one year and a page at 1,000 records. Its page says the daily request limit varies by user role without publishing a fixed number there. This job uses 10 requests in a rolling 24-hour window as a conservative local default, chunks the work, saves a zero-based API page index, and picks up at the first unfinished page. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 ## Input
 
@@ -47,7 +47,7 @@ python3 tools/samdb.py backfill --months 12 --chunk-days 90 --daily-limit 10 --p
 
 The plan states the period, filters, number of chunks, stated 24-hour limit, and estimated number of request windows. Show the user those numbers. A worked example:
 
-- Four NAICS codes, twelve months, ninety day chunks: at least 20 calls. At 10 calls per 24 hours that is at least 2 request windows. At 1,000 per 24 hours it can finish in one run.
+- Four NAICS codes, twelve months, ninety day chunks: at least 20 calls. At the default local limit of 10 calls per 24 hours that is at least 2 request windows.
 - Four NAICS codes, twelve months, thirty day chunks: at least 52 calls. At 10 calls per 24 hours that is at least 6 request windows.
 
 Larger chunks cost fewer calls. Smaller chunks are safer if a NAICS code is busy, because a chunk holding more than 1,000 records needs one extra call per further 1,000. Ninety days is the default because it is the sensible middle.
@@ -60,7 +60,7 @@ Ask before spending, in one line: "That is at least N requests over about D 24-h
 python3 tools/samdb.py backfill --months 12 --chunk-days 90 --daily-limit 10
 ```
 
-Before running, show the exact command and explain that it reads the profile and key, calls SAM.gov, and writes only `data/sam.db`. Wait for approval. Set `--daily-limit 1000` only if the user says they hold a role on an entity registration. The default of 10 is the safe assumption.
+Before running, show the exact command and explain that it reads the profile and key, calls SAM.gov, and writes only `data/sam.db`. Wait for approval. Leave the conservative `--daily-limit 10` default unless the user provides a currently confirmed positive limit for their account, then use that exact number.
 
 The tool spends up to the remaining local 24-hour budget and stops. It never sleeps or retries. Complete pages are stored. If a page is refused, the current chunk resumes at that zero-based page index next time, and the unfinished chunk is not written as completed coverage.
 

@@ -84,7 +84,7 @@ Anything you type or attach is sent to the AI provider as part of that conversat
 
 ## What the local copy of SAM.gov is, and is not
 
-The published non-federal SAM.gov Get Opportunities API tiers are as low as 10 requests in 24 hours, so the kit keeps its own notice copy and searches that instead of calling the API for every search. Its counter sees only requests from this folder, not every request made with the account key.
+The SAM.gov Get Opportunities API is rate limited, and its page says the daily limit varies by user role without publishing a fixed number there. The kit uses 10 requests in a rolling 24-hour window as a conservative local default and searches its own notice copy instead of calling the API for every search. That default is not the account's quota. Its counter sees only requests from this folder, not every request made with the account key.
 
 It mirrors opportunity notices. It does not download attachments, statements of work, or amendment documents. Those still come from SAM.gov itself.
 

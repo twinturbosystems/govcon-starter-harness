@@ -112,7 +112,7 @@ Gitignore is not a privacy boundary with the assistant. The profile, pipeline, p
 
 ## The local opportunity database
 
-The published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. The API caps a posted-date window at one year and a page at 1,000 records. Its `offset` parameter is a zero-based page index, not a record count. The database's counter sees only calls from this folder and is not the user's full account quota. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+The SAM.gov Get Opportunities page says daily request limits vary by user role, but it does not publish a fixed number on that page. The tool uses 10 requests in a rolling 24-hour window as a conservative local default, not as the user's actual quota. Use a different positive `--daily-limit` only when the user provides a currently confirmed limit. The API caps a posted-date window at one year and a page at 1,000 records. Its `offset` parameter is a zero-based page index, not a record count. The database's counter sees only calls from this folder and is not the user's full account quota. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 So the kit does not search live. It keeps a local copy in `data/sam.db`, a single SQLite file, refreshed by one small `/sync` a day, and searches it offline as often as the owner likes.
 

@@ -134,7 +134,7 @@ If anything goes wrong at any point, read [docs/STUCK.md](docs/STUCK.md).
 
 ## Why there is a local copy of SAM.gov, and what it is not
 
-The published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. The local counter sees only calls from this folder, not the user's full account usage. So the kit does not search live. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+The SAM.gov Get Opportunities page says daily request limits vary by user role, but it does not publish a fixed number on that page. The kit uses 10 requests in a rolling 24-hour window as a conservative local default, not as your account's actual quota. Use another limit only when you have confirmed it for your account. The local counter sees only calls from this folder, not your full account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 Instead, `/sync` makes one small pull a day into a single file at `data/sam.db`, and `/find-opps` searches that file offline, as many times as you like, for free. `/backfill` loads the history once, in chunks, and tells you how many days that will take under your limit before it spends anything.
 

@@ -11,7 +11,7 @@ Turn the profile into a search, run it against the local database, and shortlist
 
 ## The one thing that changed, and why
 
-This job does not call the SAM.gov API. The published non-federal tiers are 10 requests in 24 hours without an entity role and 1,000 in 24 hours with one, so the kit keeps a local notice copy and searches it offline. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+This job does not call the SAM.gov API. The API is rate limited, and the Get Opportunities page says the daily limit varies by user role without publishing a fixed number there, so the kit keeps a local notice copy and searches it offline. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 Searching never calls the API. If the local data is stale, this job says so and offers `/sync`. It does not quietly go and spend a call.
 

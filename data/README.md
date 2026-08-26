@@ -2,7 +2,7 @@
 
 This folder holds `sam.db`, the local copy of SAM.gov opportunity notices that `/sync` builds and `/find-opps` searches.
 
-It exists because the published non-federal SAM.gov Get Opportunities API tiers are 10 requests in 24 hours without a role on an entity registration and 1,000 in 24 hours with one. Searching live against the lower tier is not workable, so the kit syncs and then searches its local copy without a network call. The local counter sees only calls from this folder, not the user's complete account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
+It exists because the SAM.gov Get Opportunities API is rate limited, and its page says the daily limit varies by user role without publishing a fixed number there. The kit uses 10 requests in a rolling 24-hour window as a conservative local default, then searches its local copy without a network call. That default is not the user's actual quota. The local counter sees only calls from this folder, not the user's complete account usage. Source: https://open.gsa.gov/api/get-opportunities-public-api/ .
 
 Everything in this folder except this README is excluded from git on purpose. The database says which NAICS codes you track, which set-asides you can bid, which agencies you are watching, and which notices you looked at. That is your pipeline strategy, and it is competitive information. Nothing is lost by leaving it out of version control, because `/sync` and `/backfill` rebuild it from SAM.gov.
 
