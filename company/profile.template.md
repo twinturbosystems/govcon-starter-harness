@@ -23,7 +23,7 @@ Copy this file over `profile.md` when you are ready to start, or run `/setup-pro
 | Employer Identification Number on file with SAM (yes or no, do not write the number here) | |
 | Authorized representative who signs offers (name and title) | |
 
-If SAM registration is not active, nothing else in this file matters yet. Registration is free at https://sam.gov and you do it yourself. Do not pay a third party.
+The standard FAR 52.204-7 provision requires active registration when an offer or quotation is submitted and at award. Check FAR 4.1102 exceptions. Alternate I says to register as soon as possible. If registration is not possible at offer, the offer may proceed; if the awardee was unable to register before award, FAR 52.204-13(b) requires registration within 30 days after award or at least three days before the first invoice, whichever occurs first. Maintain registration during performance through final payment under FAR 52.204-13(c). An inactive entity can still complete the rest of this profile and do market research or capture work. Registration is free at https://sam.gov. Do not pay a third party. Sources: https://www.acquisition.gov/far/4.1102 , https://www.acquisition.gov/far/52.204-7 , and https://www.acquisition.gov/far/52.204-13 .
 
 ## NAICS codes
 
@@ -39,16 +39,17 @@ Size standards checked on: [date]
 
 ## Socioeconomic status (self-reported)
 
-Write only what you hold today, and how it is evidenced. This kit treats every line here as your own report of your status, not as verification of it. Certified programs are verified by the certifying body, not by you and not by this file.
+Write only what you hold today, how it is evidenced, and when you checked it. This kit treats every line as your report, not verification. General small-business status is a size representation for an applicable NAICS, not a generic SBA certificate. 8(a), SDVOSB, HUBZone, WOSB, and EDWOSB each have their own certification and offer or award timing. VOSB alone is not a government-wide SDVOSB status. Check the program gate in `CLAUDE.md` for every pursuit.
 
-| Program | Status | Certified or self-certified | Certifying body | Certificate or approval date | Expiration |
+| Program | Claim or application status | Official evidence source | Approval date | Expiration if used | Last checked |
 |---|---|---|---|---|---|
-| Small business | | | | | |
+| Small business, by NAICS | | | | | |
 | 8(a) Business Development | | | | | |
-| SDVOSB or VOSB | | | | | |
+| SDVOSB | | | | | |
+| VOSB, VA-specific | | | | | |
 | WOSB or EDWOSB | | | | | |
 | HUBZone | | | | | |
-| Other (state or agency programs) | | | | | |
+| Other state or agency program | | | | | |
 
 Notes on anything in progress, including application dates:
 
@@ -119,7 +120,8 @@ Only people you can actually put on a contract, with their real credentials. A r
 | Largest you believe you could deliver | |
 | How long you can carry payroll before the first invoice is paid | |
 | Line of credit or factoring in place | |
-| Accounting system (name it; note whether it has ever been reviewed by DCAA) | |
+| Accounting system and controls (cost segregation, direct and indirect costs, timekeeping, billing) | |
+| Evidence of accounting-system adequacy, including any DCAA or other preaward review | |
 | Timekeeping system | |
 
 ## Bonding and insurance
@@ -152,7 +154,7 @@ Only people you can actually put on a contract, with their real credentials. A r
 - Offices or program shops inside them where you have a relationship:
 - Contract vehicles you hold (GSA MAS, agency IDIQ, BPA):
 - Vehicles you are pursuing:
-- Set-aside types you can bid today:
+- Programs you may be eligible to bid under today, with the evidence and solicitation gate still to check:
 Optional, and only if you want `/sync` to filter at the SAM.gov API rather than pulling every set-aside under your NAICS codes and filtering locally. Write the API codes on a line of their own, exactly like this, and `/sync` will read them:
 
 SAM set-aside codes: SBA, SDVOSBC
@@ -164,9 +166,11 @@ The codes SAM.gov documents are SBA and SBP for small business, 8A and 8AN, HZC 
 
 Companies you have worked with, or would team with, and what each one brings. This is what `/find-subs` and `/teaming` start from.
 
-| Company | UEI | What they bring | Size and set-aside status (as they report it) | Similarly situated for which set-asides? | Worked together before? |
-|---|---|---|---|---|---|
-| | | | | | |
+| Company | UEI | What they bring | Size and program status evidence | Candidate first-tier role | Subcontract NAICS to test per pursuit | Worked together before? |
+|---|---|---|---|---|---|---|
+| | | | | | | |
+
+Similarly situated status is decided per pursuit. The firm must be first-tier, hold the prime's program status, and be small under the NAICS assigned to its subcontract. Only its own-employee work qualifies.
 
 ## How you write
 

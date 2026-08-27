@@ -16,6 +16,6 @@ proposals/47QTCA-25-R-0012/
   package/            the files that actually get sent
 ```
 
-Two things this folder never contains. It never contains a completed representation or certification, because those are signed by an authorized representative of your company and the kit will not answer one. And it never contains a submitted proposal, because the kit does not submit; the last thing it produces is a checked package and the steps for you to send it.
+The kit never chooses or answers a representation or certification. It separates incorporated annual SAM representations from offer-specific fill-ins and identifies the authorized-human action the solicitation requires. It never submits; the last thing it produces is a manifest and checklist. A package is not ready until a human opens every final DOCX or PDF and verifies the rendered mechanics.
 
 Everything here except this README is excluded from git on purpose. Drafts carry your pricing narrative, your staffing plan, and material your teaming partners gave you under an NDA. If you want to keep drafts in your own repository, make that repository private first, then delete the matching lines from `.gitignore`.

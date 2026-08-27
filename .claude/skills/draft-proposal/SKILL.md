@@ -2,7 +2,6 @@
 name: draft-proposal
 description: Draft the technical, management, and past performance volumes against the compliance matrix, in the owner's voice, using only facts that appear in company/profile.md. Anything not in the profile becomes a marked gap rather than a plausible sentence. Written to proposals/<solicitation>/. Use when the user asks to write, draft, or start the proposal.
 user-invocable: true
-allowed-tools: Read, Write, Edit
 argument-hint: [solicitation number, or a volume or section name such as "volume 2" or "the transition plan"]
 ---
 
@@ -65,7 +64,7 @@ Cover, in the order the instructions require:
 - Communication and reporting: what the customer receives, how often, and who the single point of contact is.
 - Risk management, phase-in and phase-out, and the plan for the last thirty days of the contract, which almost nobody writes and evaluators notice.
 
-If this is a set-aside and the volume describes the workshare, add the limitations on subcontracting check before you finish the volume. Compare the described split against the clause in the solicitation, usually FAR 52.219-14, and against 13 CFR 125.6 as the controlling authority. Do not state the percentage from memory. If the plan as written looks non-compliant, stop drafting that section, say so, and send the user to `/teaming` to fix the split first, because the fix changes the price and the staffing and there is no point drafting around it.
+If the volume describes workshare, read the completed limitations-on-subcontracting section in the pipeline file before finishing. It must record applicability, the solicitation's FAR 52.219-14 text, 13 CFR 125.6 treatment, principal-purpose NAICS and mixed-contract portion if relevant, permitted material or other-direct-cost exclusions, first-tier similarly situated evidence under each subcontract NAICS, any nonmanufacturer branch, and the clause-specified measurement period. Do not recalculate from memory. If the check is missing, unresolved, or inconsistent with the draft, stop that section and send the user to `/teaming` because the fix changes price and staffing.
 
 ## Volume 3, past performance
 
@@ -101,14 +100,14 @@ Defaults if the profile says nothing:
 
 For each volume drafted, write `proposals/<solicitation-number>/volume-N-<name>.md` containing:
 
-1. A header with the solicitation number, the volume name, the page limit, and the matrix rows this volume answers.
+1. A header with the solicitation number, volume name, stated page limit, and matrix rows this volume answers. Label the page limit as a target until the final rendered file is checked.
 2. The draft itself, in the required section numbering.
 3. A cross reference table at the end: requirement ID, section of this volume that answers it, and status.
 4. The gap list for this volume.
 
 Also maintain `proposals/<solicitation-number>/gaps.md` as the single collected list across all volumes, in priority order, with what each gap needs and who can supply it.
 
-In the conversation, give them: the file paths, an honest note on length against the page limit, the three gaps that block finishing, and the next volume to draft.
+In the conversation, give them: the file paths, the draft length and target page limit without claiming rendered compliance, the three gaps that block finishing, and the next volume to draft. A human checks the final rendered DOCX or PDF in `/submit-package`.
 
 ## Rules
 
@@ -117,5 +116,5 @@ In the conversation, give them: the file paths, an honest note on length against
 - Never claim compliance with a standard, a framework, or a regulation that the profile does not evidence.
 - Never answer a representation or certification inside a volume.
 - Never describe subcontracted work as self-performed.
-- Do not exceed a page limit and then note it. Write to fit, and say what you cut.
+- Draft toward the stated page limit and say what you cut. Never claim a markdown or source-text draft proves the final rendered page count.
 - If asked to draft a cover letter or a transmittal, draft it for the user to send. Do not send anything.

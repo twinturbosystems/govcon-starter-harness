@@ -2,10 +2,10 @@
 """
 samdb.py, the local opportunity database for the GovCon Starter Kit.
 
-Why this exists. The SAM.gov Get Opportunities API is rate limited hard. A non-federal
-user with no role on an entity registration gets 10 requests per day. With a role it is
-1,000 per day. Searching live against that budget is not workable, so this script keeps a
-local copy: one small sync per day, then search offline as often as you like.
+Why this exists. The SAM.gov Get Opportunities API is rate limited. Its documentation says
+the daily limit varies by user role without publishing a fixed number on that page. This
+script uses 10 requests in a rolling 24-hour window as a conservative local default, then
+keeps a local copy so searches do not spend more calls.
 
 What it is not. It mirrors opportunity NOTICES. It does not download attachments,
 statements of work, or amendment documents. Those still come from SAM.gov itself.
@@ -13,7 +13,7 @@ statements of work, or amendment documents. Those still come from SAM.gov itself
 Design constraints, on purpose:
   - Python 3 standard library only. No pip install. The audience is not technical.
   - One SQLite file at data/sam.db. No server.
-  - The api.data.gov key is loaded inside this process, from company/.env.local, and is
+  - The SAM.gov public API key is loaded inside this process, from company/.env.local, and is
     never written to the database, to a log, to a filename, or to standard output.
   - Every SQL statement is parameterised. Search terms come from user input.
 
@@ -267,12 +267,33 @@ class KitError(Exception):
 
 
 class RateLimited(KitError):
-    pass
+    """A refused request, plus any complete pages already read by the current pull."""
+
+    def __init__(self, message, next_action=None, code=3):
+        KitError.__init__(self, message, next_action, code)
+        self.records = []
+        self.calls_used = 0
+        self.next_offset = 0
 
 
 # ---------------------------------------------------------------------------
 # small helpers
 # ---------------------------------------------------------------------------
+
+def require_positive_daily_limit(args):
+    if args.daily_limit < 1:
+        raise KitError(
+            "--daily-limit must be at least 1.",
+            "Run the command again with --daily-limit 10, or with the positive limit "
+            "shown for your SAM.gov API key.",
+            code=2)
+
+
+def positive_int(value):
+    number = int(value)
+    if number < 1:
+        raise argparse.ArgumentTypeError("must be at least 1")
+    return number
 
 def now_utc():
     return datetime.now(timezone.utc)
@@ -340,9 +361,9 @@ def load_key(root):
     path = os.path.join(root, "company", ".env.local")
     if not os.path.exists(path):
         raise KitError(
-            "No api.data.gov key file at company/.env.local, so there is nothing to call the "
-            "API with.",
-            "Get a free key at https://api.data.gov/signup/ , copy "
+            "No SAM.gov public API key file exists at company/.env.local, so there is "
+            "nothing to call the API with.",
+            "Sign in at https://sam.gov, open Account Details, request a Public API Key, copy "
             "company/.env.local.example to company/.env.local, and paste the key after "
             "SAM_API_KEY= . Then run this again.",
             code=4,
@@ -424,10 +445,11 @@ def set_state(conn, key, value):
     )
 
 
-def calls_today(conn):
+def calls_last_24_hours(conn):
+    cutoff = (now_utc() - timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ")
     row = conn.execute(
-        "SELECT COUNT(*) AS n FROM api_calls WHERE call_date = ? AND outcome != 'fixture'",
-        (today_utc(),),
+        "SELECT COUNT(*) AS n FROM api_calls WHERE called_utc >= ? AND outcome != 'fixture'",
+        (cutoff,),
     ).fetchone()
     return int(row["n"])
 
@@ -460,6 +482,15 @@ def note_coverage(conn, kind, value, posted_from, posted_to):
         "last_synced_utc = excluded.last_synced_utc",
         (kind, value, earliest, latest, now_utc_iso()),
     )
+
+
+def note_completed_query_coverage(conn, naics, set_aside, posted_from, posted_to):
+    """Record only a filter combination whose entire date window finished."""
+    if set_aside:
+        note_coverage(conn, "query", "NAICS %s; set-aside %s" % (naics, set_aside),
+                      posted_from, posted_to)
+    else:
+        note_coverage(conn, "naics", naics, posted_from, posted_to)
 
 
 # ---------------------------------------------------------------------------
@@ -602,23 +633,23 @@ def error_text(body):
 
 def raise_for_status(status, body, conn, endpoint, params, key=None, fixture=False):
     detail = scrub(error_text(body), key)
-    used = calls_today(conn)
+    used = calls_last_24_hours(conn)
     if status == 429 or "RATE_LIMIT" in detail.upper() or "OVER_RATE" in detail.upper():
         raise RateLimited(
             "Rate limit reached. The API refused the call with HTTP %d and said: %s"
             % (status, detail),
-            "Stop here. This folder has made %d API calls today. Nothing was lost and the "
-            "saved position is written down, so run the same command again tomorrow and it "
-            "picks up where it stopped. Do not retry now; retrying against a rate limit "
-            "burns the next day's budget too." % used,
+            "Stop here. This folder has made %d API calls in the last 24 hours. This command "
+            "does not retry. Backfill saves the refused page index. Sync keeps complete "
+            "pages and safely repeats the unfinished filter window after the limit resets."
+            % used,
             code=3,
         )
     if status in (401, 403):
         raise KitError(
             "The API rejected the key with HTTP %d and said: %s" % (status, detail),
-            "Check that the key in company/.env.local is the api.data.gov key from the "
-            "signup email, with no spaces around it. If it is new, keys can take a few "
-            "minutes to become active. Do not paste the key into the chat.",
+            "Sign in at https://sam.gov, open Account Details, and check the Public API Key "
+            "copied into company/.env.local. Keep spaces out of the value and do not paste "
+            "the key into the chat.",
             code=4,
         )
     if status == 400:
@@ -717,8 +748,12 @@ def normalize(record):
         "office": office,
         "naics": naics,
         "classification_code": str(record.get("classificationCode") or ""),
-        "set_aside_code": str(record.get("typeOfSetAside") or ""),
-        "set_aside_description": str(record.get("typeOfSetAsideDescription") or ""),
+        # The current response table uses setAsideCode and setAside. Older examples and
+        # stored fixtures use typeOfSetAside and typeOfSetAsideDescription. Accept both.
+        "set_aside_code": str(record.get("setAsideCode") or
+                              record.get("typeOfSetAside") or ""),
+        "set_aside_description": str(record.get("setAside") or
+                                     record.get("typeOfSetAsideDescription") or ""),
         "notice_type": str(record.get("type") or ""),
         "base_type": str(record.get("baseType") or ""),
         "posted_date": str(record.get("postedDate") or "")[:10],
@@ -857,7 +892,7 @@ def pull_window(conn, key, naics, set_aside, date_from, date_to, budget, args,
     calls = 0
     offset = start_offset
     complete = False
-    page_index = 0
+    page_index = start_offset
 
     while True:
         if calls >= budget:
@@ -875,15 +910,24 @@ def pull_window(conn, key, naics, set_aside, date_from, date_to, budget, args,
         if args.notice_type:
             params["ptype"] = args.notice_type
 
-        body = api_get(conn, API_SEARCH, params, key, timeout=args.timeout,
-                       fixture=args.fixture, page_index=page_index)
+        try:
+            body = api_get(conn, API_SEARCH, params, key, timeout=args.timeout,
+                           fixture=args.fixture, page_index=page_index)
+        except RateLimited as exc:
+            # The refused request is a real request attempt. Attach the successful pages so
+            # the caller can persist them before it records the resume position.
+            exc.records = list(records)
+            exc.calls_used = calls + 1
+            exc.next_offset = offset
+            raise
         calls += 1
         page_index += 1
         page = body.get("opportunitiesData") or []
         total = int(body.get("totalRecords") or 0)
         records.extend(page)
-        offset += len(page)
-        if not page or offset >= total:
+        offset += 1
+        if (not page or len(page) < MAX_RECORDS_PER_CALL or
+                (total and offset * MAX_RECORDS_PER_CALL >= total)):
             complete = True
             break
     return records, calls, offset, complete
@@ -924,7 +968,7 @@ def coverage_lines(conn):
         "ORDER BY filter_kind, filter_value").fetchall()
     lines = []
     for row in rows:
-        label = "NAICS" if row["filter_kind"] == "naics" else row["filter_kind"]
+        label = "NAICS" if row["filter_kind"] == "naics" else row["filter_kind"].title()
         lines.append("  %s %s, notices posted %s to %s" % (
             label, row["filter_value"], row["earliest_posted"] or "unknown",
             row["latest_posted"] or "unknown"))
@@ -941,9 +985,15 @@ def freshness_banner(conn):
         lines.append("Local database last synced %s, %s day(s) ago." % (last, days))
         if days is not None and days >= 3:
             lines.append("That is stale. Run /sync before you rely on any deadline below.")
+    if get_state(conn, "last_sync_status") == "incomplete":
+        attempt = get_state(conn, "last_sync_attempt_utc", "time not recorded")
+        lines.append("The most recent sync attempt at %s did not finish. Complete pages were "
+                     "kept, but they did not advance freshness or completed coverage."
+                     % attempt)
     covered = coverage_lines(conn)
     if covered:
-        lines.append("Coverage, which is the whole of what this database knows about:")
+        lines.append("Completed coverage only. Partial pages may be stored, but do not extend "
+                     "these ranges:")
         lines.extend(covered)
     else:
         lines.append("Coverage: nothing recorded yet.")
@@ -955,7 +1005,7 @@ CONFIRM_LINE = ("Confirm every deadline on SAM.gov itself before you rely on it 
                 "authoritative record.")
 
 FIXTURE_BANNER = ("Rehearsal against a local fixture file. No API call was made, nothing "
-                  "counted against your daily budget, and none of this came from SAM.gov.")
+                  "counted against your 24-hour budget, and none of this came from SAM.gov.")
 
 NOT_ATTACHMENTS_LINE = ("This database holds notices only. Attachments, statements of work, "
                         "and amendment documents are not here and still come from SAM.gov.")
@@ -998,7 +1048,8 @@ def cmd_status(args):
     for line in freshness_banner(conn):
         say("  " + line)
     say("")
-    say("  API calls made from this folder today: %d" % calls_today(conn))
+    say("  API calls made from this folder in the last 24 hours: %d"
+        % calls_last_24_hours(conn))
     say("  That count is what this database recorded. It cannot see calls made with the "
         "same key from anywhere else.")
 
@@ -1008,6 +1059,8 @@ def cmd_status(args):
         cursor = json.loads(get_state(conn, "backfill_cursor", '{"index": 0, "offset": 0}'))
         done = cursor.get("index", 0)
         say("  Backfill: chunk %d of %d done." % (done, len(plan)))
+        if done < len(plan) and cursor.get("offset", 0):
+            say("  Current chunk resumes at API page index %d." % cursor["offset"])
         if done >= len(plan):
             say("  Backfill is complete.")
     else:
@@ -1048,6 +1101,7 @@ def resolve_set_asides(args, root):
 
 
 def cmd_sync(args):
+    require_positive_daily_limit(args)
     root = repo_root()
     conn = open_db(args.db)
     naics_codes = resolve_naics(conn, args, root)
@@ -1071,13 +1125,14 @@ def cmd_sync(args):
         else:
             combos.append((code, ""))
 
-    used_today = calls_today(conn)
-    budget = max(0, args.daily_limit - used_today)
+    used_recently = calls_last_24_hours(conn)
+    budget = max(0, args.daily_limit - used_recently)
     if not args.fixture and budget <= 0:
-        say("Nothing was called. This folder has already made %d API calls today, which is "
-            "the daily limit you told it about (%d)." % (used_today, args.daily_limit))
-        say("Next action: run /sync again tomorrow. The database still holds everything from "
-            "earlier runs.")
+        say("Nothing was called. This folder has already made %d API calls in the last 24 "
+            "hours, which is the limit you told it about (%d)."
+            % (used_recently, args.daily_limit))
+        say("Next action: run /sync after the oldest call leaves the 24-hour window. The "
+            "database still holds everything from earlier runs.")
         conn.close()
         return 3
 
@@ -1111,7 +1166,7 @@ def cmd_sync(args):
     for code, set_aside in combos:
         if not args.fixture and total_calls >= budget:
             completed_all = False
-            say("Stopped before NAICS %s: the daily call budget is spent." % code)
+            say("Stopped before NAICS %s: the 24-hour call budget is spent." % code)
             break
         try:
             records, calls, _, complete = pull_window(
@@ -1120,29 +1175,33 @@ def cmd_sync(args):
         except RateLimited as exc:
             rate_limited = True
             completed_all = False
+            total_calls += exc.calls_used
+            seen, changes = apply_records(conn, exc.records, sync_date)
+            total_records += seen
+            all_changes.extend(changes)
             conn.commit()
             say(exc.message)
+            if seen:
+                say("Retained %d notice(s) from complete pages before the refused page. "
+                    "That partial window is not recorded as full coverage." % seen)
             say(exc.next_action)
             break
         total_calls += calls
         seen, changes = apply_records(conn, records, sync_date)
         total_records += seen
         all_changes.extend(changes)
-        if records:
-            posted = sorted(r.get("postedDate", "")[:10] for r in records
-                            if r.get("postedDate"))
-            if posted:
-                note_coverage(conn, "naics", code, posted[0], posted[-1])
-        else:
-            note_coverage(conn, "naics", code, start.isoformat(), end.isoformat())
-        if set_aside:
-            note_coverage(conn, "set_aside", set_aside, start.isoformat(), end.isoformat())
+        if complete:
+            note_completed_query_coverage(conn, code, set_aside, start.isoformat(),
+                                          end.isoformat())
         if not complete:
             completed_all = False
 
-    set_state(conn, "last_sync_utc", now_utc_iso())
-    set_state(conn, "last_sync_calls", total_calls)
+    attempt_utc = now_utc_iso()
+    set_state(conn, "last_sync_attempt_utc", attempt_utc)
+    set_state(conn, "last_sync_attempt_calls", total_calls)
     if completed_all:
+        set_state(conn, "last_sync_utc", attempt_utc)
+        set_state(conn, "last_sync_calls", total_calls)
         set_state(conn, "last_sync_window_from", start.isoformat())
         set_state(conn, "last_sync_window_to", end.isoformat())
         set_state(conn, "last_sync_status", "complete")
@@ -1151,8 +1210,8 @@ def cmd_sync(args):
     conn.commit()
 
     say("")
-    say("API calls used by this run: %d. Calls from this folder today: %d."
-        % (total_calls, calls_today(conn)))
+    say("Request attempts in this run: %d. API calls from this folder in the last 24 hours: "
+        "%d." % (total_calls, calls_last_24_hours(conn)))
     say("Notices read: %d." % total_records)
     report_changes(all_changes, conn)
 
@@ -1164,12 +1223,12 @@ def cmd_sync(args):
         say("The sync did not finish, so the saved window was left where it was and nothing "
             "will be skipped next time.")
         if not rate_limited:
-            say("Next action: run /sync again tomorrow.")
+            say("Next action: run /sync after the 24-hour request window resets.")
     say("")
     say(NOT_ATTACHMENTS_LINE)
     say(CONFIRM_LINE)
     conn.close()
-    return 3 if rate_limited else 0
+    return 0 if completed_all else 3
 
 
 def report_changes(changes, conn):
@@ -1228,6 +1287,7 @@ def build_backfill_plan(naics_codes, set_asides, start, end, chunk_days):
 
 
 def cmd_backfill(args):
+    require_positive_daily_limit(args)
     root = repo_root()
     conn = open_db(args.db)
     naics_codes = resolve_naics(conn, args, root)
@@ -1267,8 +1327,8 @@ def cmd_backfill(args):
         conn.close()
         return 0
 
-    used_today = calls_today(conn)
-    budget = max(0, args.daily_limit - used_today)
+    used_recently = calls_last_24_hours(conn)
+    budget = max(0, args.daily_limit - used_recently)
     days_needed = (remaining + args.daily_limit - 1) // args.daily_limit
 
     say("Backfill plan")
@@ -1285,10 +1345,10 @@ def cmd_backfill(args):
             % (len(plan) // max(1, len(set_asides))))
     say("  Each chunk is at least one API call. A chunk holding more than 1,000 records "
         "needs one extra call per further 1,000.")
-    say("  Your stated daily limit is %d calls, and %d have been used today."
-        % (args.daily_limit, used_today))
-    say("  At that limit this backfill takes about %d more day(s), and longer if chunks "
-        "need extra pages." % days_needed)
+    say("  Your stated 24-hour limit is %d calls, and this folder made %d in the last "
+        "24 hours." % (args.daily_limit, used_recently))
+    say("  At that limit this backfill takes at least %d more 24-hour request window(s), "
+        "and longer if chunks need extra pages." % days_needed)
     say("")
 
     if args.fixture:
@@ -1301,10 +1361,10 @@ def cmd_backfill(args):
         return 0
 
     if not args.fixture and budget <= 0:
-        say("Nothing was called. The daily budget of %d calls is already spent."
+        say("Nothing was called. The 24-hour budget of %d calls is already spent."
             % args.daily_limit)
-        say("Next action: run /backfill again tomorrow. It resumes at chunk %d of %d."
-            % (cursor.get("index", 0) + 1, len(plan)))
+        say("Next action: run /backfill after the oldest call leaves the 24-hour window. It "
+            "resumes at chunk %d of %d." % (cursor.get("index", 0) + 1, len(plan)))
         conn.close()
         return 3
 
@@ -1329,46 +1389,62 @@ def cmd_backfill(args):
                 start_offset=cursor.get("offset", 0))
         except RateLimited as exc:
             rate_limited = True
+            calls_used += exc.calls_used
+            seen, changes = apply_records(conn, exc.records, sync_date)
+            total_records += seen
+            all_changes.extend(changes)
+            cursor = {"index": cursor["index"], "offset": exc.next_offset}
+            set_state(conn, "backfill_cursor", json.dumps(cursor))
             conn.commit()
             say(exc.message)
+            if seen:
+                say("Retained %d notice(s) from complete pages before the refused page. "
+                    "This unfinished chunk is not recorded as full coverage." % seen)
             say(exc.next_action)
             break
         calls_used += calls
         seen, changes = apply_records(conn, records, sync_date)
         total_records += seen
         all_changes.extend(changes)
-        note_coverage(conn, "naics", chunk["naics"], chunk["from"], chunk["to"])
-        if chunk["set_aside"]:
-            note_coverage(conn, "set_aside", chunk["set_aside"], chunk["from"], chunk["to"])
         if complete:
+            note_completed_query_coverage(conn, chunk["naics"], chunk["set_aside"],
+                                          chunk["from"], chunk["to"])
             cursor = {"index": cursor["index"] + 1, "offset": 0}
         else:
             cursor = {"index": cursor["index"], "offset": next_offset}
         set_state(conn, "backfill_cursor", json.dumps(cursor))
         conn.commit()
 
-    set_state(conn, "last_backfill_utc", now_utc_iso())
+    attempt_utc = now_utc_iso()
+    set_state(conn, "last_backfill_attempt_utc", attempt_utc)
+    set_state(conn, "last_backfill_status",
+              "complete" if cursor["index"] >= len(plan) else "incomplete")
+    if cursor["index"] >= len(plan):
+        set_state(conn, "last_backfill_utc", attempt_utc)
     conn.commit()
 
     done = cursor["index"]
     say("")
-    say("API calls used by this run: %d. Calls from this folder today: %d."
-        % (calls_used, calls_today(conn)))
+    say("Request attempts in this run: %d. API calls from this folder in the last 24 hours: "
+        "%d." % (calls_used, calls_last_24_hours(conn)))
     say("Notices read: %d." % total_records)
-    say("Progress saved: chunk %d of %d." % (done, len(plan)))
+    say("Completed chunks: %d of %d." % (done, len(plan)))
+    if done < len(plan):
+        say("Current chunk resumes at API page index %d." % cursor.get("offset", 0))
     report_changes(all_changes, conn)
     if done >= len(plan):
         say("")
         say("Backfill is complete. Next action: run /sync each day from now on.")
     else:
         say("")
-        say("Backfill is not finished. Next action: run /backfill again tomorrow and it "
-            "resumes at chunk %d." % (done + 1))
+        say("Backfill is not finished. Next action: run /backfill after the request limit "
+            "resets. It resumes at chunk %d, API page index %d."
+            % (done + 1, cursor.get("offset", 0)))
     say("")
     say(NOT_ATTACHMENTS_LINE)
     say(CONFIRM_LINE)
     conn.close()
-    return 3 if rate_limited else 0
+    return 0 if done >= len(plan) else 3
 
 
 def cmd_search(args):
@@ -1463,6 +1539,8 @@ def cmd_search(args):
         payload = {
             "generated_utc": now_utc_iso(),
             "last_sync_utc": get_state(conn, "last_sync_utc"),
+            "last_sync_attempt_utc": get_state(conn, "last_sync_attempt_utc"),
+            "last_sync_status": get_state(conn, "last_sync_status"),
             "days_since_sync": staleness(conn)[1],
             "database_notices": total,
             "coverage": [dict(r) for r in conn.execute(
@@ -1617,11 +1695,11 @@ def cmd_describe(args):
             "newer than your last sync.",
             code=5,
         )
-    used_today = calls_today(conn)
-    if not args.fixture and used_today >= args.daily_limit:
-        say("Nothing was called. This folder has used %d of its %d API calls today."
-            % (used_today, args.daily_limit))
-        say("Next action: run this again tomorrow.")
+    used_recently = calls_last_24_hours(conn)
+    if not args.fixture and used_recently >= args.daily_limit:
+        say("Nothing was called. This folder has used %d of its %d API calls in the last "
+            "24 hours." % (used_recently, args.daily_limit))
+        say("Next action: run this again after the oldest call leaves the 24-hour window.")
         conn.close()
         return 3
 
@@ -1635,7 +1713,8 @@ def cmd_describe(args):
                  "WHERE notice_id = ?", (clean, now_utc_iso(), args.notice_id))
     conn.commit()
     say("Description stored for %s, %d characters." % (args.notice_id, len(clean)))
-    say("That cost one API call. Calls from this folder today: %d." % calls_today(conn))
+    say("That cost one API call. Calls from this folder in the last 24 hours: %d."
+        % calls_last_24_hours(conn))
     say("")
     say(clean[:2000] + (" ..." if len(clean) > 2000 else ""))
     say("")
@@ -1656,10 +1735,10 @@ def add_common(parser):
 
 
 def add_network(parser):
-    parser.add_argument("--daily-limit", type=int, default=10,
-                        help="API calls your account is allowed per day. 10 is the "
-                             "no-role tier, 1000 if you hold a role on an entity "
-                             "registration. Default 10, the safe assumption.")
+    parser.add_argument("--daily-limit", type=positive_int, default=10,
+                        help="conservative local rolling 24-hour call budget; default 10. "
+                             "Use another positive number only when you have confirmed "
+                             "your account limit.")
     parser.add_argument("--timeout", type=int, default=60, help="seconds per call")
     parser.add_argument("--fixture", default=None,
                         help="read a canned JSON response instead of calling the API. A file "
